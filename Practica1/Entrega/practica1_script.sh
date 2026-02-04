@@ -13,7 +13,7 @@ echo "== Comandos básicos OpenSSL =="
 openssl version || true
 openssl speed || true
 
-# Crear archivos binarios aleatorios y convertir a Base64
+# Crear archivos binarios aleatorios, convertir a Base64 y comprobar que funciona correctamente
 echo "\n== Crear archivos binarios aleatorios =="
 openssl rand -out rand8.bin 8
 openssl rand -out rand256.bin 256
@@ -42,13 +42,13 @@ else
   echo "rand256: ¡ERROR en conversiones base64!"
 fi
 
+# Crear fichero de  0 y de 255
 echo "\n== Crear ficheros con valores fijos =="
 # 16 bytes de 0x00
 dd if=/dev/zero bs=1 count=16 of=zeros16.bin status=none
 # 64 bytes de 0xFF
-python3 - <<'PY'
-open('ff64.bin','wb').write(b'\xff'*64)
-PY
+dd if=/dev/zero bs=1 count=64 status=none | tr '\000' '\377' > ff64.bin
+
 
 echo "\n== Visualización hexadecimal (xxd) =="
 xxd zeros16.bin | sed -n '1,5p'
@@ -58,6 +58,9 @@ echo "\n== Visualización octal (od) =="
 od -An -t o1 -v zeros16.bin | sed -n '1,5p'
 od -An -t o1 -v ff64.bin | sed -n '1,5p'
 
+
+
+# Email con adjuntos pero no se si está bien
 echo "\n== Generar imagen pequeña y documento RTF =="
 # Imagen PNG 1x1 en base64
 cat > image.png.b64 <<'B64'
