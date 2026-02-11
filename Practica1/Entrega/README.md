@@ -1,47 +1,44 @@
-Práctica 1 - Entrega
+# Práctica 1 - Entrega
 
-Descripción
-- Script `practica1_script.sh` que realiza todas las operaciones solicitadas: comandos OpenSSL, generación y conversión Base64, creación de archivos con valores 00/FF, visualización en hexadecimal y octal, generación de un correo (.eml) con adjuntos y extracción con `ripmime`.
+## Descripción
+Este directorio contiene la entrega de la Práctica 1.
+El script principal `practica1_script.sh` realiza las siguientes actividades obligatorias:
 
-Archivos incluidos
-- `practica1_script.sh` : script principal (bash).
-- `make_email.py` : genera `message.eml` con adjuntos y opcionalmente lo envía.
+1. Ejecución de comandos básicos de OpenSSL (`version`, `speed`).
+2. Creación de archivos binarios aleatorios (8 y 256 bytes).
+3. Conversión de binario a Base64 y viceversa, con verificación.
+4. Creación de archivos con patrones específicos (0x00 y 0xFF).
+5. Visualización de archivos en hexadecimal y octal.
+6. Procesamiento de un archivo de correo `.eml` existente para extraer adjuntos usando `ripmime`.
 
-Dependencias
-- openssl
-- coreutils (dd, base64)
-- xxd, od
-- python3
-- ripmime (para extraer adjuntos desde .eml)
-- sendmail (opcional, para enviar el correo)
+## Estructura
+- `practica1_script.sh`: Script Bash que automatiza la tarea.
+- `../ArchivosOriginales/Correoeml.eml`: Archivo de correo utilizado para la extracción de adjuntos.
+- `../Salidas/`: Directorio donde se generarán todos los archivos resultantes.
 
-Instrucciones rápidas
-1. Abrir terminal en `Practica1/Entrega`.
-2. Hacer ejecutable el script:
+## Requisitos previos
+El script requiere la herramienta `ripmime` para la parte de extracción de correo.
+Instalación en sistemas basados en Debian/Ubuntu (Kali):
 
+```bash
+sudo apt update
+sudo apt install ripmime
+```
+
+## Instrucciones de ejecución
+
+1. Dar permisos de ejecución al script (si aún no los tiene):
+   ```bash
    chmod +x practica1_script.sh
+   ```
 
-3. (Opcional) exportar direcciones de correo:
-
-   export RECIPIENT=tu@email
-   export SENDER=mi@dominio
-
-   Si no se exportan, `make_email.py` fallará al crear el .eml por falta de parámetros; puede ejecutarse manualmente:
-
-   python3 make_email.py --to tu@email --from mi@dominio --image entrega_practica1/image.png --file entrega_practica1/doc.rtf --out entrega_practica1/message.eml
-
-4. Ejecutar el script:
-
+2. Ejecutar el script:
+   ```bash
    ./practica1_script.sh
+   ```
 
-5. Si quieres enviar el correo vía sendmail (si está configurado):
+3. Verificar los resultados en la carpeta `../Salidas/` y `../Salidas/Adjuntos/`.
 
-   python3 make_email.py --to tu@correo --from yo@dominio --image entrega_practica1/image.png --file entrega_practica1/doc.rtf --out entrega_practica1/message.eml --send
-
-6. Para extraer adjuntos desde `message.eml` use `ripmime`:
-
-   ripmime -i entrega_practica1/message.eml -d salida
-
-Notas
-- `openssl speed` puede tardar varios segundos/minutos según la máquina.
-- La creación del `.eml` y su envío dependen de que el sistema tenga `sendmail` configurado; alternativa: subir el `.eml` al cliente web y descargarlo desde la interfaz para inspección.
+## Notas
+- La prueba de `openssl speed` puede tardar mucho tiempo si se ejecuta completa. El script ejecuta una versión reducida (`rsa` y `md5`) como demostración.
+- La comparación de archivos adjuntos extraídos requiere poseer los archivos originales fuera del correo. El script realiza la extracción correctamente en la carpeta de salidas.

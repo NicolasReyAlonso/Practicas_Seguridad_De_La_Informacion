@@ -1,124 +1,123 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/bin/bash
 
-# Script para la práctica 1 - seguridad de la información
-# Requisitos: openssl, base64, xxd, od, python3, ripmime (opcional), sendmail (opcional)
+# Configuración de directorios
+BASE_DIR="$(dirname "$0")"
+SALIDAS_DIR="$BASE_DIR/../Salidas"
+ORIGINALES_DIR="$BASE_DIR/../ArchivosOriginales"
+mkdir -p "$SALIDAS_DIR"
 
-OUTDIR="entrega_practica1"
-mkdir -p "$OUTDIR"
-cd "$OUTDIR"
+echo "========================================"
+echo "1. Comandos básicos OpenSSL"
+echo "========================================"
+echo "Versión de OpenSSL:"
+openssl version
 
-# Comandos básicos de OpenSSL
-echo "== Comandos básicos OpenSSL =="
-openssl version || true
-openssl speed || true
+echo ""
+echo "Nota: 'openssl speed' ejecuta pruebas de rendimiento para todos los algoritmos y tarda mucho."
+echo "Ejecutando prueba rápida solo para rsa y md5 como demostración..."
+openssl speed rsa md5
+# Para ejecutar todos: openssl speed
 
-# Crear archivos binarios aleatorios, convertir a Base64 y comprobar que funciona correctamente
-echo "\n== Crear archivos binarios aleatorios =="
-openssl rand -out rand8.bin 8
-openssl rand -out rand256.bin 256
+echo ""
+echo "========================================"
+echo "2. Crear archivos binarios (8 y 256 bytes) con openssl rand"
+echo "========================================"
+openssl rand -out "$SALIDAS_DIR/bin_8bytes.bin" 8
+openssl rand -out "$SALIDAS_DIR/bin_256bytes.bin" 256
+echo "Generados: bin_8bytes.bin y bin_256bytes.bin en $SALIDAS_DIR"
 
-echo "== Convertir a Base64 y con openssl enc -a =="
-base64 rand8.bin > rand8.base64
-openssl enc -a -in rand8.bin -out rand8.openssl.b64
+echo ""
+echo "========================================"
+echo "3. Convertir a Base64 y comparar"
+echo "========================================"
+# Usando comando base64
+base64 "$SALIDAS_DIR/bin_8bytes.bin" > "$SALIDAS_DIR/bin_8bytes.b64"
+echo "Codificado bin_8bytes.bin a Base64 (usando base64)"
 
-base64 -d rand8.base64 > rand8.base64.dec
-openssl enc -d -a -in rand8.openssl.b64 -out rand8.openssl.dec
+# Usando openssl enc -a
+openssl enc -a -in "$SALIDAS_DIR/bin_256bytes.bin" -out "$SALIDAS_DIR/bin_256bytes.b64"
+echo "Codificado bin_256bytes.bin a Base64 (usando openssl enc -a)"
 
-if cmp -s rand8.bin rand8.base64.dec && cmp -s rand8.bin rand8.openssl.dec; then
-  echo "rand8: conversiones base64 consistentes"
+echo "Decodificando para verificar..."
+base64 -d "$SALIDAS_DIR/bin_8bytes.b64" > "$SALIDAS_DIR/bin_8bytes_check.bin"
+openssl enc -a -d -in "$SALIDAS_DIR/bin_256bytes.b64" -out "$SALIDAS_DIR/bin_256bytes_check.bin"
+
+echo "Comparando originales con decodificados:"
+if cmp -s "$SALIDAS_DIR/bin_8bytes.bin" "$SALIDAS_DIR/bin_8bytes_check.bin"; then
+    echo "[OK] bin_8bytes.bin coincide."
 else
-  echo "rand8: ¡ERROR en conversiones base64!"
+    echo "[ERROR] bin_8bytes.bin NO coincide."
 fi
 
-base64 rand256.bin > rand256.base64
-openssl enc -a -in rand256.bin -out rand256.openssl.b64
-base64 -d rand256.base64 > rand256.base64.dec
-openssl enc -d -a -in rand256.openssl.b64 -out rand256.openssl.dec
-
-if cmp -s rand256.bin rand256.base64.dec && cmp -s rand256.bin rand256.openssl.dec; then
-  echo "rand256: conversiones base64 consistentes"
+if cmp -s "$SALIDAS_DIR/bin_256bytes.bin" "$SALIDAS_DIR/bin_256bytes_check.bin"; then
+    echo "[OK] bin_256bytes.bin coincide."
 else
-  echo "rand256: ¡ERROR en conversiones base64!"
+    echo "[ERROR] bin_256bytes.bin NO coincide."
 fi
 
-# Crear fichero de  0 y de 255
-echo "\n== Crear ficheros con valores fijos =="
-# 16 bytes de 0x00
-dd if=/dev/zero bs=1 count=16 of=zeros16.bin status=none
-# 64 bytes de 0xFF
-dd if=/dev/zero bs=1 count=64 status=none | tr '\000' '\377' > ff64.bin
+echo ""
+echo "========================================"
+echo "4. Crear archivos de ceros (00) y unos (FF)"
+echo "========================================"
+# 16 bytes de 00
+dd if=/dev/zero of="$SALIDAS_DIR/zeros_16.bin" bs=1 count=16 2>/dev/null
+echo "Creado zeros_16.bin (16 bytes de 0x00)"
 
+# 64 bytes de FF
+# Usando perl para generar caracteres 0xFF
+perl -e 'print "\xff" x 64' > "$SALIDAS_DIR/ones_64.bin"
+echo "Creado ones_64.bin (64 bytes de 0xFF)"
 
-echo "\n== Visualización hexadecimal (xxd) =="
-xxd zeros16.bin | sed -n '1,5p'
-xxd ff64.bin | sed -n '1,5p'
+echo ""
+echo "========================================"
+echo "5. Visualización Hexadecimal y Octal"
+echo "========================================"
+echo "--> zeros_16.bin en Hexadecimal:"
+hexdump -C "$SALIDAS_DIR/zeros_16.bin"
+echo "--> zeros_16.bin en Octal:"
+od -b "$SALIDAS_DIR/zeros_16.bin"
 
-echo "\n== Visualización octal (od) =="
-od -An -t o1 -v zeros16.bin | sed -n '1,5p'
-od -An -t o1 -v ff64.bin | sed -n '1,5p'
+echo ""
+echo "--> ones_64.bin en Hexadecimal:"
+hexdump -C "$SALIDAS_DIR/ones_64.bin"
+echo "--> ones_64.bin en Octal:"
+od -b "$SALIDAS_DIR/ones_64.bin"
 
-
-
-# Email con adjuntos pero no se si está bien
-echo "\n== Generar imagen pequeña y documento RTF =="
-# Imagen PNG 1x1 en base64
-cat > image.png.b64 <<'B64'
-iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2P8z/C/HwAF/gL+2c9qAAAAAElFTkSuQmCC
-B64
-base64 -d image.png.b64 > image.png
-rm image.png.b64
-
-# Documento RTF simple (abre en Word)
-cat > doc.rtf <<'RTF'
-{\rtf1\ansi
-{\fonttbl\f0\fswiss Helvetica;}\f0\fs24
-Hola, esta es la práctica 1.\par
-}
-RTF
-
-ls -l image.png doc.rtf
-
-echo "\n== Crear mensaje .eml con adjuntos (message.eml) =="
-# make_email.py se encarga de generar message.eml y opcionalmente enviarlo
-if command -v python3 >/dev/null 2>&1; then
-  python3 ../make_email.py --to "$RECIPIENT" --from "$SENDER" --image image.png --file doc.rtf --out message.eml || true
-else
-  echo "python3 no encontrado: no se puede crear .eml automáticamente"
-fi
-
-echo "\n== Extraer adjuntos con ripmime =="
-if command -v ripmime >/dev/null 2>&1; then
-  mkdir -p rip_out
-  ripmime -i message.eml -d rip_out || true
-  echo "ficheros extraídos en rip_out/"
-  echo "Comparando adjuntos extraídos con originales..."
-  for f in image.png doc.rtf; do
-    if [ -f "rip_out/$f" ]; then
-      if cmp -s "$f" "rip_out/$f"; then
-        echo "$f: OK"
-      else
-        echo "$f: DIFERENTE"
-      fi
+echo ""
+echo "========================================"
+echo "6, 7 & 8. Tratamiento de Correo (.eml)"
+echo "========================================"
+EMAIL_FILE="$ORIGINALES_DIR/Correoeml.eml"
+if [ -f "$EMAIL_FILE" ]; then
+    echo "Archivo de correo encontrado: $EMAIL_FILE"
+    
+    # Intenta instalar ripmime si no existe (requiere sudo/interacción, comentado por seguridad en script auto)
+    if ! command -v ripmime &> /dev/null; then
+         echo "AVISO: 'ripmime' no está instalado. Ejecuta: sudo apt install ripmime"
+         # Continuar solo si está instalado...
     else
-      echo "$f: no extraído"
+        EXTRACT_DIR="$SALIDAS_DIR/Adjuntos"
+        mkdir -p "$EXTRACT_DIR"
+        
+        echo "Visualizando cabecera del correo (primeras 20 líneas):"
+        head -n 20 "$EMAIL_FILE"
+        
+        echo ""
+        echo "Extrayendo adjuntos con ripmime en $EXTRACT_DIR..."
+        ripmime -i "$EMAIL_FILE" -d "$EXTRACT_DIR"
+        
+        echo "Archivos extraídos:"
+        ls -l "$EXTRACT_DIR"
+        
+        echo ""
+        echo "Nota sobre la comparación:"
+        echo "Para comparar los ficheros extraídos con los originales, necesitaríamos la ruta de los archivos originales (imagen y Word)."
+        echo "Ejemplo de comando de comparación:"
+        echo "  diff \"$EXTRACT_DIR/nombre_imagen.jpg\" \"/ruta/a/original/nombre_imagen.jpg\""
     fi
-  done
 else
-  echo "ripmime no instalado; instale 'ripmime' para extraer adjuntos" >&2
+    echo "Archivo $EMAIL_FILE no encontrado. Verifica que esté en la carpeta ArchivosOriginales."
 fi
 
-echo "\n== Fin del script =="
-
-# Notas de uso imprimibles
-cat <<USAGE
-
-Uso:
-  Antes de ejecutar exporta las variables de entorno (opcional):
-    export RECIPIENT=tu@email
-    export SENDER=mi@dominio
-  Hacer ejecutable y ejecutar:
-    chmod +x practica1_script.sh
-    ./practica1_script.sh
-
-USAGE
+echo ""
+echo "Script finalizado."
