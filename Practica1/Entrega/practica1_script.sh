@@ -87,8 +87,10 @@ echo ""
 echo "========================================"
 echo "6, 7 & 8. Tratamiento de Correo (.eml)"
 echo "========================================"
-EMAIL_FILE="$ORIGINALES_DIR/Correoeml.eml"
-if [ -f "$EMAIL_FILE" ]; then
+# Detectar archivo .eml (tomamos el primero que encontremos)
+EMAIL_FILE=$(find "$ORIGINALES_DIR" -maxdepth 1 -name "*.eml" | head -n 1)
+
+if [ -n "$EMAIL_FILE" ] && [ -f "$EMAIL_FILE" ]; then
     echo "Archivo de correo encontrado: $EMAIL_FILE"
     
     # Intenta instalar ripmime si no existe (requiere sudo/interacción, comentado por seguridad en script auto)
@@ -97,6 +99,8 @@ if [ -f "$EMAIL_FILE" ]; then
          # Continuar solo si está instalado...
     else
         EXTRACT_DIR="$SALIDAS_DIR/Adjuntos"
+        # Limpiamos carpeta anterior para asegurar limpieza
+        rm -rf "$EXTRACT_DIR"
         mkdir -p "$EXTRACT_DIR"
         
         echo "Visualizando cabecera del correo (primeras 20 líneas):"
@@ -104,19 +108,41 @@ if [ -f "$EMAIL_FILE" ]; then
         
         echo ""
         echo "Extrayendo adjuntos con ripmime en $EXTRACT_DIR..."
-        ripmime -i "$EMAIL_FILE" -d "$EXTRACT_DIR"
+        ripmime -i "$EMAIL_FILE" -d "$EXTRACT_DIR" --no-nameless
         
         echo "Archivos extraídos:"
         ls -l "$EXTRACT_DIR"
         
         echo ""
-        echo "Nota sobre la comparación:"
-        echo "Para comparar los ficheros extraídos con los originales, necesitaríamos la ruta de los archivos originales (imagen y Word)."
-        echo "Ejemplo de comando de comparación:"
-        echo "  diff \"$EXTRACT_DIR/nombre_imagen.jpg\" \"/ruta/a/original/nombre_imagen.jpg\""
+        echo "Comparando ficheros extraídos con los originales:"
+        
+        # Definimos los archivos a comparar (pic.png y holo.odt que están en ArchivosOriginales)
+        ARCHIVOS_A_COMPARAR=("pic.png" "holo.odt")
+        
+        for ARCHIVO in "${ARCHIVOS_A_COMPARAR[@]}"; do
+            ORIGINAL="$ORIGINALES_DIR/$ARCHIVO"
+            EXTRAIDO="$EXTRACT_DIR/$ARCHIVO"
+            
+            if [ -f "$ORIGINAL" ]; then
+                if [ -f "$EXTRAIDO" ]; then
+                    echo -n "Verificando $ARCHIVO... "
+                    if cmp -s "$ORIGINAL" "$EXTRAIDO"; then
+                        echo "[OK] COINCIDE (Los archivos son idénticos)"
+                    else
+                        echo "[DIFERENTE] Los archivos NO son idénticos"
+                        # Información adicional si son diferentes
+                        ls -l "$ORIGINAL" "$EXTRAIDO"
+                    fi
+                else
+                    echo "[ERROR] No se encontró el archivo extraído: $ARCHIVO"
+                fi
+            else
+                echo "[AVISO] No existe el archivo original para comparar: $ARCHIVO"
+            fi
+        done
     fi
 else
-    echo "Archivo $EMAIL_FILE no encontrado. Verifica que esté en la carpeta ArchivosOriginales."
+    echo "ERROR: No se encontró ningún archivo .eml en $ORIGINALES_DIR"
 fi
 
 echo ""
