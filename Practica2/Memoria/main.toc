@@ -1,0 +1,51 @@
+\babel@toc {spanish}{}\relax 
+\contentsline {chapter}{\numberline {1}Introducción}{4}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Objetivo de la práctica}{4}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Requisitos previos}{4}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Organización del informe}{4}{section.1.3}%
+\contentsline {chapter}{\numberline {2}Generación y Comprobación de Resúmenes}{6}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Descripción teórica}{6}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Algoritmos utilizados}{7}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Metodología experimental}{7}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Archivo de prueba}{7}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Comandos utilizados}{7}{subsection.2.3.2}%
+\contentsline {section}{\numberline {2.4}Resultados}{8}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Resúmenes obtenidos}{8}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Verificación de tamaño}{8}{subsection.2.4.2}%
+\contentsline {subsection}{\numberline {2.4.3}Sensibilidad del hash}{8}{subsection.2.4.3}%
+\contentsline {chapter}{\numberline {3}Cifrado Simétrico de Documentos}{10}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Descripción teórica}{10}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Algoritmos de cifrado simétrico}{10}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Cifradores de bloque}{10}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Cifradores de flujo}{11}{subsection.3.2.2}%
+\contentsline {section}{\numberline {3.3}Modos de operación}{11}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Derivación de claves: PBKDF2}{11}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Metodología experimental}{12}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}Archivo de prueba}{12}{subsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.5.2}Cifrado con contraseña}{12}{subsection.3.5.2}%
+\contentsline {section}{\numberline {3.6}Resultados}{12}{section.3.6}%
+\contentsline {subsection}{\numberline {3.6.1}Cifrado con diferentes algoritmos}{12}{subsection.3.6.1}%
+\contentsline {subsection}{\numberline {3.6.2}Análisis de overhead}{12}{subsection.3.6.2}%
+\contentsline {subsection}{\numberline {3.6.3}Cifrado con clave e IV explícitos}{13}{subsection.3.6.3}%
+\contentsline {chapter}{\numberline {4}Demostración de la Peligrosidad del Modo ECB}{14}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Fundamento teórico: El problema del modo ECB}{14}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Problemas de seguridad}{14}{subsection.4.1.1}%
+\contentsline {section}{\numberline {4.2}Experimento: Cifrado de imágenes}{14}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Procedimiento}{14}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Comandos utilizados}{15}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}Comparación de modos}{15}{subsection.4.2.3}%
+\contentsline {section}{\numberline {4.3}Resultados obtenidos}{16}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Imágenes generadas}{16}{subsection.4.3.1}%
+\contentsline {section}{\numberline {4.4}Conclusiones sobre seguridad}{16}{section.4.4}%
+\contentsline {chapter}{\numberline {5}Conclusiones}{17}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Resumen de aprendizajes}{17}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Recomendaciones de seguridad}{17}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Problemas encontrados y soluciones}{17}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Trabajos futuros}{18}{section.5.4}%
+\contentsline {chapter}{\numberline {A}Comandos OpenSSL Utilizados}{20}{appendix.Alph1}%
+\contentsline {section}{\numberline {A.1}Comandos de hash}{20}{section.Alph1.1}%
+\contentsline {section}{\numberline {A.2}Comandos de cifrado}{20}{section.Alph1.2}%
+\contentsline {section}{\numberline {A.3}Comandos para manipulación de archivos}{21}{section.Alph1.3}%
+\contentsline {chapter}{\numberline {B}Configuración de ImageMagick}{22}{appendix.Alph2}%
+\contentsline {section}{\numberline {B.1}Instalación}{22}{section.Alph2.1}%
+\contentsline {section}{\numberline {B.2}Conversiones útiles}{22}{section.Alph2.2}%
