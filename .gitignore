@@ -1,1 +1,12 @@
 .DS_Store
+*.idb
+*.log
+*.aux
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+Practica2/Memoria/main.log
