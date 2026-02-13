@@ -1,0 +1,1 @@
+SHA2-256(../ArchivosOriginales/TextFile.txt)= 43f38d2a135292e9d2f1e9e39fa0543ab79a720b4ee68fd04e51101bba5e3851

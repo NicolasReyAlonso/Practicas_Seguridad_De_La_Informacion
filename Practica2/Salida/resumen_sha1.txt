@@ -1,0 +1,1 @@
+SHA1(../ArchivosOriginales/TextFile.txt)= 6fb6e68d041f023e8cdabfa19b4fc539fc5a2270

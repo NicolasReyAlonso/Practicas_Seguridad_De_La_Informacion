@@ -1,0 +1,1 @@
+WHIRLPOOL(../ArchivosOriginales/TextFile.txt)= 29d2a395274ab59ea25fabe00124cb9664fc503b06ca6cdb7f5130248b42f7bf0e8f760b2048ad46e45de44721dbeb38b0eaf9a4bab31a01c211a2f0c5dadf34
