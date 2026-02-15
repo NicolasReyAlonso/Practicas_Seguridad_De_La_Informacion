@@ -1,0 +1,112 @@
+\chapter{Generación y Comprobación de Resúmenes}
+
+\section{Descripción teórica}
+
+Los algoritmos de resumen (\textit{hash}) son funciones criptográficas que transforman un 
+documento de cualquier tamaño en una cadena de longitud fija, denominada \textit{hash} o \textit{resumen}. 
+
+\section{Algoritmos utilizados}
+
+\begin{table}[H]
+    \centering
+    \caption{Algoritmos de resumen utilizados}
+    \begin{tabularx}{\textwidth}{l|c|c|p{5cm}}
+        \toprule
+        \textbf{Algoritmo} & \textbf{Bits} & \textbf{Bytes} & \textbf{Observaciones} \\
+        \midrule
+        MD5 & 128 & 16 & Obsoleto \\
+        SHA-1 & 160 & 20 & Débil \\
+        SHA-256 & 256 & 32 & Recomendado y usado en la actualidad \\
+        SHA-512 & 512 & 64 & Muy seguro \\
+        Whirlpool & 512 & 64 & Alternativa a SHA-512 \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\section{Metodología experimental}
+
+\subsection{Archivo de prueba}
+
+Se utilizará un archivo de texto plano con las siguientes características:
+
+\begin{itemize}[label=\textbullet]
+    \item Tamaño: entre 150 y 200 caracteres
+    \item Contenido legible
+    \item Sin caracteres especiales problemáticos
+\end{itemize}
+
+\begin{lstlisting}[caption=Contenido del archivo de prueba]
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Vivamus bibendum iaculis ante, quis sagittis eros eleifend 
+iaculis. Sed egestas consequat feugiat. Lorem aliquam.
+\end{lstlisting}
+
+\subsection{Comandos utilizados}
+
+\begin{lstlisting}[caption=Cálculo de resúmenes con OpenSSL]
+# MD5
+openssl dgst -md5 archivo.txt
+
+# SHA-1
+openssl dgst -sha1 archivo.txt
+
+# SHA-256
+openssl dgst -sha256 archivo.txt
+
+# Formato con separadores
+openssl dgst -sha256 -c archivo.txt
+
+# Formato binario
+openssl dgst -sha256 -binary archivo.txt > hash.bin
+\end{lstlisting}
+
+\section{Resultados}
+
+\subsection{Resúmenes obtenidos}
+
+\begin{table}[H]
+    \centering
+    \caption{Resúmenes calculados para el archivo de prueba}
+    \begin{tabularx}{\textwidth}{l|X}
+        \toprule
+        \textbf{Algoritmo} & \textbf{Valor del hash} \\
+        \midrule
+        MD5 & \includegraphics[width=0.8\linewidth]{imagenes/screenshots/resumenes/md5.png} \\
+        SHA-1 & \includegraphics[width=0.8\linewidth]{imagenes/screenshots/resumenes/sha1.png} \\
+        SHA-256 & \includegraphics[width=0.8\linewidth]{imagenes/screenshots/resumenes/sha256.png} \\
+        SHA-512 & \includegraphics[width=0.8\linewidth]{imagenes/screenshots/resumenes/sha512.png} \\
+        Whirlpool & \includegraphics[width=0.8\linewidth]{imagenes/screenshots/resumenes/whirlpool.png} \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\subsection{Verificación de tamaño}
+
+Los tamaños de los resúmenes coinciden con las especificaciones teóricas:
+
+\begin{itemize}[label=\textbullet]
+    \item MD5: 32 caracteres hexadecimales (128 bits)
+    \item SHA-1: 40 caracteres hexadecimales (160 bits)
+    \item SHA-256: 64 caracteres hexadecimales (256 bits)
+    \item SHA-512: 128 caracteres hexadecimales (512 bits)
+    \item Whirlpool: 128 caracteres hexadecimales (512 bits)
+\end{itemize}
+
+\subsection{Sensibilidad del hash}
+
+Se realizó una prueba de sensibilidad cambiando un único carácter del archivo original:
+
+\begin{table}[H]
+    \centering
+    \caption{Comparación de hash con cambio mínimo}
+    \begin{tabularx}{\textwidth}{l|X}
+        \toprule
+        \textbf{Escenario} & \textbf{Hash SHA-256} \\
+        \midrule
+        Archivo original & \includegraphics[width=0.8\linewidth]{imagenes/screenshots/resumenes/sha256.png} \\
+        Con un carácter modificado & \includegraphics[width=0.8\linewidth]{imagenes/screenshots/resumenes/sha256-binary.png} \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\textbf{Conclusión:} A pesar de cambiar un único carácter, el hash es completamente diferente, demostrando el efecto avalancha.
