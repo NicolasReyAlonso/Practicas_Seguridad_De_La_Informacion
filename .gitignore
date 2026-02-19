@@ -7,6 +7,9 @@
 *.lof
 *.lot
 *.fls
+*.idx
 *.fdb_latexmk
 *.synctex.gz
+.vscode/
+.vscode/*
 Practica2/Memoria/main.log
