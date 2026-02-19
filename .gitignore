@@ -12,4 +12,5 @@
 *.synctex.gz
 .vscode/
 .vscode/*
+.vscode/**/*
 Practica2/Memoria/main.log
