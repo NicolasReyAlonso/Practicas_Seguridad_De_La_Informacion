@@ -1,0 +1,165 @@
+\chapter{Cifrado Simétrico de Documentos}
+
+\section{Descripción teórica}
+
+El cifrado simétrico es una técnica criptográfica en la que se utiliza la misma clave tanto para cifrar como para descifrar. Los elementos principales son:
+
+\begin{itemize}[label=\textbullet]
+    \item \textbf{Texto claro:} Documento original sin cifrar
+    \item \textbf{Algoritmo de cifrado:} Función matemática que transforma el texto
+    \item \textbf{Clave:} Información secreta que controla la transformación
+    \item \textbf{Texto cifrado:} Resultado ilegible del proceso
+    \item \textbf{Vector de inicialización (IV):} Valor aleatorio para ciertos modos
+\end{itemize}
+
+\section{Algoritmos de cifrado simétrico}
+
+\subsection{Cifradores de bloque}
+
+\begin{table}[H]
+    \centering
+    \caption{Cifradores de bloque empleados}
+    \begin{tabularx}{\textwidth}{l|c|c|p{5cm}}
+        \toprule
+        \textbf{Algoritmo} & \textbf{Tamaño bloque} & \textbf{Tamaño clave} & \textbf{Estado} \\
+        \midrule
+        AES-256 & 128 bits & 256 bits & Recomendado \\
+        3DES/TDES & 64 bits & 168 bits & Deprecado \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\subsection{Cifradores de flujo}
+
+\begin{table}[H]
+    \centering
+    \caption{Cifradores de flujo empleados}
+    \begin{tabularx}{\textwidth}{l|c|p{5cm}}
+        \toprule
+        \textbf{Algoritmo} & \textbf{Tamaño clave} & \textbf{Observaciones} \\
+        \midrule
+        RC4 & Variable & Débil, deprecado \\
+        ChaCha20 & 256 bits & Moderno, recomendado \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\section{Modos de operación}
+
+\begin{table}[H]
+    \centering
+    \caption{Modos de operación de cifrado en bloque}
+    \begin{tabularx}{\textwidth}{l|p{6cm}|p{3cm}}
+        \toprule
+        \textbf{Modo} & \textbf{Descripción} & \textbf{Seguridad} \\
+        \midrule
+        ECB & Cada bloque cifra de forma independiente & \textcolor{red}{Inseguro} \\
+        CBC & Encadenamiento de bloques con IV & Seguro \\
+        OFB & Flujo de retroalimentación de salida & Seguro \\
+        CTR & Modo contador & Seguro \\
+        GCM & Authenticated encryption & Muy seguro \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\section{Derivación de claves: PBKDF2}
+
+El estándar PKCS\#5 define los siguientes métodos de derivación:
+
+\begin{itemize}[label=\textbullet]
+    \item \textbf{PBKDF1:} Primera versión, limitada
+    \item \textbf{PBKDF2:} Versión mejorada, recomendada
+\end{itemize}
+
+PBKDF2 genera una clave a partir de una contraseña utilizando:
+
+\begin{equation}
+DK = PBKDF2(P, S, c, dkLen)
+\end{equation}
+
+Donde:
+\begin{itemize}
+    \item $P$: Contraseña
+    \item $S$: Sal (salt) - mínimo 8 bytes
+    \item $c$: Número de iteraciones (por defecto 10000)
+    \item $dkLen$: Longitud deseada de la clave
+\end{itemize}
+
+\section{Metodología experimental}
+
+\subsection{Archivo de prueba}
+
+Se utiliza un archivo de texto pequeño (31-81 caracteres):
+
+\begin{lstlisting}[caption=Archivo para cifrado simétrico]
+Este es un texto de prueba para cifrado simétrico.
+\end{lstlisting}
+
+\subsection{Cifrado con contraseña}
+
+\begin{lstlisting}[caption=Cifrado con contraseña y PBKDF2]
+openssl enc -aes-256-cbc -pbkdf2 -in archivo.txt \
+    -out archivo.bin -pass pass:"contraseña"
+
+# Con información de derivación
+openssl enc -aes-256-cbc -pbkdf2 -in archivo.txt \
+    -out archivo.bin -pass pass:"contraseña" -p
+\end{lstlisting}
+
+\section{Resultados}
+
+\subsection{Cifrado con diferentes algoritmos}
+
+Se realizaron cifrados con los siguientes algoritmos:
+
+\begin{table}[H]
+    \centering
+    \caption{Resultados del cifrado simétrico}
+    \begin{tabularx}{\textwidth}{l|c|c|l}
+        \toprule
+        \textbf{Algoritmo} & \textbf{Modo} & \textbf{Tamaño} & \textbf{Descifrado} \\
+        \midrule
+        AES-256 & CBC & [Tamaño] bytes & $\checkmark$ OK \\
+        AES-128 & CTR & [Tamaño] bytes & $\checkmark$ OK \\
+        3DES & CBC & [Tamaño] bytes & $\checkmark$ OK \\
+        3DES & OFB & [Tamaño] bytes & $\checkmark$ OK \\
+        RC4 & - & [Tamaño] bytes & $\checkmark$ OK \\
+        ChaCha20 & - & [Tamaño] bytes & $\checkmark$ OK \\
+        AES-256 & GCM & [Tamaño] bytes & $\checkmark$ OK \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\subsection{Análisis de overhead}
+
+El tamaño de los archivos cifrados incluye:
+
+\begin{itemize}[label=\textbullet]
+    \item \textbf{Sal (Salt):} Primeros 8 bytes (formato: ``Salted\_\_'')
+    \item \textbf{Contenido cifrado:} Datos cifrados
+    \item \textbf{Padding (si aplica):} Relleno para completar bloques (en modos CBC)
+\end{itemize}
+
+Ecuación general:
+\begin{equation}
+\text{Tamaño\_cifrado} = 16 + \text{ceil}\left(\frac{\text{Tamaño\_original}}{T_{\text{bloque}}}\right) \times T_{\text{bloque}}
+\end{equation}
+
+Donde $T_{\text{bloque}}$ es el tamaño del bloque (128 bits para AES, 64 bits para 3DES).
+
+\subsection{Cifrado con clave e IV explícitos}
+
+Se demostró cómo descifrar utilizando la clave y el IV en lugar de la contraseña:
+
+\begin{lstlisting}[caption=Cifrado con información de derivación]
+# Obtener clave e IV derivados
+openssl enc -aes-256-cbc -pbkdf2 -in archivo.txt \
+    -out archivo.bin -pass pass:"contraseña" -p
+
+# Eliminar los 16 bytes de sal
+dd if=archivo.bin of=archivo_sin_sal.bin bs=1 skip=16
+
+# Descifrar con clave e IV
+openssl enc -aes-256-cbc -d -in archivo_sin_sal.bin \
+    -out archivo_descifrado.txt -K <clave_hex> -iv <iv_hex>
+\end{lstlisting}

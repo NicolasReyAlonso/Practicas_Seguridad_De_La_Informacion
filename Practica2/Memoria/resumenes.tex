@@ -30,15 +30,21 @@ documento de cualquier tamaño en una cadena de longitud fija, denominada \texti
 Se utilizará un archivo de texto plano con las siguientes características:
 
 \begin{itemize}[label=\textbullet]
-    \item Tamaño: entre 150 y 200 caracteres
-    \item Contenido legible
-    \item Sin caracteres especiales problemáticos
+    \item Tamaño: 170 caracteres-
+    \item Contenido legible.
+    \item Sin caracteres especiales.
 \end{itemize}
 
 \begin{lstlisting}[caption=Contenido del archivo de prueba]
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
 Vivamus bibendum iaculis ante, quis sagittis eros eleifend 
 iaculis. Sed egestas consequat feugiat. Lorem aliquam.
+\end{lstlisting}
+
+\begin{lstlisting}[caption=Contenido del archivo de prueba modificado]
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Vivamus bibendum iaculis ante, quis sagittis eros eleifend 
+iaculis. Sed egestas consequat feugiat. Lorem aliquas.
 \end{lstlisting}
 
 \subsection{Comandos utilizados}
@@ -64,21 +70,36 @@ openssl dgst -sha256 -binary archivo.txt > hash.bin
 
 \subsection{Resúmenes obtenidos}
 
-\begin{table}[H]
-    \centering
-    \caption{Resúmenes calculados para el archivo de prueba}
-    \begin{tabularx}{\textwidth}{l|X}
-        \toprule
-        \textbf{Algoritmo} & \textbf{Valor del hash} \\
-        \midrule
-        MD5 & \includegraphics[width=0.8\linewidth]{imagenes/screenshots/resumenes/md5.png} \\
-        SHA-1 & \includegraphics[width=0.8\linewidth]{imagenes/screenshots/resumenes/sha1.png} \\
-        SHA-256 & \includegraphics[width=0.8\linewidth]{imagenes/screenshots/resumenes/sha256.png} \\
-        SHA-512 & \includegraphics[width=0.8\linewidth]{imagenes/screenshots/resumenes/sha512.png} \\
-        Whirlpool & \includegraphics[width=0.8\linewidth]{imagenes/screenshots/resumenes/whirlpool.png} \\
-        \bottomrule
-    \end{tabularx}
-\end{table}
+% Tabla larga: usa longtable para permitir saltos de página
+\begin{longtable}{@{}p{\textwidth}@{}}
+\caption{Resúmenes calculados para el archivo de prueba}\\
+\toprule
+\textbf{Algoritmo} \\
+\midrule
+\endfirsthead
+\caption[]{Resúmenes calculados para el archivo de prueba (cont.)}\\
+\toprule
+\textbf{Algoritmo} \\
+\midrule
+\endhead
+
+MD5 \\ \includegraphics[width=\linewidth]{imagenes/screenshots/resumenes/md5.png} \\
+MD5 con formato de salida con separadores \\ \includegraphics[width=\linewidth]{imagenes/screenshots/resumenes/md5-separator.png} \\
+MD5 en formato binario \\ \includegraphics[width=\linewidth]{imagenes/screenshots/resumenes/md5-binary.png} \\
+SHA-1 \\ \includegraphics[width=\linewidth]{imagenes/screenshots/resumenes/sha1.png} \\
+SHA-1 con formato de salida con separadores \\ \includegraphics[width=\linewidth]{imagenes/screenshots/resumenes/sha1-separator.png} \\
+SHA-1 en formato binario \\ \includegraphics[width=\linewidth]{imagenes/screenshots/resumenes/sha1-binary.png} \\
+SHA-256 \\ \includegraphics[width=\linewidth]{imagenes/screenshots/resumenes/sha256.png} \\
+SHA-256 con formato de salida con separadores \\ \includegraphics[width=\linewidth]{imagenes/screenshots/resumenes/sha256-separator.png} \\
+SHA-256 en formato binario \\ \includegraphics[width=\linewidth]{imagenes/screenshots/resumenes/sha256-binary.png} \\
+SHA-512 \\ \includegraphics[width=\linewidth]{imagenes/screenshots/resumenes/sha512.png} \\
+SHA-512 con formato de salida con separadores \\ \includegraphics[width=\linewidth]{imagenes/screenshots/resumenes/sha512-separator.png} \\
+SHA-512 en formato binario \\ \includegraphics[width=\linewidth]{imagenes/screenshots/resumenes/sha512-binary.png} \\
+Whirlpool \\ \includegraphics[width=\linewidth]{imagenes/screenshots/resumenes/whirlpool.png} \\
+Whirlpool con formato de salida con separadores \\ \includegraphics[width=\linewidth]{imagenes/screenshots/resumenes/whirlpool-separator.png} \\
+Whirlpool en formato binario \\ \includegraphics[width=\linewidth]{imagenes/screenshots/resumenes/whirlpool-binary.png} \\
+\bottomrule
+\end{longtable}
 
 \subsection{Verificación de tamaño}
 
@@ -95,18 +116,10 @@ Los tamaños de los resúmenes coinciden con las especificaciones teóricas:
 \subsection{Sensibilidad del hash}
 
 Se realizó una prueba de sensibilidad cambiando un único carácter del archivo original:
-
-\begin{table}[H]
+\begin{figure}[H]
     \centering
-    \caption{Comparación de hash con cambio mínimo}
-    \begin{tabularx}{\textwidth}{l|X}
-        \toprule
-        \textbf{Escenario} & \textbf{Hash SHA-256} \\
-        \midrule
-        Archivo original & \includegraphics[width=0.8\linewidth]{imagenes/screenshots/resumenes/sha256.png} \\
-        Con un carácter modificado & \includegraphics[width=0.8\linewidth]{imagenes/screenshots/resumenes/sha256-binary.png} \\
-        \bottomrule
-    \end{tabularx}
-\end{table}
+    \caption{Diferencias tras cambiar un único carácter (comparación de resúmenes)}
+    \includegraphics[width=\linewidth]{imagenes/screenshots/resumenes/DiferenciasShaEdicion1caracter.png}
+\end{figure}
 
-\textbf{Conclusión:} A pesar de cambiar un único carácter, el hash es completamente diferente, demostrando el efecto avalancha.
+\textbf{Conclusión:} A pesar de cambiar un único carácter, el hash es completamente diferente.
