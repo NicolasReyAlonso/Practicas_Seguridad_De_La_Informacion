@@ -380,8 +380,8 @@ echo -e "${GREEN}── Trabajo de ANA: Cifrado, protección de claves y firma �
 echo ""
 
 # Clave AES-256 (32 bytes = 64 hex) y IV (16 bytes = 32 hex) escogidos
-ANA_KEY="A1B2C3D4E5F6A7B8C9D0E1F2A3B4C5D6A7B8C9D0E1F2A3B4C5D6A7B8C9D0E1F2"
-ANA_IV="0A1B2C3D4E5F6A7B8C9D0E1F2A3B4C5D"
+ANA_KEY=$(openssl rand -hex 32)
+ANA_IV=$(openssl rand -hex 16)
 
 # Copiar el texto original como texto.txt (nombre requerido por el enunciado)
 cp "$TEXTO" "$SALIDA/texto.txt"
