@@ -152,107 +152,11 @@
 % Tabla de contenidos
 \include{indice}
 \include{intro}
-\include{resumenes}
-\include{cifradoSimetrico}
+\include{clavesAsimetricas}
+\include{intercambioSeguro}
 
 %% ============================================================================
-%% CAPÍTULO 4: DEMOSTRACIÓN DE LA PELIGROSIDAD DEL MODO ECB
-%% ============================================================================
-
-\chapter{Demostración de la Peligrosidad del Modo ECB}
-
-\section{Fundamento teórico: El problema del modo ECB}
-
-El modo ECB (\textit{Electronic Codebook}) es uno de los modos de operación más simples e inseguros. Su funcionamiento es:
-
-\begin{equation}
-C_i = E(K, P_i)
-\end{equation}
-
-Donde cada bloque de texto plano $P_i$ se cifra independientemente con la misma clave $K$.
-
-\subsection{Problemas de seguridad}
-
-\begin{enumerate}
-    \item \textbf{Determinismo:} Bloques idénticos producen criptogramas idénticos
-    \item \textbf{Revelación de patrones:} Patrones en el texto plano se revelan en el cifrado
-    \item \textbf{Análisis de frecuencia:} Posible análisis estadístico
-    \item \textbf{Imagen de Tux:} El ejemplo clásico demuestra visualmente estas debilidades
-\end{enumerate}
-
-\section{Experimento: Cifrado de imágenes}
-
-\subsection{Procedimiento}
-
-Se utilizó una imagen de colores sólidos (PNG de 20-50 KB) para demostrar los problemas de ECB:
-
-\begin{enumerate}
-    \item Conversión de la imagen a formato PGM
-    \item Separación de cabecera y datos binarios
-    \item Cifrado de los datos con AES-256-ECB
-    \item Reconstrucción de la imagen cifrada
-    \item Conversión de vuelta al formato original
-    \item Comparación con modo CBC
-\end{enumerate}
-
-\subsection{Comandos utilizados}
-
-\begin{lstlisting}[caption=Cifrado ECB de imágenes]
-# Convertir a PGM
-convert imagen.png imagen.pgm
-
-# Separar cabecera y datos
-head -n 3 imagen.pgm > cabecera.txt
-tail -n +4 imagen.pgm > datos.bin
-
-# Cifrado ECB (INSEGURO)
-openssl enc -aes-256-ecb -in datos.bin -out datos_ecb.bin \
-    -K 0123456789ABCDEF... -nosalt
-
-# Reconstruir y convertir
-cat cabecera.txt datos_ecb.bin > imagen_cifrada.pgm
-convert imagen_cifrada.pgm imagen_cifrada.png
-\end{lstlisting}
-
-\subsection{Comparación de modos}
-
-\begin{table}[H]
-    \centering
-    \caption{Comparación de modos de operación}
-    \begin{tabularx}{\textwidth}{l|p{3cm}|p{3cm}}
-        \toprule
-        \textbf{Modo} & \textbf{Resultado} & \textbf{Seguridad} \\
-        \midrule
-        ECB & \textit{Se distinguen patrones de la imagen original} & \textcolor{red}{Crítica} \\
-        CBC & \textit{Imagen completamente aleatoria} & \textcolor{green}{Segura} \\
-        \bottomrule
-    \end{tabularx}
-\end{table}
-
-\section{Resultados obtenidos}
-
-\subsection{Imágenes generadas}
-
-Se generaron las siguientes imágenes:
-
-\begin{itemize}[label=\textbullet]
-    \item \textbf{Original:} Imagen de colores sólidos clara
-    \item \textbf{ECB con AES-256:} Los colores originales son vagamente visibles
-    \item \textbf{ECB con 3DES:} Patrones más pronunciados debido a bloques de 64 bits
-    \item \textbf{CBC con AES-256:} Imagen completamente aleatoria
-\end{itemize}
-
-\section{Conclusiones sobre seguridad}
-
-\begin{itemize}[label=\textbullet]
-    \item \textbf{NUNCA usar ECB:} Incluso con claves fuertes, revela patrones
-    \item \textbf{Usar CBC, CTR, GCM:} Estos modos son seguros
-    \item \textbf{Tamaño de bloque:} Bloques mayores (128 bits) ocultan mejor los patrones
-    \item \textbf{IV aleatorio:} Esencial en modos que requieren IV
-\end{itemize}
-
-%% ============================================================================
-%% CAPÍTULO 5: CONCLUSIONES
+%% CAPÍTULO 4: CONCLUSIONES
 %% ============================================================================
 
 \chapter{Conclusiones}
@@ -262,10 +166,12 @@ Se generaron las siguientes imágenes:
 A través de esta práctica se han consolidado los siguientes conceptos:
 
 \begin{enumerate}
-    \item \textbf{Algoritmos de resumen:} Importancia de la sensibilidad y tamaño del hash
-    \item \textbf{Cifrado simétrico:} Uso correcto de algoritmos y modos de operación
-    \item \textbf{Derivación de claves:} PBKDF2 como estándar seguro
-    \item \textbf{Modos seguros vs. inseguros:} Errores comunes en criptografía
+    \item \textbf{Criptografía asimétrica RSA:} Generación de pares de claves, exportación entre formatos (PEM, DER), y la importancia de proteger las claves privadas con contraseña.
+    \item \textbf{Firma digital:} Uso de resúmenes SHA-256 firmados con clave privada para garantizar integridad y autenticación del origen.
+    \item \textbf{DSA:} Algoritmo de firma digital alternativo a RSA, con generación de parámetros independiente de la generación de claves.
+    \item \textbf{Diffie-Hellman:} Protocolo de intercambio de claves que permite derivar un secreto compartido sin transmitirlo directamente.
+    \item \textbf{ECDH con X25519:} Curvas elípticas que logran seguridad equivalente con claves significativamente más pequeñas.
+    \item \textbf{Intercambio seguro:} Combinación de cifrado simétrico (AES-256-CBC), cifrado asimétrico (RSA) y firma digital para lograr confidencialidad, integridad y autenticación.
 \end{enumerate}
 
 \section{Recomendaciones de seguridad}
@@ -273,29 +179,22 @@ A través de esta práctica se han consolidado los siguientes conceptos:
 Para aplicaciones reales:
 
 \begin{enumerate}
-    \item \textbf{Resúmenes:} Usar SHA-256 o superior (SHA-3)
-    \item \textbf{Cifrado simétrico:} Preferir AES con modo CBC, CTR o GCM
-    \item \textbf{Derivación de claves:} PBKDF2 con mínimo 100,000 iteraciones
-    \item \textbf{Sal:} Mínimo 16 bytes de sal aleatoria
-    \item \textbf{IV:} Aleatorio y único para cada cifrado en modos que lo requieran
+    \item \textbf{Tamaño de claves RSA:} Mínimo 2048 bits; preferir 4096 bits para mayor seguridad a largo plazo.
+    \item \textbf{Protección de claves privadas:} Siempre cifrar con contraseña; evitar formatos DER para almacenamiento.
+    \item \textbf{Curvas elípticas:} Preferir X25519/Ed25519 por su eficiencia y seguridad.
+    \item \textbf{Firma digital:} Usar SHA-256 o superior como función de resumen.
+    \item \textbf{Intercambio de claves:} Combinar cifrado simétrico + asimétrico (esquema híbrido) para eficiencia.
+    \item \textbf{Verificación:} Siempre verificar la firma antes de confiar en el contenido descifrado.
 \end{enumerate}
 
 \section{Problemas encontrados y soluciones}
 
 \begin{itemize}[label=\textbullet]
-    \item \textbf{Provider Legacy:} Fue necesario activarlo para usar algoritmos antiguos (MD5, RC4)
-    \item \textbf{Formatos binarios:} Importancia de usar \texttt{-binary} en OpenSSL
-    \item \textbf{Imágenes comprimidas:} No funcionan bien con el experimento ECB
+    \item \textbf{Formato DER y contraseñas:} La conversión a DER elimina la protección con contraseña, lo cual hay que tener muy en cuenta al exportar claves privadas.
+    \item \textbf{Parámetros DH compartidos:} Ambos pares de claves DH deben usar los mismos parámetros para poder derivar un secreto común.
+    \item \textbf{Tamaño de datos RSA:} RSA solo puede cifrar datos menores al tamaño de la clave (por ejemplo, 256 bytes para RSA-2048), lo que justifica el esquema híbrido.
+    \item \textbf{Verificación con \texttt{-verifyrecover}:} Es necesario usar esta opción (exclusiva de RSA) para recuperar el resumen original de una firma y compararlo manualmente.
 \end{itemize}
-
-\section{Trabajos futuros}
-
-\begin{enumerate}
-    \item Estudiar cifrado asimétrico (RSA, ECDSA)
-    \item Implementar funciones hash criptográficas personalizadas
-    \item Analizar vulnerabilidades de padding (Padding Oracle)
-    \item Estudiar Side-channel attacks en criptografía
-\end{enumerate}
 
 %% ============================================================================
 %% BIBLIOGRAFÍA
@@ -305,19 +204,19 @@ Para aplicaciones reales:
 
 \bibitem{openssl_docs} OpenSSL Documentation, \textit{https://www.openssl.org/docs/man3.2/}, 2024.
 
-\bibitem{pkcs5} RSA Laboratories, \textit{PKCS \#5: Password-Based Cryptography Specification}, RFC 2898, 2000.
+\bibitem{rsa} Rivest, R., Shamir, A., Adleman, L., \textit{A Method for Obtaining Digital Signatures and Public-Key Cryptosystems}, Communications of the ACM, 1978.
 
-\bibitem{aes} NIST Federal Information Processing Standards Publication 197, \textit{Specification for the Advanced Encryption Standard (AES)}, 2001.
+\bibitem{dsa} NIST, \textit{Digital Signature Standard (DSS)}, FIPS 186-4, 2013.
 
-\bibitem{pbkdf2} Kelm, R., Turan, M. S., \textit{PBKDF2 Implementation in OpenSSL}, 2023.
+\bibitem{dh} Diffie, W., Hellman, M., \textit{New Directions in Cryptography}, IEEE Transactions on Information Theory, 1976.
 
-\bibitem{ecb_danger} Wikipedia, \textit{Block cipher mode of operation}, https://en.wikipedia.org/wiki/Block\_cipher\_mode\_of\_operation, 2024.
+\bibitem{x25519} Bernstein, D. J., \textit{Curve25519: New Diffie-Hellman Speed Records}, PKC 2006.
 
-\bibitem{tux} Wikipedia, \textit{Electronic Codebook (ECB) - Tux the Linux Penguin}, https://en.wikipedia.org/wiki/Block\_cipher\_mode\_of\_operation\#ECB, 2024.
+\bibitem{aes} NIST, \textit{Advanced Encryption Standard (AES)}, FIPS 197, 2001.
 
-\bibitem{md5} Rivest, R., \textit{The MD5 Message-Digest Algorithm}, RFC 1321, 1992.
+\bibitem{pkcs1} RSA Laboratories, \textit{PKCS \#1: RSA Cryptography Specifications}, RFC 8017, 2016.
 
-\bibitem{sha} FIPs 180-4: Secure Hash Standard, National Institute of Standards and Technology, 2015.
+\bibitem{hybrid} Menezes, A., van Oorschot, P., Vanstone, S., \textit{Handbook of Applied Cryptography}, CRC Press, 1996.
 
 \end{thebibliography}
 
@@ -329,79 +228,82 @@ Para aplicaciones reales:
 
 \chapter{Comandos OpenSSL Utilizados}
 
-\section{Comandos de hash}
+\section{Generación de claves}
 
-\begin{lstlisting}[caption=Comandos para resúmenes]
-# Listar algoritmos disponibles
-openssl dgst -list
+\begin{lstlisting}[caption=Comandos para generación de claves]
+# RSA: Generar par de claves con contraseña
+openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 \
+    -aes-256-cbc -pass pass:"contraseña" -out privkey.pem
 
-# Diferentes formatos
-openssl dgst -md5 archivo.txt
-openssl dgst -sha256 -c archivo.txt          # Con separadores
-openssl dgst -sha256 -binary archivo.txt     # Binario
+# Exportar clave pública
+openssl pkey -in privkey.pem -passin pass:"contraseña" \
+    -pubout -out pubkey.pem
+
+# Exportar a DER
+openssl pkey -in privkey.pem -passin pass:"contraseña" \
+    -outform DER -out privkey.der
+
+# DER a PEM
+openssl pkey -in privkey.der -inform DER -out privkey_nopass.pem
 \end{lstlisting}
 
-\section{Comandos de cifrado}
+\section{Firma y verificación}
 
-\begin{lstlisting}[caption=Comandos para cifrado simétrico]
-# Listar cifradores disponibles
-openssl enc -list
+\begin{lstlisting}[caption=Comandos para firma digital]
+# Crear resumen SHA-256
+openssl dgst -sha256 -binary -out digest.bin archivo.txt
 
-# Cifrado básico
-openssl enc -aes-256-cbc -in archivo.txt -out archivo.bin \
-    -pass pass:"contraseña"
+# Firmar resumen
+openssl pkeyutl -sign -in digest.bin \
+    -inkey privkey.pem -passin pass:"contraseña" \
+    -out firma.bin
 
-# Con información de derivación
-openssl enc -aes-256-cbc -in archivo.txt -out archivo.bin \
-    -pass pass:"contraseña" -pbkdf2 -p
+# Verificar firma
+openssl pkeyutl -verify -in digest.bin \
+    -sigfile firma.bin -pubin -inkey pubkey.pem
 
-# Descifrado
-openssl enc -aes-256-cbc -d -in archivo.bin -out archivo.txt \
-    -pass pass:"contraseña" -pbkdf2
+# Recuperar resumen de la firma (solo RSA)
+openssl pkeyutl -verifyrecover -in firma.bin \
+    -pubin -inkey pubkey.pem -out resumen_recuperado.bin
 \end{lstlisting}
 
-\section{Comandos para manipulación de archivos}
+\section{Derivación de secretos}
 
-\begin{lstlisting}[caption=Comandos útiles]
-# Ver información del archivo
-file archivo.bin
-hexdump -C archivo.bin | head -n 5
+\begin{lstlisting}[caption=Comandos para derivación DH y X25519]
+# DH: Generar parámetros
+openssl genpkey -genparam -algorithm DH \
+    -pkeyopt dh_paramgen_prime_len:2048 -out dh_params.pem
 
-# Eliminar primeros N bytes
-dd if=entrada.bin of=salida.bin bs=1 skip=16
+# DH: Generar claves con parámetros
+openssl genpkey -paramfile dh_params.pem -out dh_priv.pem
+openssl pkey -in dh_priv.pem -pubout -out dh_pub.pem
 
-# Conocer tamaño
-wc -c archivo.bin
+# Derivar secreto compartido
+openssl pkeyutl -derive -inkey priv1.pem \
+    -peerkey pub2.pem -out secreto.bin
+
+# X25519: Generar claves
+openssl genpkey -algorithm X25519 -out x25519_priv.pem
+openssl pkey -in x25519_priv.pem -pubout -out x25519_pub.pem
 \end{lstlisting}
 
-\chapter{Configuración de ImageMagick}
+\section{Cifrado asimétrico y conversión BASE64}
 
-\section{Instalación}
+\begin{lstlisting}[caption=Comandos para cifrado asimétrico]
+# Cifrar con clave pública RSA
+openssl pkeyutl -encrypt -in datos.txt \
+    -pubin -inkey pubkey.pem -out datos.bin
 
-En macOS:
-\begin{lstlisting}
-brew install imagemagick
-brew install ghostscript
-\end{lstlisting}
+# Descifrar con clave privada RSA
+openssl pkeyutl -decrypt -in datos.bin \
+    -inkey privkey.pem -passin pass:"contraseña" \
+    -out datos_descifrados.txt
 
-En Linux:
-\begin{lstlisting}
-apt install imagemagick
-apt install ghostscript
-\end{lstlisting}
+# Convertir binario a BASE64
+openssl enc -a -in datos.bin -out datos.txt
 
-\section{Conversiones útiles}
-
-\begin{lstlisting}[caption=Conversiones de imagen]
-# PNG a PGM
-convert imagen.png imagen.pgm
-
-# PGM a PNG
-convert imagen.pgm imagen.png
-
-# Crear imagen de prueba
-convert -size 200x200 xc:red -fill blue \
-    -draw 'rectangle 0,0 100,200' test.png
+# Convertir BASE64 a binario
+openssl enc -a -d -in datos.txt -out datos.bin
 \end{lstlisting}
 
 \end{document}

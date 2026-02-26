@@ -138,118 +138,11 @@
 \maketitle
 \thispagestyle{firststyle}
 
-% Separador
-\newpage
-\thispagestyle{empty}
-\mbox{}
-\vfill
-\begin{center}
-    \textit{``La criptografía es la ciencia y el arte de proteger la información.''}
-\end{center}
-\vfill
-\mbox{}
-
-% Tabla de contenidos
 \include{indice}
 \include{intro}
 \include{resumenes}
 \include{cifradoSimetrico}
-
-%% ============================================================================
-%% CAPÍTULO 4: DEMOSTRACIÓN DE LA PELIGROSIDAD DEL MODO ECB
-%% ============================================================================
-
-\chapter{Demostración de la Peligrosidad del Modo ECB}
-
-\section{Fundamento teórico: El problema del modo ECB}
-
-El modo ECB (\textit{Electronic Codebook}) es uno de los modos de operación más simples e inseguros. Su funcionamiento es:
-
-\begin{equation}
-C_i = E(K, P_i)
-\end{equation}
-
-Donde cada bloque de texto plano $P_i$ se cifra independientemente con la misma clave $K$.
-
-\subsection{Problemas de seguridad}
-
-\begin{enumerate}
-    \item \textbf{Determinismo:} Bloques idénticos producen criptogramas idénticos
-    \item \textbf{Revelación de patrones:} Patrones en el texto plano se revelan en el cifrado
-    \item \textbf{Análisis de frecuencia:} Posible análisis estadístico
-    \item \textbf{Imagen de Tux:} El ejemplo clásico demuestra visualmente estas debilidades
-\end{enumerate}
-
-\section{Experimento: Cifrado de imágenes}
-
-\subsection{Procedimiento}
-
-Se utilizó una imagen de colores sólidos (PNG de 20-50 KB) para demostrar los problemas de ECB:
-
-\begin{enumerate}
-    \item Conversión de la imagen a formato PGM
-    \item Separación de cabecera y datos binarios
-    \item Cifrado de los datos con AES-256-ECB
-    \item Reconstrucción de la imagen cifrada
-    \item Conversión de vuelta al formato original
-    \item Comparación con modo CBC
-\end{enumerate}
-
-\subsection{Comandos utilizados}
-
-\begin{lstlisting}[caption=Cifrado ECB de imágenes]
-# Convertir a PGM
-convert imagen.png imagen.pgm
-
-# Separar cabecera y datos
-head -n 3 imagen.pgm > cabecera.txt
-tail -n +4 imagen.pgm > datos.bin
-
-# Cifrado ECB (INSEGURO)
-openssl enc -aes-256-ecb -in datos.bin -out datos_ecb.bin \
-    -K 0123456789ABCDEF... -nosalt
-
-# Reconstruir y convertir
-cat cabecera.txt datos_ecb.bin > imagen_cifrada.pgm
-convert imagen_cifrada.pgm imagen_cifrada.png
-\end{lstlisting}
-
-\subsection{Comparación de modos}
-
-\begin{table}[H]
-    \centering
-    \caption{Comparación de modos de operación}
-    \begin{tabularx}{\textwidth}{l|p{3cm}|p{3cm}}
-        \toprule
-        \textbf{Modo} & \textbf{Resultado} & \textbf{Seguridad} \\
-        \midrule
-        ECB & \textit{Se distinguen patrones de la imagen original} & \textcolor{red}{Crítica} \\
-        CBC & \textit{Imagen completamente aleatoria} & \textcolor{green}{Segura} \\
-        \bottomrule
-    \end{tabularx}
-\end{table}
-
-\section{Resultados obtenidos}
-
-\subsection{Imágenes generadas}
-
-Se generaron las siguientes imágenes:
-
-\begin{itemize}[label=\textbullet]
-    \item \textbf{Original:} Imagen de colores sólidos clara
-    \item \textbf{ECB con AES-256:} Los colores originales son vagamente visibles
-    \item \textbf{ECB con 3DES:} Patrones más pronunciados debido a bloques de 64 bits
-    \item \textbf{CBC con AES-256:} Imagen completamente aleatoria
-\end{itemize}
-
-\section{Conclusiones sobre seguridad}
-
-\begin{itemize}[label=\textbullet]
-    \item \textbf{NUNCA usar ECB:} Incluso con claves fuertes, revela patrones
-    \item \textbf{Usar CBC, CTR, GCM:} Estos modos son seguros
-    \item \textbf{Tamaño de bloque:} Bloques mayores (128 bits) ocultan mejor los patrones
-    \item \textbf{IV aleatorio:} Esencial en modos que requieren IV
-\end{itemize}
+\include{ecbPeligro}
 
 %% ============================================================================
 %% CAPÍTULO 5: CONCLUSIONES
@@ -257,7 +150,7 @@ Se generaron las siguientes imágenes:
 
 \chapter{Conclusiones}
 
-\section{Resumen de aprendizajes}
+\section{Resumen}
 
 A través de esta práctica se han consolidado los siguientes conceptos:
 
@@ -265,7 +158,7 @@ A través de esta práctica se han consolidado los siguientes conceptos:
     \item \textbf{Algoritmos de resumen:} Importancia de la sensibilidad y tamaño del hash
     \item \textbf{Cifrado simétrico:} Uso correcto de algoritmos y modos de operación
     \item \textbf{Derivación de claves:} PBKDF2 como estándar seguro
-    \item \textbf{Modos seguros vs. inseguros:} Errores comunes en criptografía
+    \item \textbf{Modos seguros vs.\@ inseguros:} Errores comunes en criptografía
 \end{enumerate}
 
 \section{Recomendaciones de seguridad}
@@ -283,19 +176,10 @@ Para aplicaciones reales:
 \section{Problemas encontrados y soluciones}
 
 \begin{itemize}[label=\textbullet]
-    \item \textbf{Provider Legacy:} Fue necesario activarlo para usar algoritmos antiguos (MD5, RC4)
     \item \textbf{Formatos binarios:} Importancia de usar \texttt{-binary} en OpenSSL
     \item \textbf{Imágenes comprimidas:} No funcionan bien con el experimento ECB
 \end{itemize}
 
-\section{Trabajos futuros}
-
-\begin{enumerate}
-    \item Estudiar cifrado asimétrico (RSA, ECDSA)
-    \item Implementar funciones hash criptográficas personalizadas
-    \item Analizar vulnerabilidades de padding (Padding Oracle)
-    \item Estudiar Side-channel attacks en criptografía
-\end{enumerate}
 
 %% ============================================================================
 %% BIBLIOGRAFÍA

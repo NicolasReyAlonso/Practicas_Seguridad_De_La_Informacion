@@ -1,0 +1,91 @@
+\chapter{Introducción}
+
+\section{Objetivo de la práctica}
+
+El objetivo principal de esta práctica es utilizar \textit{OpenSSL} para realizar 
+operaciones criptográficas relativas al cifrado asimétrico, incluyendo:
+
+\begin{itemize}[label=\textbullet]
+    \item Generación y gestión de claves asimétricas (RSA, DSA)
+    \item Exportación y conversión de formatos de claves (PEM, DER)
+    \item Firma digital y verificación de resúmenes
+    \item Derivación de secretos compartidos con Diffie-Hellman (DH) y curvas elípticas (X25519)
+    \item Intercambio seguro de información combinando cifrado simétrico, asimétrico y firma digital
+\end{itemize}
+
+\section{Conceptos fundamentales}
+
+\subsection{Criptografía asimétrica}
+
+A diferencia del cifrado simétrico (donde emisor y receptor comparten la misma clave), la criptografía asimétrica utiliza un \textbf{par de claves} matemáticamente relacionadas:
+
+\begin{itemize}[label=\textbullet]
+    \item \textbf{Clave pública:} Puede distribuirse libremente. Se usa para cifrar y verificar firmas.
+    \item \textbf{Clave privada:} Debe mantenerse en secreto. Se usa para descifrar y firmar.
+\end{itemize}
+
+La relación entre ambas claves cumple las siguientes propiedades:
+
+\begin{equation}
+D(K_{priv}, E(K_{pub}, M)) = M \quad \text{(cifrado)}
+\end{equation}
+\begin{equation}
+V(K_{pub}, S(K_{priv}, H(M))) = \text{true} \quad \text{(firma)}
+\end{equation}
+
+\subsection{Algoritmos utilizados}
+
+\begin{table}[H]
+    \centering
+    \caption{Algoritmos asimétricos utilizados en esta práctica}
+    \begin{tabularx}{\textwidth}{l|p{3cm}|p{6cm}}
+        \toprule
+        \textbf{Algoritmo} & \textbf{Función} & \textbf{Descripción} \\
+        \midrule
+        RSA & Cifrado y firma & Basado en la factorización de números primos grandes \\
+        DSA & Solo firma & Estándar de firma digital del NIST \\
+        DH & Intercambio de claves & Protocolo de negociación de secretos compartidos \\
+        X25519 & Intercambio de claves & DH con curva elíptica Curve25519 (usado por WhatsApp) \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\subsection{Formatos de claves}
+
+\begin{table}[H]
+    \centering
+    \caption{Formatos de almacenamiento de claves}
+    \begin{tabularx}{\textwidth}{l|l|p{7cm}}
+        \toprule
+        \textbf{Formato} & \textbf{Tipo} & \textbf{Características} \\
+        \midrule
+        PEM & Texto (Base64) & Legible, puede incluir cifrado con contraseña \\
+        DER & Binario & Más compacto, \textbf{no soporta cifrado con contraseña} \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\subsection{Esquema híbrido de cifrado}
+
+En la práctica real, el cifrado asimétrico no se utiliza directamente sobre documentos grandes debido a su lentitud. En su lugar, se emplea un \textbf{esquema híbrido}:
+
+\begin{enumerate}
+    \item Se cifra el documento con un algoritmo simétrico (rápido), por ejemplo AES-256-CBC.
+    \item Se cifra la clave simétrica utilizada con la clave pública del destinatario (RSA).
+    \item Se firma un resumen del documento original con la clave privada del emisor.
+    \item Se envían: documento cifrado + clave cifrada + firma digital.
+\end{enumerate}
+
+Con este esquema se logra simultáneamente:
+\begin{itemize}[label=\textbullet]
+    \item \textbf{Confidencialidad:} Solo el destinatario puede descifrar la clave simétrica.
+    \item \textbf{Integridad:} El resumen garantiza que el documento no ha sido alterado.
+    \item \textbf{Autenticación:} La firma demuestra que el documento proviene del emisor legítimo.
+\end{itemize}
+
+\section{Herramientas utilizadas}
+
+\begin{itemize}[label=\textbullet]
+    \item \textbf{OpenSSL 3.x:} Herramienta principal de criptografía
+    \item Comandos principales: \texttt{genpkey}, \texttt{pkey}, \texttt{pkeyutl}, \texttt{enc}, \texttt{dgst}
+\end{itemize}

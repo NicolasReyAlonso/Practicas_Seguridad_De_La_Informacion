@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2026.1.30)  19 FEB 2026 16:20
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2026.1.30)  23 FEB 2026 13:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -569,7 +569,7 @@ File: l3backend-xetex.def 2024-05-08 L3 backend support: XeTeX
 ) (./main.aux
 LaTeX Info: Redefining \. on input line 11.
 LaTeX Info: Redefining \% on input line 11.
- (./indice.aux) (./intro.aux) (./resumenes.aux) (./cifradoSimetrico.aux))
+ (./indice.aux) (./intro.aux) (./resumenes.aux) (./cifradoSimetrico.aux) (./ecbPeligro.aux))
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 135.
@@ -662,8 +662,6 @@ File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 [1
 
 ]
-
-[1]
 \openout2 = `indice.aux'.
 
  (./indice.tex (./main.toc
@@ -671,7 +669,7 @@ LaTeX Info: Redefining \. on input line 1.
 LaTeX Info: Redefining \% on input line 1.
 
 
-[2
+[1
 
 
 ])
@@ -687,14 +685,14 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[3]
+[2]
 \openout2 = `intro.aux'.
 
  (./intro.tex
 Capítulo 1.
 )
 
-[4
+[3
 
 
 
@@ -711,7 +709,7 @@ Underfull \hbox (badness 10000) in alignment at lines 23--23
 
 
 
-[5
+[4
 
 
 
@@ -757,7 +755,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[6]
+[5]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -765,7 +763,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[7]
+[6]
 File: imagenes/screenshots/resumenes/DiferenciasShaEdicion1caracter.png Graphic file (type bmp)
 <imagenes/screenshots/resumenes/DiferenciasShaEdicion1caracter.png>
 )
@@ -777,7 +775,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[8]
+[7]
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -786,7 +784,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[9]
+[8]
 \openout2 = `cifradoSimetrico.aux'.
 
  (./cifradoSimetrico.tex
@@ -803,7 +801,7 @@ Underfull \hbox (badness 10000) in alignment at lines 44--44
 
 
 
-[10
+[9
 
 
 
@@ -822,7 +820,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[11]
+[10]
 Underfull \hbox (badness 10000) in alignment at lines 130--130
 [][][][] 
  []
@@ -836,7 +834,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[12])
+[11])
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -845,25 +843,55 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[13]
+[12]
+\openout2 = `ecbPeligro.aux'.
+
+ (./ecbPeligro.tex
 Capítulo 4.
 
 
-[14
+[13
+
 
 
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 229--229
-[]|\T1/ptm/m/it/12 Imagen com-ple-
+File: imagenes/ImagenesEncriptadas/kalili.png Graphic file (type bmp)
+<imagenes/ImagenesEncriptadas/kalili.png>
+File: imagenes/ImagenesEncriptadas/imagen_cifrada_des_ecb.png Graphic file (type bmp)
+<imagenes/ImagenesEncriptadas/imagen_cifrada_des_ecb.png>
+
+Overfull \hbox (96.7366pt too wide) in paragraph at lines 73--73
+[]|[]| 
  []
 
 
-Underfull \hbox (badness 10000) in alignment at lines 229--229
+Underfull \hbox (badness 10000) in paragraph at lines 73--73
+[]|\T1/ptm/m/it/12 Imagen com-ple-
+ []
+
+File: imagenes/ImagenesEncriptadas/imagen_cifrada_cbc.png Graphic file (type bmp)
+<imagenes/ImagenesEncriptadas/imagen_cifrada_cbc.png>
+
+Overfull \hbox (96.7366pt too wide) in paragraph at lines 73--73
+[]|[]| 
+ []
+
+
+Underfull \hbox (badness 10000) in alignment at lines 73--73
 [][][] 
  []
 
 
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[14])
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -887,34 +915,27 @@ Capítulo 5.
 
 [17
 
+
+
 ]
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[18]
-Overfull \hbox (88.9286pt too wide) in paragraph at lines 314--315
+Overfull \hbox (88.9286pt too wide) in paragraph at lines 198--199
 []\T1/ptm/m/n/12 Wikipedia, \T1/ptm/m/it/12 Block cipher mo-de of ope-ra-tion\T1/ptm/m/n/12 , https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 316--317
+Underfull \hbox (badness 10000) in paragraph at lines 200--201
 []\T1/ptm/m/n/12 Wikipedia, \T1/ptm/m/it/12 Elec-tro-nic Co-de-book (ECB) - Tux the Li-nux Pen-guin\T1/ptm/m/n/12 ,
  []
 
 
 
-[19
+[18
 
 ]
 Apéndice A.
 
 
-[20
+[19
 
 ]
 
@@ -925,32 +946,42 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[21]
+[20]
 Apéndice B.
 
 
-[22
+[21
 
 ] 
 enddocument/afterlastpage (AED): lastpage setting LastPage.
 (./main.aux
 LaTeX Info: Redefining \. on input line 11.
 LaTeX Info: Redefining \% on input line 11.
- (./indice.aux) (./intro.aux) (./resumenes.aux) (./cifradoSimetrico.aux))
+ (./indice.aux) (./intro.aux) (./resumenes.aux) (./cifradoSimetrico.aux) (./ecbPeligro.aux))
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
-Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 67893A52FF2C3FA9DF6D4C81934C4C4B;8605.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package rerunfilecheck Warning: File `main.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `main.out':
+(rerunfilecheck)             Before: 67893A52FF2C3FA9DF6D4C81934C4C4B;8605
+(rerunfilecheck)             After:  BCCC2E08C3C48A4AF6FF4BC8A80E7338;8381.
  ) 
 Here is how much of TeX's memory you used:
- 17709 strings out of 473832
- 289133 string characters out of 5729481
+ 17762 strings out of 473832
+ 291146 string characters out of 5729481
  963291 words of memory out of 5000000
- 40472 multiletter control sequences out of 15000+600000
+ 40514 multiletter control sequences out of 15000+600000
  596901 words of font info for 97 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  72i,15n,79p,607b,1823s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main.pdf (23 pages).
+Output written on main.pdf (22 pages).
