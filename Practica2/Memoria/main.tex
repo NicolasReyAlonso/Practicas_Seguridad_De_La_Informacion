@@ -161,22 +161,11 @@ A través de esta práctica se han consolidado los siguientes conceptos:
     \item \textbf{Modos seguros vs.\@ inseguros:} Errores comunes en criptografía
 \end{enumerate}
 
-\section{Recomendaciones de seguridad}
-
-Para aplicaciones reales:
-
-\begin{enumerate}
-    \item \textbf{Resúmenes:} Usar SHA-256 o superior (SHA-3)
-    \item \textbf{Cifrado simétrico:} Preferir AES con modo CBC, CTR o GCM
-    \item \textbf{Derivación de claves:} PBKDF2 con mínimo 100,000 iteraciones
-    \item \textbf{Sal:} Mínimo 16 bytes de sal aleatoria
-    \item \textbf{IV:} Aleatorio y único para cada cifrado en modos que lo requieran
-\end{enumerate}
-
 \section{Problemas encontrados y soluciones}
 
 \begin{itemize}[label=\textbullet]
     \item \textbf{Formatos binarios:} Importancia de usar \texttt{-binary} en OpenSSL
+     para evitar problemas de codificación cundo se requiere un formato específico.
     \item \textbf{Imágenes comprimidas:} No funcionan bien con el experimento ECB
 \end{itemize}
 

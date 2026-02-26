@@ -23,7 +23,7 @@
 \contentsline {subsection}{\numberline {3.5.2}Cifrado con contraseña}{11}{subsection.3.5.2}%
 \contentsline {section}{\numberline {3.6}Resultados}{11}{section.3.6}%
 \contentsline {subsection}{\numberline {3.6.1}Cifrado con diferentes algoritmos}{11}{subsection.3.6.1}%
-\contentsline {subsection}{\numberline {3.6.2}Análisis de overhead}{11}{subsection.3.6.2}%
+\contentsline {subsection}{\numberline {3.6.2}Análisis de overhead}{12}{subsection.3.6.2}%
 \contentsline {subsection}{\numberline {3.6.3}Cifrado con clave e IV explícitos}{12}{subsection.3.6.3}%
 \contentsline {chapter}{\numberline {4}Demostración de la Peligrosidad del Modo ECB}{13}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Fundamento teórico: El problema del modo ECB}{13}{section.4.1}%
@@ -37,8 +37,7 @@
 \contentsline {section}{\numberline {4.4}Conclusiones sobre seguridad}{15}{section.4.4}%
 \contentsline {chapter}{\numberline {5}Conclusiones}{17}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Resumen}{17}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Recomendaciones de seguridad}{17}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Problemas encontrados y soluciones}{17}{section.5.3}%
+\contentsline {section}{\numberline {5.2}Problemas encontrados y soluciones}{17}{section.5.2}%
 \contentsline {chapter}{\numberline {A}Comandos OpenSSL Utilizados}{19}{appendix.Alph1}%
 \contentsline {section}{\numberline {A.1}Comandos de hash}{19}{section.Alph1.1}%
 \contentsline {section}{\numberline {A.2}Comandos de cifrado}{19}{section.Alph1.2}%

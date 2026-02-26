@@ -67,20 +67,21 @@ El cifrado simétrico es una técnica criptográfica en la que se utiliza la mis
 El estándar PKCS\#5 define los siguientes métodos de derivación:
 
 \begin{itemize}[label=\textbullet]
-    \item \textbf{PBKDF1:} Primera versión, limitada
-    \item \textbf{PBKDF2:} Versión mejorada, recomendada
+    \item \textbf{PBKDF1:} Primera versión.
+    \item \textbf{PBKDF2:} Versión mejorada.
 \end{itemize}
 
 PBKDF2 genera una clave a partir de una contraseña utilizando:
 
 \begin{equation}
-DK = PBKDF2(P, S, c, dkLen)
+DK = PBKDF2(PRF, Pass, Salt, c, dkLen)
 \end{equation}
 
 Donde:
 \begin{itemize}
-    \item $P$: Contraseña
-    \item $S$: Sal (salt) - mínimo 8 bytes
+    \item $PRF$: Función de pseudoaleatoriedad (ej.\@ HMAC-SHA256)
+    \item $Pass$: Contraseña
+    \item $Salt$: Sal (salt) - mínimo 8 bytes
     \item $c$: Número de iteraciones (por defecto 10000)
     \item $dkLen$: Longitud deseada de la clave
 \end{itemize}
@@ -137,15 +138,8 @@ El tamaño de los archivos cifrados incluye:
 \begin{itemize}[label=\textbullet]
     \item \textbf{Sal (Salt):} Primeros 8 bytes (formato: ``Salted\_\_'')
     \item \textbf{Contenido cifrado:} Datos cifrados
-    \item \textbf{Padding (si aplica):} Relleno para completar bloques (en modos CBC)
+    \item \textbf{Padding (si tiene):} Relleno para completar bloques (en modos CBC)
 \end{itemize}
-
-Ecuación general:
-\begin{equation}
-\text{Tamaño\_cifrado} = 16 + \text{ceil}\left(\frac{\text{Tamaño\_original}}{T_{\text{bloque}}}\right) \times T_{\text{bloque}}
-\end{equation}
-
-Donde $T_{\text{bloque}}$ es el tamaño del bloque (128 bits para AES, 64 bits para 3DES).
 
 \subsection{Cifrado con clave e IV explícitos}
 
