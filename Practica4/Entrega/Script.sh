@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ################################################################################
-# Práctica 3: Algoritmos de cifrado asimétrico
+# Práctica 4: CORREO ELECTRÓNICO SEGURO S/MIME
 # Fecha: 19 de febrero de 2026
 ################################################################################
 
@@ -28,25 +28,20 @@ if [ ! -f "$TEXTO" ]; then
 fi
 
 echo -e "${BLUE}╔═══════════════════════════════════════════════════════════════╗${NC}"
-echo -e "${BLUE}║  Práctica 3: Algoritmos de cifrado asimétrico                ║${NC}"
+echo -e "${BLUE}║  Práctica 4: CORREO ELECTRÓNICO SEGURO S/MIME                ║${NC}"
 echo -e "${BLUE}╚═══════════════════════════════════════════════════════════════╝${NC}"
 echo ""
 
 ################################################################################
-# PREVIO: Verificación de OpenSSL
+# PREVIO: Creacion Claves
 ################################################################################
 echo -e "${YELLOW}═══════════════════════════════════════════════════════════════${NC}"
-echo -e "${YELLOW}PREVIO: Verificación de OpenSSL${NC}"
+echo -e "${YELLOW}PREVIO: Creación de mi clave${NC}"
 echo -e "${YELLOW}═══════════════════════════════════════════════════════════════${NC}"
 echo ""
 
 echo "Versión de OpenSSL instalada:"
-openssl version
-echo ""
-
-echo "Providers activos:"
-openssl list -providers
-echo ""
+openssl genpkey -algorithm RSA -out certificadoPersonal.key -aes256 -password
 
 ################################################################################
 # 3.1 GENERACIÓN DE CLAVES ASIMÉTRICAS, FIRMA DE RESÚMENES Y DERIVACIÓN DH
