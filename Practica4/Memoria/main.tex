@@ -2,6 +2,7 @@
 % Idioma y codificación
 \usepackage[spanish]{babel}
 \usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
 % Márgenes
 \usepackage[left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
 % Formato de página
@@ -58,7 +59,8 @@
     numberstyle=\tiny\color{gray},
     showstringspaces=false,
     aboveskip=10pt,
-    belowskip=10pt
+    belowskip=10pt,
+    literate={á}{{\'{a}}}1 {é}{{\'{e}}}1 {í}{{\'{i}}}1 {ó}{{\'{o}}}1 {ú}{{\'{u}}}1 {ñ}{{\~{n}}}1 {Ñ}{{\~{N}}}1
 }
 
 % Matemáticas
@@ -143,8 +145,9 @@
 % Tabla de contenidos
 \include{indice}
 \include{intro}
-\include{clavesAsimetricas}
-\include{intercambioSeguro}
+\include{certificadoPersonal}
+\include{instalacionThunderbird}
+\include{decodificacionSMIME}
 
 %% ============================================================================
 %% CAPÍTULO 4: CONCLUSIONES
@@ -157,40 +160,28 @@
 A través de esta práctica se han consolidado los siguientes conceptos:
 
 \begin{enumerate}
-    \item \textbf{Criptografía asimétrica RSA:} Generación de pares de claves, exportación entre formatos (PEM, DER), y la importancia de proteger las claves privadas con contraseña.
-    \item \textbf{Firma digital:} Uso de resúmenes SHA-256 firmados con clave privada para garantizar integridad y autenticación del origen.
-    \item \textbf{DSA:} Algoritmo de firma digital alternativo a RSA, con generación de parámetros independiente de la generación de claves.
-    \item \textbf{Diffie-Hellman:} Protocolo de intercambio de claves que permite derivar un secreto compartido sin transmitirlo directamente.
-    \item \textbf{ECDH con X25519:} Curvas elípticas que logran seguridad equivalente con claves significativamente más pequeñas.
-    \item \textbf{Intercambio seguro:} Combinación de cifrado simétrico (AES-256-CBC), cifrado asimétrico (RSA) y firma digital para lograr confidencialidad, integridad y autenticación.
+    \item \textbf{Certificados X.509:} Creación de un certificado personal firmado por una CA raíz, comprendiendo la cadena de confianza y el proceso CSR $\rightarrow$ firma $\rightarrow$ certificado.
+    \item \textbf{Formato PKCS\#12:} Empaquetado de clave privada y certificado en un único fichero protegido para su importación en aplicaciones.
+    \item \textbf{Configuración de S/MIME en Thunderbird:} Instalación de certificados (raíz en Autoridades, personal en Sus certificados, compañero en Otras personas) y configuración de firma y cifrado.
+    \item \textbf{Intercambio de certificados:} Necesidad de enviar primero mensajes solo firmados para que ambas partes dispongan del certificado del otro antes de poder cifrar.
+    \item \textbf{Esquema de doble envolvente S/MIME:} Firma + cifrado al enviar, descifrado + verificación al recibir, como operaciones separadas.
+    \item \textbf{Decodificación con OpenSSL:} Uso de \texttt{openssl smime} para descifrar y verificar mensajes S/MIME desde línea de comandos.
 \end{enumerate}
 
-\section{Concclusiones sobre la práctica}
+\section{Conclusiones sobre la práctica}
 
-Es importante tener en cuenta que para el almacenamiento de claves el formato DER no soporta cifrado con contraseña, por lo que se debería evitar su uso para claves privadas a menos que se tomen medidas adicionales de protección.
+El estándar S/MIME proporciona una solución completa para asegurar comunicaciones por correo electrónico, combinando cifrado (confidencialidad), firma digital (autenticación e integridad) y certificados X.509 (confianza).
 
-Para la generación de claves RSA, se recomienda un tamaño mínimo de 2048 bits, aunque 4096 bits es preferible para garantizar seguridad a largo plazo.
+Un aspecto fundamental es la gestión de la cadena de confianza: para que la verificación de firma sea completa, ambos interlocutores deben compartir una CA raíz común o disponer de la cadena de certificados intermedia adecuada. En entornos donde esto no es posible, la opción \texttt{-noverify} permite comprobar la firma sin validar la cadena de CA.
 
-En cuanto a la firma digital, es crucial utilizar funciones de resumen seguras como SHA-256 o superiores. Para el intercambio de claves, el uso de esquemas híbridos que combinan cifrado simétrico y asimétrico es esencial para lograr eficiencia sin comprometer la seguridad.
-
-Finalmente, siempre se debe verificar la firma digital antes de confiar en el contenido descifrado para asegurar la autenticidad e integridad del mensaje.
+El formato de los ficheros es crítico: \texttt{-recip} de \texttt{openssl smime} requiere certificados en formato PEM (\texttt{.crt}), no PKCS\#12 (\texttt{.p12}), lo que obliga a separar clave y certificado.
 
 \section{Problemas encontrados y soluciones}
 
 \begin{itemize}[label=\textbullet]
-    \item \textbf{Formato DER y contraseñas:} La conversión a DER elimina la 
-    protección con contraseña, lo cual hay que tener muy en cuenta al exportar 
-    claves privadas.
-    \item \textbf{Parámetros DH compartidos:} Ambos pares de claves DH deben usar 
-    los mismos parámetros para poder derivar un secreto común, por lo que se genera
-    la duda de cómo asegurar que ambos usuarios usan los mismos parámetros y que estos
-    se mantengan seguros.
-    \item \textbf{Tamaño de datos RSA:} RSA solo puede cifrar datos menores al 
-    tamaño de la clave (por ejemplo, 256 bytes para RSA-2048), lo que justifica 
-    el esquema híbrido.
-    \item \textbf{Verificación con \texttt{-verifyrecover}:} Es necesario usar 
-    esta opción (exclusiva de RSA) para recuperar el resumen original de una firma
-     y compararlo manualmente.
+    \item \textbf{Uso de .p12 con \texttt{-recip}:} Inicialmente se intentó usar el fichero \texttt{.p12} directamente con \texttt{openssl smime -decrypt}, lo que provocaba errores. La solución fue usar los ficheros \texttt{.crt} y \texttt{.key} por separado.
+    \item \textbf{Verificación de cadena de CA:} Al verificar la firma, el error \texttt{unable to get local issuer certificate} se resolvió utilizando \texttt{-CAfile} con el certificado raíz compartido.
+    \item \textbf{Intercambio previo de certificados:} No fue posible cifrar mensajes hasta que ambas partes intercambiaron mensajes firmados, permitiendo que Thunderbird almacenara los certificados.
 \end{itemize}
 
 %% ============================================================================
@@ -201,19 +192,17 @@ Finalmente, siempre se debe verificar la firma digital antes de confiar en el co
 
 \bibitem{openssl_docs} OpenSSL Documentation, \textit{https://www.openssl.org/docs/man3.2/}, 2024.
 
-\bibitem{rsa} Rivest, R., Shamir, A., Adleman, L., \textit{A Method for Obtaining Digital Signatures and Public-Key Cryptosystems}, Communications of the ACM, 1978.
+\bibitem{openssl_wiki} Wiki HowTo OpenSSL -- CICEI, \textit{https://openssl.cicei.com}, 2025.
 
-\bibitem{dsa} NIST, \textit{Digital Signature Standard (DSS)}, FIPS 186-4, 2013.
+\bibitem{smime_rfc} Ramsdell, B., Turner, S., \textit{Secure/Multipurpose Internet Mail Extensions (S/MIME) Version 4.0 Message Specification}, RFC 8551, 2019.
 
-\bibitem{dh} Diffie, W., Hellman, M., \textit{New Directions in Cryptography}, IEEE Transactions on Information Theory, 1976.
+\bibitem{x509} Cooper, D. et al., \textit{Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile}, RFC 5280, 2008.
 
-\bibitem{x25519} Bernstein, D. J., \textit{Curve25519: New Diffie-Hellman Speed Records}, PKC 2006.
+\bibitem{pkcs12} RSA Laboratories, \textit{PKCS \#12: Personal Information Exchange Syntax Standard}, v1.1, 2014.
 
-\bibitem{aes} NIST, \textit{Advanced Encryption Standard (AES)}, FIPS 197, 2001.
+\bibitem{pkcs7} RSA Laboratories, \textit{PKCS \#7: Cryptographic Message Syntax Standard}, RFC 2315, 1998.
 
-\bibitem{pkcs1} RSA Laboratories, \textit{PKCS \#1: RSA Cryptography Specifications}, RFC 8017, 2016.
-
-\bibitem{hybrid} Menezes, A., van Oorschot, P., Vanstone, S., \textit{Handbook of Applied Cryptography}, CRC Press, 1996.
+\bibitem{thunderbird} Mozilla, \textit{Thunderbird -- Documentación de soporte}, \textit{https://support.mozilla.org/products/thunderbird}.
 
 \end{thebibliography}
 
@@ -225,82 +214,50 @@ Finalmente, siempre se debe verificar la firma digital antes de confiar en el co
 
 \chapter{Comandos OpenSSL Utilizados}
 
-\section{Generación de claves}
+\section{Creación de certificados}
 
-\begin{lstlisting}[caption=Comandos para generación de claves]
-# RSA: Generar par de claves con contraseña
-openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 \
-    -aes-256-cbc -pass pass:"contraseña" -out privkey.pem
+\begin{lstlisting}[caption=Comandos para creación del certificado personal]
+# Paso b) Generar clave privada RSA con contraseña
+openssl genpkey -algorithm RSA -out certificadoPersonal.key -aes256
 
-# Exportar clave pública
-openssl pkey -in privkey.pem -passin pass:"contraseña" \
-    -pubout -out pubkey.pem
+# Paso c) Crear CSR (solicitud de firma)
+openssl req -new -key certificadoPersonal.key \
+    -out certificadoPersonal.csr
 
-# Exportar a DER
-openssl pkey -in privkey.pem -passin pass:"contraseña" \
-    -outform DER -out privkey.der
+# Paso d) Firmar CSR con certificado raiz
+openssl x509 -req -in certificadoPersonal.csr \
+    -CA certificadoRaiz.crt -CAkey certificadoRaiz.key \
+    -CAcreateserial -out certificadoPersonal.crt -days 365
 
-# DER a PEM
-openssl pkey -in privkey.der -inform DER -out privkey_nopass.pem
+# Paso e) Crear fichero PKCS#12
+openssl pkcs12 -export -in certificadoPersonal.crt \
+    -inkey certificadoPersonal.key \
+    -out certificadoPersonal.p12 -name "Certificado Personal"
 \end{lstlisting}
 
-\section{Firma y verificación}
+\section{Operaciones S/MIME}
 
-\begin{lstlisting}[caption=Comandos para firma digital]
-# Crear resumen SHA-256
-openssl dgst -sha256 -binary -out digest.bin archivo.txt
+\begin{lstlisting}[caption=Comandos S/MIME para descifrado y verificación]
+# Descifrar mensaje S/MIME (P7M -> P7S)
+openssl smime -decrypt \
+    -in mensaje_cifrado.eml \
+    -recip certificadoPersonal.crt \
+    -inkey certificadoPersonal.key \
+    -out mensaje_descifrado.eml
 
-# Firmar resumen
-openssl pkeyutl -sign -in digest.bin \
-    -inkey privkey.pem -passin pass:"contraseña" \
-    -out firma.bin
+# Verificar firma S/MIME con CA raiz compartida
+openssl smime -verify \
+    -in mensaje_descifrado.eml \
+    -signer certificadoCompanero.crt \
+    -CAfile certificadoRaiz.crt \
+    -out mensaje_plano.txt
 
-# Verificar firma
-openssl pkeyutl -verify -in digest.bin \
-    -sigfile firma.bin -pubin -inkey pubkey.pem
-
-# Recuperar resumen de la firma (solo RSA)
-openssl pkeyutl -verifyrecover -in firma.bin \
-    -pubin -inkey pubkey.pem -out resumen_recuperado.bin
-\end{lstlisting}
-
-\section{Derivación de secretos}
-
-\begin{lstlisting}[caption=Comandos para derivación DH y X25519]
-# DH: Generar parámetros
-openssl genpkey -genparam -algorithm DH \
-    -pkeyopt dh_paramgen_prime_len:2048 -out dh_params.pem
-
-# DH: Generar claves con parámetros
-openssl genpkey -paramfile dh_params.pem -out dh_priv.pem
-openssl pkey -in dh_priv.pem -pubout -out dh_pub.pem
-
-# Derivar secreto compartido
-openssl pkeyutl -derive -inkey priv1.pem \
-    -peerkey pub2.pem -out secreto.bin
-
-# X25519: Generar claves
-openssl genpkey -algorithm X25519 -out x25519_priv.pem
-openssl pkey -in x25519_priv.pem -pubout -out x25519_pub.pem
-\end{lstlisting}
-
-\section{Cifrado asimétrico y conversión BASE64}
-
-\begin{lstlisting}[caption=Comandos para cifrado asimétrico]
-# Cifrar con clave pública RSA
-openssl pkeyutl -encrypt -in datos.txt \
-    -pubin -inkey pubkey.pem -out datos.bin
-
-# Descifrar con clave privada RSA
-openssl pkeyutl -decrypt -in datos.bin \
-    -inkey privkey.pem -passin pass:"contraseña" \
-    -out datos_descifrados.txt
-
-# Convertir binario a BASE64
-openssl enc -a -in datos.bin -out datos.txt
-
-# Convertir BASE64 a binario
-openssl enc -a -d -in datos.txt -out datos.bin
+# Verificar firma sin verificacion de cadena de CA
+openssl smime -verify \
+    -in mensaje_descifrado.eml \
+    -signer certificadoCompanero.crt \
+    -noverify \
+    -out mensaje_plano.txt
 \end{lstlisting}
 
 \end{document}

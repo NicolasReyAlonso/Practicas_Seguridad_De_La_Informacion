@@ -2,89 +2,90 @@
 
 \section{Objetivo de la práctica}
 
-El objetivo principal de esta práctica es utilizar \textit{OpenSSL} para realizar 
-operaciones criptográficas relativas al cifrado asimétrico, incluyendo:
+El objetivo principal de esta práctica es configurar y utilizar \textbf{correo electrónico seguro} mediante el estándar \textbf{S/MIME} (\textit{Secure/Multipurpose Internet Mail Extensions}), incluyendo:
 
 \begin{itemize}[label=\textbullet]
-    \item Generación y gestión de claves asimétricas (RSA, DSA)
-    \item Exportación y conversión de formatos de claves (PEM, DER)
-    \item Firma digital y verificación de resúmenes
-    \item Derivación de secretos compartidos con Diffie-Hellman (DH) y curvas elípticas (X25519)
-    \item Intercambio seguro de información combinando cifrado simétrico, asimétrico y firma digital
+    \item Creación de un certificado digital personal X.509 firmado por una CA raíz
+    \item Instalación de certificados en el cliente de correo Mozilla Thunderbird
+    \item Intercambio de mensajes firmados y cifrados con otro compañero
+    \item Decodificación de mensajes S/MIME cifrados y firmados desde línea de comandos con \texttt{openssl smime}
 \end{itemize}
 
 \section{Conceptos fundamentales}
 
-\subsection{Criptografía asimétrica}
+\subsection{Certificados digitales X.509}
 
-A diferencia del cifrado simétrico (donde emisor y receptor comparten la misma clave), la criptografía asimétrica utiliza un \textbf{par de claves} matemáticamente relacionadas:
+Un \textbf{certificado digital} vincula la identidad de un sujeto (nombre, correo electrónico, organización) con su \textbf{clave pública}. Esta vinculación está firmada digitalmente por una \textbf{Autoridad de Certificación (CA)}, lo que permite a cualquier parte que confíe en esa CA verificar la autenticidad del certificado.
+
+La estructura básica de un certificado X.509 incluye:
 
 \begin{itemize}[label=\textbullet]
-    \item \textbf{Clave pública:} Puede distribuirse libremente. Se usa para cifrar y verificar firmas.
-    \item \textbf{Clave privada:} Debe mantenerse en secreto. Se usa para descifrar y firmar.
+    \item \textbf{Sujeto (Subject):} Identidad del titular (CN, O, OU, C, Email)
+    \item \textbf{Emisor (Issuer):} CA que firma el certificado
+    \item \textbf{Clave pública:} La clave pública del titular
+    \item \textbf{Periodo de validez:} Fechas de inicio y expiración
+    \item \textbf{Firma digital:} Firma de la CA sobre todos los campos anteriores
 \end{itemize}
 
-La relación entre ambas claves cumple las siguientes propiedades:
+\subsection{S/MIME: Correo electrónico seguro}
 
-\begin{equation}
-D(K_{priv}, E(K_{pub}, M)) = M \quad \text{(cifrado)}
-\end{equation}
-\begin{equation}
-V(K_{pub}, S(K_{priv}, H(M))) = \text{true} \quad \text{(firma)}
-\end{equation}
-
-\subsection{Algoritmos utilizados}
+S/MIME utiliza criptografía de clave pública y certificados X.509 para proporcionar tres servicios de seguridad al correo electrónico:
 
 \begin{table}[H]
     \centering
-    \caption{Algoritmos asimétricos utilizados en esta práctica}
-    \begin{tabularx}{\textwidth}{l|p{3cm}|p{6cm}}
+    \caption{Serviciones de seguridad de S/MIME}
+    \begin{tabularx}{\textwidth}{l|l|X}
         \toprule
-        \textbf{Algoritmo} & \textbf{Función} & \textbf{Descripción} \\
+        \textbf{Servicio} & \textbf{Mecanismo} & \textbf{Descripción} \\
         \midrule
-        RSA & Cifrado y firma & Basado en la factorización de números primos grandes \\
-        DSA & Solo firma & Estándar de firma digital del NIST \\
-        DH & Intercambio de claves & Protocolo de negociación de secretos compartidos \\
-        X25519 & Intercambio de claves & DH con curva elíptica Curve25519 (usado por WhatsApp) \\
+        Confidencialidad & Cifrado & Solo el destinatario puede leer el mensaje (cifrado con su clave pública) \\
+        Autenticación & Firma digital & Se verifica la identidad del emisor \\
+        Integridad & Firma digital & Se detecta si el mensaje fue alterado \\
         \bottomrule
     \end{tabularx}
 \end{table}
 
-\subsection{Formatos de claves}
+\subsection{Estructura de un mensaje cifrado y firmado}
 
-\begin{table}[H]
-    \centering
-    \caption{Formatos de almacenamiento de claves}
-    \begin{tabularx}{\textwidth}{l|l|p{7cm}}
-        \toprule
-        \textbf{Formato} & \textbf{Tipo} & \textbf{Características} \\
-        \midrule
-        PEM & Texto (Base64) & Legible, puede incluir cifrado con contraseña \\
-        DER & Binario & Más compacto, \textbf{no soporta cifrado con contraseña} \\
-        \bottomrule
-    \end{tabularx}
-\end{table}
-
-\subsection{Esquema híbrido de cifrado}
-
-En la práctica real, el cifrado asimétrico no se utiliza directamente sobre documentos 
-grandes debido a su lentitud y sus limítaciones técnicas. En su lugar, se emplea un
- \textbf{esquema híbrido}:
+Cuando un mensaje S/MIME es tanto firmado como cifrado, se crea una estructura de \textbf{doble envolvente}:
 
 \begin{enumerate}
-    \item Se cifra el documento con un algoritmo simétrico (rápido), por ejemplo AES-256-CBC.
-    \item Se cifra la clave simétrica utilizada con la clave pública del destinatario (RSA).
-    \item Se firma un resumen del documento original con la clave privada del emisor.
-    \item Se envían: documento cifrado + clave cifrada + firma digital.
+    \item El emisor \textbf{firma} el mensaje con su clave privada $\rightarrow$ genera estructura \texttt{signed-data} (SMIME.P7S)
+    \item El resultado se \textbf{cifra} con la clave pública del destinatario $\rightarrow$ genera estructura \texttt{enveloped-data} (SMIME.P7M)
 \end{enumerate}
 
-Con este esquema se logra simultáneamente que solo el destinatario pueda descifrar el 
-documento (confidencialidad), que el documento no haya sido alterado 
-(integridad) y que el emisor sea quien dice ser (autenticación).
+Para decodificarlo, el receptor realiza el proceso inverso:
+
+\begin{enumerate}
+    \item \textbf{Descifra} con su clave privada (SMIME.P7M $\rightarrow$ SMIME.P7S)
+    \item \textbf{Verifica la firma} con el certificado del emisor (SMIME.P7S $\rightarrow$ texto plano)
+\end{enumerate}
+
+\subsection{Formatos de ficheros}
+
+\begin{table}[H]
+    \centering
+    \caption{Formatos de ficheros utilizados en esta práctica}
+    \begin{tabularx}{\textwidth}{l|l|X}
+        \toprule
+        \textbf{Extensión} & \textbf{Formato} & \textbf{Contenido} \\
+        \midrule
+        .crt & PEM (Base64) & Certificado X.509 (solo parte pública) \\
+        .key & PEM (Base64) & Clave privada (puede estar cifrada con contraseña) \\
+        .csr & PEM (Base64) & Solicitud de firma de certificado \\
+        .p12 & PKCS\#12 (binario) & Certificado + clave privada empaquetados \\
+        .eml & Texto & Mensaje de correo completo (cabeceras + cuerpo MIME) \\
+        .p7m & PKCS\#7 (binario) & Mensaje cifrado S/MIME (\texttt{enveloped-data}) \\
+        .p7s & PKCS\#7 (binario) & Mensaje firmado S/MIME (\texttt{signed-data}) \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
 
 \section{Herramientas utilizadas}
 
 \begin{itemize}[label=\textbullet]
-    \item \textbf{OpenSSL 3.x:} Herramienta principal de criptografía
-    \item Comandos principales: \texttt{genpkey}, \texttt{pkey}, \texttt{pkeyutl}, \texttt{enc}, \texttt{dgst}
+    \item \textbf{OpenSSL 3.x:} Herramienta de criptografía en línea de comandos
+    \item Comandos principales: \texttt{genpkey}, \texttt{req}, \texttt{x509}, \texttt{pkcs12}, \texttt{smime}
+    \item \textbf{Mozilla Thunderbird:} Cliente de correo electrónico con soporte S/MIME
 \end{itemize}
+
