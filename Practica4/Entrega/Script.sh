@@ -78,4 +78,17 @@ echo -e "${GREEN}CSR creado en $CERT_PERSONAL_CSR${NC}"
 echo -e "${GREEN}Firmando CSR con certificado raíz...${NC}"
 openssl x509 -req -in "$CERT_PERSONAL_CSR" -CA "$CERT_RAIZ" -CAkey "$KEY_RAIZ" -CAcreateserial -out "$CERT_PERSONAL_CRT" -days 365
 echo -e "${GREEN}Certificado personal firmado en $CERT_PERSONAL_CRT${NC}"
+
+# 1.1.2.e) Crear fichero PKCS#12 con la parte pública y privada del certificado personal
+CERT_PERSONAL_P12="$SALIDA/certificadoPersonal.p12"
+
+echo -e "${GREEN}Creando fichero PKCS#12 (certificadoPersonal.p12)...${NC}"
+echo "(Se pedirá la contraseña de certificadoPersonal.key y luego la contraseña de protección del .p12)"
+openssl pkcs12 -export -in "$CERT_PERSONAL_CRT" -inkey "$CERT_PERSONAL_KEY" -out "$CERT_PERSONAL_P12" -name "Certificado Personal"
+echo -e "${GREEN}Fichero PKCS#12 creado en $CERT_PERSONAL_P12${NC}"
+
+# Eliminar el CSR (ya no es necesario)
+rm -f "$CERT_PERSONAL_CSR"
+echo -e "${GREEN}CSR eliminado (ya no necesario)${NC}"
+
 echo -e "${BLUE}Proceso completado. Certificados generados en $SALIDA${NC}"
