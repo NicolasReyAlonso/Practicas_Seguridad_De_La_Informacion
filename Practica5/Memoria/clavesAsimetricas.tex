@@ -1,0 +1,294 @@
+\chapter{Generación de Claves Asimétricas, Firma y Derivación de Secretos}
+
+\section{Claves RSA}
+
+\subsection{Descripción teórica}
+
+RSA (\textit{Rivest-Shamir-Adleman}) es un algoritmo de criptografía asimétrica basado en la dificultad de factorizar el producto de dos números primos grandes. Permite tanto cifrado como firma digital.
+
+La generación de claves RSA consiste en:
+
+\begin{enumerate}
+    \item Elegir dos primos grandes $p$ y $q$
+    \item Calcular $n = p \cdot q$ (módulo)
+    \item Calcular $\phi(n) = (p-1)(q-1)$ (función de Euler)
+    \item Elegir $e$ coprimo con $\phi(n)$ (exponente público, típicamente 65537)
+    \item Calcular $d = e^{-1} \mod \phi(n)$ (exponente privado)
+\end{enumerate}
+
+\begin{itemize}[label=\textbullet]
+    \item Clave pública: $(n, e)$
+    \item Clave privada: $(n, d)$
+\end{itemize}
+
+\subsection{Generación del par de claves RSA}
+
+Se genera un par de claves RSA de 2048 bits protegido con contraseña:
+
+\begin{lstlisting}[caption=Generación de claves RSA con contraseña]
+# Generar clave privada RSA de 2048 bits (cifrada con AES-256-CBC)
+openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 \
+    -aes-256-cbc -pass pass:"rsapassword123" \
+    -out rsa_privkey.pem
+\end{lstlisting}
+
+La clave privada generada está cifrada con AES-256-CBC y protegida con la contraseña proporcionada. La cabecera del archivo PEM indica que está cifrada:
+
+\begin{lstlisting}[caption=Cabecera de clave privada cifrada]
+-----BEGIN ENCRYPTED PRIVATE KEY-----
+\end{lstlisting}
+
+\subsection{Exportación de clave pública}
+
+\begin{lstlisting}[caption=Exportación de clave pública RSA]
+openssl pkey -in rsa_privkey.pem -passin pass:"rsapassword123" \
+    -pubout -out rsa_pubkey.pem
+\end{lstlisting}
+
+\subsection{Conversión a formato DER y de vuelta a PEM}
+
+El formato DER es la representación binaria de la clave. Una característica importante es que \textbf{DER no soporta cifrado con contraseña}:
+
+\begin{lstlisting}[caption=Conversión RSA: PEM $\rightarrow$ DER $\rightarrow$ PEM]
+# Exportar a DER (se pierde la contraseña)
+openssl pkey -in rsa_privkey.pem -passin pass:"rsapassword123" \
+    -outform DER -out rsa_privkey.der
+
+# Reconvertir DER a PEM (sin contraseña)
+openssl pkey -in rsa_privkey.der -inform DER \
+    -out rsa_privkey_from_der.pem
+\end{lstlisting}
+
+\textbf{Resultado importante:} La clave convertida desde DER tiene la cabecera:
+
+\begin{lstlisting}[caption=Cabecera de clave privada sin cifrar]
+-----BEGIN PRIVATE KEY-----
+\end{lstlisting}
+
+En lugar de \texttt{-----BEGIN ENCRYPTED PRIVATE KEY-----}, lo que demuestra que la conversión a formato DER \textbf{elimina la protección con contraseña} de la clave privada.
+
+\subsection{Firma y verificación RSA}
+
+Se firma el resumen SHA-256 de un fichero de texto utilizando \texttt{openssl pkeyutl}:
+
+\begin{lstlisting}[caption=Firma y verificación RSA con SHA-256]
+# Crear resumen SHA-256 en binario
+openssl dgst -sha256 -binary -out rsa_digest.bin TextFile.txt
+
+# Firmar el resumen con clave privada RSA
+openssl pkeyutl -sign -in rsa_digest.bin \
+    -inkey rsa_privkey.pem -passin pass:"rsapassword123" \
+    -out rsa_firma.bin
+
+# Verificar la firma con clave pública
+openssl pkeyutl -verify -in rsa_digest.bin \
+    -sigfile rsa_firma.bin \
+    -pubin -inkey rsa_pubkey.pem
+\end{lstlisting}
+
+El resultado esperado de la verificación es:
+
+\begin{lstlisting}[caption=Resultado de verificación]
+Signature Verified Successfully
+\end{lstlisting}
+
+\textbf{Tamaño de la firma RSA-2048:} 256 bytes (igual al tamaño de la clave en bytes: $2048 / 8 = 256$).
+
+%% ============================================================================
+%% DSA
+%% ============================================================================
+
+\section{Claves DSA}
+
+\subsection{Descripción teórica}
+
+DSA (\textit{Digital Signature Algorithm}) es un algoritmo de firma digital estandarizado por el NIST. A diferencia de RSA, DSA \textbf{solo permite firmar}, no cifrar.
+
+La generación de claves DSA requiere dos pasos:
+\begin{enumerate}
+    \item Generación de \textbf{parámetros} del dominio ($p$, $q$, $g$)
+    \item Generación del \textbf{par de claves} a partir de los parámetros
+\end{enumerate}
+
+\subsection{Generación de parámetros y claves DSA}
+
+\begin{lstlisting}[caption=Generación de claves DSA]
+# Paso 1: Generar parámetros DSA
+openssl genpkey -genparam -algorithm DSA \
+    -pkeyopt dsa_paramgen_bits:2048 \
+    -out dsa_params.pem
+
+# Paso 2: Generar par de claves con los parámetros
+openssl genpkey -paramfile dsa_params.pem \
+    -aes-256-cbc -pass pass:"dsapassword123" \
+    -out dsa_privkey.pem
+
+# Exportar clave pública
+openssl pkey -in dsa_privkey.pem -passin pass:"dsapassword123" \
+    -pubout -out dsa_pubkey.pem
+\end{lstlisting}
+
+\subsection{Conversión a formato DER}
+
+Al igual que con RSA, la conversión a DER elimina la protección con contraseña:
+
+\begin{lstlisting}[caption=Conversión DSA a DER y de vuelta]
+# Exportar a DER
+openssl pkey -in dsa_privkey.pem -passin pass:"dsapassword123" \
+    -outform DER -out dsa_privkey.der
+
+# DER a PEM (sin contraseña)
+openssl pkey -in dsa_privkey.der -inform DER \
+    -out dsa_privkey_from_der.pem
+\end{lstlisting}
+
+\subsection{Firma y verificación DSA}
+
+\begin{lstlisting}[caption=Firma y verificación DSA]
+# Crear resumen y firmar
+openssl dgst -sha256 -binary -out dsa_digest.bin TextFile.txt
+openssl pkeyutl -sign -in dsa_digest.bin \
+    -inkey dsa_privkey.pem -passin pass:"dsapassword123" \
+    -out dsa_firma.bin
+
+# Verificar
+openssl pkeyutl -verify -in dsa_digest.bin \
+    -sigfile dsa_firma.bin \
+    -pubin -inkey dsa_pubkey.pem
+\end{lstlisting}
+
+\textbf{Nota:} El tamaño de la firma DSA es variable (entre 46-48 bytes típicamente), ya que DSA codifica la firma como estructura ASN.1 con dos valores $(r, s)$.
+
+\subsection{Comparación RSA vs DSA}
+
+\begin{table}[H]
+    \centering
+    \caption{Comparación entre RSA y DSA}
+    \begin{tabularx}{\textwidth}{l|p{5cm}|p{5cm}}
+        \toprule
+        \textbf{Característica} & \textbf{RSA} & \textbf{DSA} \\
+        \midrule
+        Cifrado & Sí & No \\
+        Firma digital & Sí & Sí \\
+        Generación de claves & Un solo paso & Dos pasos (parámetros + claves) \\
+        Tamaño de firma (2048 bits) & 256 bytes (fijo) & $\sim$46-48 bytes (variable) \\
+        Velocidad de firma & Más lenta & Más rápida \\
+        Velocidad de verificación & Más rápida & Más lenta \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+%% ============================================================================
+%% DH
+%% ============================================================================
+
+\section{Derivación de secretos: Diffie-Hellman (DH)}
+
+\subsection{Descripción teórica}
+
+El protocolo \textbf{Diffie-Hellman} permite a dos partes derivar un \textbf{secreto compartido} sin necesidad de transmitirlo. El principio se basa en la propiedad:
+
+\begin{equation}
+(g^a \bmod p)^b \bmod p = (g^b \bmod p)^a \bmod p = g^{ab} \bmod p
+\end{equation}
+
+Donde:
+\begin{itemize}
+    \item $g$ y $p$ son parámetros públicos
+    \item $a$ es la clave privada del usuario 1
+    \item $b$ es la clave privada del usuario 2
+    \item $g^a \bmod p$ y $g^b \bmod p$ son las claves públicas
+\end{itemize}
+
+\subsection{Generación de claves y derivación}
+
+\begin{lstlisting}[caption=Derivación de secretos DH]
+# Generar parámetros DH compartidos
+openssl genpkey -genparam -algorithm DH \
+    -pkeyopt dh_paramgen_prime_len:2048 \
+    -out dh_params.pem
+
+# Generar par de claves #1
+openssl genpkey -paramfile dh_params.pem -out dh_privkey1.pem
+openssl pkey -in dh_privkey1.pem -pubout -out dh_pubkey1.pem
+
+# Generar par de claves #2 (mismos parámetros)
+openssl genpkey -paramfile dh_params.pem -out dh_privkey2.pem
+openssl pkey -in dh_privkey2.pem -pubout -out dh_pubkey2.pem
+
+# Derivar secreto 1: privada1 + pública2
+openssl pkeyutl -derive -inkey dh_privkey1.pem \
+    -peerkey dh_pubkey2.pem -out dh_secreto1.bin
+
+# Derivar secreto 2: privada2 + pública1
+openssl pkeyutl -derive -inkey dh_privkey2.pem \
+    -peerkey dh_pubkey1.pem -out dh_secreto2.bin
+\end{lstlisting}
+
+\textbf{Resultado:} Ambos secretos son \textbf{idénticos}, demostrando la propiedad fundamental de Diffie-Hellman.
+
+%% ============================================================================
+%% X25519
+%% ============================================================================
+
+\section{Derivación de secretos: ECDH con X25519}
+
+\subsection{Descripción teórica}
+
+X25519 es una implementación del protocolo Diffie-Hellman usando la \textbf{curva elíptica Curve25519}, diseñada por Daniel J. Bernstein. Es el algoritmo utilizado por aplicaciones como \textbf{WhatsApp}, Signal y TLS 1.3.
+
+La ventaja principal es que ofrece seguridad equivalente a claves RSA/DH mucho más grandes:
+
+\begin{table}[H]
+    \centering
+    \caption{Equivalencia de seguridad entre algoritmos}
+    \begin{tabularx}{\textwidth}{c|c|c}
+        \toprule
+        \textbf{Seguridad (bits)} & \textbf{RSA/DH (bits)} & \textbf{Curva Elíptica (bits)} \\
+        \midrule
+        128 & 3072 & 256 (X25519) \\
+        192 & 7680 & 384 \\
+        256 & 15360 & 512 \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\subsection{Generación de claves y derivación}
+
+A diferencia de DH estándar, X25519 no necesita generar parámetros previos:
+
+\begin{lstlisting}[caption=Derivación de secretos X25519]
+# Generar par de claves X25519 #1
+openssl genpkey -algorithm X25519 -out x25519_privkey1.pem
+openssl pkey -in x25519_privkey1.pem -pubout -out x25519_pubkey1.pem
+
+# Generar par de claves X25519 #2
+openssl genpkey -algorithm X25519 -out x25519_privkey2.pem
+openssl pkey -in x25519_privkey2.pem -pubout -out x25519_pubkey2.pem
+
+# Derivar secretos
+openssl pkeyutl -derive -inkey x25519_privkey1.pem \
+    -peerkey x25519_pubkey2.pem -out x25519_secreto1.bin
+
+openssl pkeyutl -derive -inkey x25519_privkey2.pem \
+    -peerkey x25519_pubkey1.pem -out x25519_secreto2.bin
+\end{lstlisting}
+
+\textbf{Resultado:} Ambos secretos X25519 son \textbf{idénticos}, confirmando el intercambio correcto.
+
+\subsection{Comparación de tamaños: DH vs X25519}
+
+\begin{table}[H]
+    \centering
+    \caption{Comparación de tamaños de secretos compartidos}
+    \begin{tabularx}{\textwidth}{l|c|c|p{5cm}}
+        \toprule
+        \textbf{Algoritmo} & \textbf{Tamaño secreto} & \textbf{Bits} & \textbf{Observaciones} \\
+        \midrule
+        DH estándar (2048 bits) & 256 bytes & 2048 & Secreto grande \\
+        X25519 (Curve25519) & 32 bytes & 256 & Secreto compacto \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\textbf{Conclusión:} X25519 genera un secreto de \textbf{32 bytes} (256 bits) frente a los \textbf{256 bytes} (2048 bits) de DH estándar, logrando seguridad equivalente con un secreto \textbf{8 veces menor}. Esto se debe a que la seguridad en curvas elípticas crece mucho más rápido con el tamaño de la clave que en DH clásico.

@@ -1,0 +1,91 @@
+\chapter{Introducción}
+
+\section{Objetivo de la práctica}
+
+El objetivo principal de esta práctica es configurar y utilizar \textbf{correo electrónico seguro} mediante el estándar \textbf{S/MIME} (\textit{Secure/Multipurpose Internet Mail Extensions}), incluyendo:
+
+\begin{itemize}[label=\textbullet]
+    \item Creación de un certificado digital personal X.509 firmado por una CA raíz
+    \item Instalación de certificados en el cliente de correo Mozilla Thunderbird
+    \item Intercambio de mensajes firmados y cifrados con otro compañero
+    \item Decodificación de mensajes S/MIME cifrados y firmados desde línea de comandos con \texttt{openssl smime}
+\end{itemize}
+
+\section{Conceptos fundamentales}
+
+\subsection{Certificados digitales X.509}
+
+Un \textbf{certificado digital} vincula la identidad de un sujeto (nombre, correo electrónico, organización) con su \textbf{clave pública}. Esta vinculación está firmada digitalmente por una \textbf{Autoridad de Certificación (CA)}, lo que permite a cualquier parte que confíe en esa CA verificar la autenticidad del certificado.
+
+La estructura básica de un certificado X.509 incluye:
+
+\begin{itemize}[label=\textbullet]
+    \item \textbf{Sujeto (Subject):} Identidad del titular (CN, O, OU, C, Email)
+    \item \textbf{Emisor (Issuer):} CA que firma el certificado
+    \item \textbf{Clave pública:} La clave pública del titular
+    \item \textbf{Periodo de validez:} Fechas de inicio y expiración
+    \item \textbf{Firma digital:} Firma de la CA sobre todos los campos anteriores
+\end{itemize}
+
+\subsection{S/MIME: Correo electrónico seguro}
+
+S/MIME utiliza criptografía de clave pública y certificados X.509 para proporcionar tres servicios de seguridad al correo electrónico:
+
+\begin{table}[H]
+    \centering
+    \caption{Serviciones de seguridad de S/MIME}
+    \begin{tabularx}{\textwidth}{l|l|X}
+        \toprule
+        \textbf{Servicio} & \textbf{Mecanismo} & \textbf{Descripción} \\
+        \midrule
+        Confidencialidad & Cifrado & Solo el destinatario puede leer el mensaje (cifrado con su clave pública) \\
+        Autenticación & Firma digital & Se verifica la identidad del emisor \\
+        Integridad & Firma digital & Se detecta si el mensaje fue alterado \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\subsection{Estructura de un mensaje cifrado y firmado}
+
+Cuando un mensaje S/MIME es tanto firmado como cifrado, se crea una estructura de \textbf{doble envolvente}:
+
+\begin{enumerate}
+    \item El emisor \textbf{firma} el mensaje con su clave privada $\rightarrow$ genera estructura \texttt{signed-data} (SMIME.P7S)
+    \item El resultado se \textbf{cifra} con la clave pública del destinatario $\rightarrow$ genera estructura \texttt{enveloped-data} (SMIME.P7M)
+\end{enumerate}
+
+Para decodificarlo, el receptor realiza el proceso inverso:
+
+\begin{enumerate}
+    \item \textbf{Descifra} con su clave privada (SMIME.P7M $\rightarrow$ SMIME.P7S)
+    \item \textbf{Verifica la firma} con el certificado del emisor (SMIME.P7S $\rightarrow$ texto plano)
+\end{enumerate}
+
+\subsection{Formatos de ficheros}
+
+\begin{table}[H]
+    \centering
+    \caption{Formatos de ficheros utilizados en esta práctica}
+    \begin{tabularx}{\textwidth}{l|l|X}
+        \toprule
+        \textbf{Extensión} & \textbf{Formato} & \textbf{Contenido} \\
+        \midrule
+        .crt & PEM (Base64) & Certificado X.509 (solo parte pública) \\
+        .key & PEM (Base64) & Clave privada (puede estar cifrada con contraseña) \\
+        .csr & PEM (Base64) & Solicitud de firma de certificado \\
+        .p12 & PKCS\#12 (binario) & Certificado + clave privada empaquetados \\
+        .eml & Texto & Mensaje de correo completo (cabeceras + cuerpo MIME) \\
+        .p7m & PKCS\#7 (binario) & Mensaje cifrado S/MIME (\texttt{enveloped-data}) \\
+        .p7s & PKCS\#7 (binario) & Mensaje firmado S/MIME (\texttt{signed-data}) \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\section{Herramientas utilizadas}
+
+\begin{itemize}[label=\textbullet]
+    \item \textbf{OpenSSL 3.x:} Herramienta de criptografía en línea de comandos
+    \item Comandos principales: \texttt{genpkey}, \texttt{req}, \texttt{x509}, \texttt{pkcs12}, \texttt{smime}
+    \item \textbf{Mozilla Thunderbird:} Cliente de correo electrónico con soporte S/MIME
+\end{itemize}
+
