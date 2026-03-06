@@ -1,8 +1,14 @@
 #!/bin/bash
 
 ################################################################################
-# Práctica 4: CORREO ELECTRÓNICO SEGURO S/MIME
-# Fecha: 19 de febrero de 2026
+# Práctica 5: CORREO ELECTRÓNICO SEGURO OpenPGP
+# Apartado 5.2: Decodificación manual con GnuPG
+# Fecha: 5 de marzo de 2026
+#
+# PREREQUISITOS (colocar en ArchivosOriginales/ antes de ejecutar):
+#   · claveprivada.asc  → tu clave privada OpenPGP exportada de Thunderbird
+#   · clave.asc         → clave pública del compañero que envió el mensaje
+#   · mensaje.eml       → el mensaje cifrado y firmado exportado de Thunderbird
 ################################################################################
 
 # Colores para salida
@@ -19,167 +25,240 @@ SALIDA="../Salida"
 # Crear directorio de salida si no existe
 mkdir -p "$SALIDA"
 
-# Archivo de texto de la práctica anterior
-TEXTO="$ORIGINALES/TextFile.txt"
-
-if [ ! -f "$TEXTO" ]; then
-    echo "Creando archivo de texto de prueba..."
-    echo "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus bibendum iaculis ante, quis sagittis eros eleifend iaculis. Sed egestas consequat feugiat. Lorem aliquam." > "$TEXTO"
-fi
-
 echo -e "${BLUE}╔═══════════════════════════════════════════════════════════════╗${NC}"
 echo -e "${BLUE}║  Práctica 4: CORREO ELECTRÓNICO SEGURO S/MIME                ║${NC}"
+echo -e "${BLUE}║  Práctica 5: CORREO ELECTRÓNICO SEGURO OpenPGP               ║${NC}"
+echo -e "${BLUE}║  Apartado 5.2: Decodificación manual con GnuPG               ║${NC}"
 echo -e "${BLUE}╚═══════════════════════════════════════════════════════════════╝${NC}"
 echo ""
 
 ################################################################################
-# PREVIO: Creacion Claves
+# Variables de ficheros de entrada
+################################################################################
+CLAVE_PRIVADA="$ORIGINALES/claveprivada.asc"   # Tu clave privada OpenPGP
+CLAVE_PUBLICA="$ORIGINALES/clave.asc"           # Clave pública del compañero
+MENSAJE_EML="$ORIGINALES/mensaje.eml"           # Mensaje cifrado y firmado
+
+# Ficheros de salida
+MENSAJE_MIME="$SALIDA/mensaje.mime"             # Salida bruta del descifrado
+DIR_FINAL="$SALIDA/dir_final"                   # Adjuntos extraídos por ripmime
+
+################################################################################
+# PASO 0 – Comprobación de prerrequisitos
 ################################################################################
 echo -e "${YELLOW}═══════════════════════════════════════════════════════════════${NC}"
-echo -e "${YELLOW}PREVIO: Creación de mi clave${NC}"
+echo -e "${YELLOW}PASO 0: Comprobación de prerrequisitos${NC}"
 echo -e "${YELLOW}═══════════════════════════════════════════════════════════════${NC}"
 echo ""
 
-echo "Versión de OpenSSL instalada:"
-openssl version
-
-################################################################################
-# 1.1 – Creación de nuestro certificado personal
-################################################################################
-echo -e "${YELLOW}═══════════════════════════════════════════════════════════════${NC}"
-echo -e "${YELLOW}1.1: Creación de certificado personal${NC}"
-echo -e "${YELLOW}═══════════════════════════════════════════════════════════════${NC}"
-echo ""
-
-# Variables de archivos
-CERT_RAIZ="$ORIGINALES/certificadoRaiz.crt"
-KEY_RAIZ="$ORIGINALES/certificadoRaiz.key"
-CERT_PERSONAL_KEY="$SALIDA/certificadoPersonal.key"
-CERT_PERSONAL_CSR="$SALIDA/certificadoPersonal.csr"
-CERT_PERSONAL_CRT="$SALIDA/certificadoPersonal.crt"
-
-# Comprobar existencia de archivos raíz
-if [ ! -f "$CERT_RAIZ" ] || [ ! -f "$KEY_RAIZ" ]; then
-    echo -e "${RED}No se encuentran certificadoRaiz.crt o certificadoRaiz.key en $ORIGINALES${NC}"
+# Comprobar gpg
+if ! command -v gpg &>/dev/null; then
+    echo -e "${RED}ERROR: 'gpg' no está instalado.${NC}"
+    echo "  · En macOS:  brew install gnupg"
+    echo "  · En Debian: sudo apt install gnupg"
     exit 1
 fi
+echo -e "${GREEN}✓ gpg encontrado: $(gpg --version | head -1)${NC}"
 
-# 1.1.2.b) Crear clave personal
-echo -e "${GREEN}Creando clave personal...${NC}"
-openssl genpkey -algorithm RSA -out "$CERT_PERSONAL_KEY" -aes256
-echo -e "${GREEN}Clave personal creada en $CERT_PERSONAL_KEY${NC}"
-
-# 1.1.2.c) Crear CSR
-echo -e "${GREEN}Creando CSR (solicitud de firma)...${NC}"
-openssl req -new -key "$CERT_PERSONAL_KEY" -out "$CERT_PERSONAL_CSR"
-echo -e "${GREEN}CSR creado en $CERT_PERSONAL_CSR${NC}"
-
-# 1.1.2.d) Firmar CSR con certificado raíz
-echo -e "${GREEN}Firmando CSR con certificado raíz...${NC}"
-openssl x509 -req -in "$CERT_PERSONAL_CSR" -CA "$CERT_RAIZ" -CAkey "$KEY_RAIZ" -CAcreateserial -out "$CERT_PERSONAL_CRT" -days 365
-echo -e "${GREEN}Certificado personal firmado en $CERT_PERSONAL_CRT${NC}"
-
-# 1.1.2.e) Crear fichero PKCS#12 con la parte pública y privada del certificado personal
-CERT_PERSONAL_P12="$SALIDA/certificadoPersonal.p12"
-
-echo -e "${GREEN}Creando fichero PKCS#12 (certificadoPersonal.p12)...${NC}"
-echo "(Se pedirá la contraseña de certificadoPersonal.key y luego la contraseña de protección del .p12)"
-openssl pkcs12 -export -in "$CERT_PERSONAL_CRT" -inkey "$CERT_PERSONAL_KEY" -out "$CERT_PERSONAL_P12" -name "Certificado Personal"
-echo -e "${GREEN}Fichero PKCS#12 creado en $CERT_PERSONAL_P12${NC}"
-
-# Eliminar el CSR (ya no es necesario)
-rm -f "$CERT_PERSONAL_CSR"
-echo -e "${GREEN}CSR eliminado (ya no necesario)${NC}"
-
-echo -e "${BLUE}Proceso completado. Certificados generados en $SALIDA${NC}"
-
-################################################################################
-# 1.3 – Descifrar y verificar la firma del mensaje del compañero
-################################################################################
-echo ""
-echo -e "${YELLOW}═══════════════════════════════════════════════════════════════${NC}"
-echo -e "${YELLOW}1.3: Descifrado y verificación de firma S/MIME del compañero${NC}"
-echo -e "${YELLOW}═══════════════════════════════════════════════════════════════${NC}"
-echo ""
-
-# Archivos necesarios
-EML_COMPANERO="$ORIGINALES/Wafa Azdad Triki - Wafa Azdad Triki <azdadwafa0@gmail.com> - 2026-03-04 2000.eml"
-CERT_COMPANERO="$ORIGINALES/WafaAzdadTriki.crt"
-
-# Archivos de salida
-MENSAJE_DESCIFRADO="$SALIDA/mensaje_descifrado.eml"
-MENSAJE_PLANO="$SALIDA/mensaje_plano.txt"
-
-# Comprobar existencia de los archivos de entrada
-if [ ! -f "$EML_COMPANERO" ]; then
-    echo -e "${RED}No se encuentra el fichero EML del compañero: $EML_COMPANERO${NC}"
-    exit 1
-fi
-
-if [ ! -f "$CERT_COMPANERO" ]; then
-    echo -e "${RED}No se encuentra el certificado del compañero: $CERT_COMPANERO${NC}"
-    exit 1
-fi
-
-if [ ! -f "$CERT_PERSONAL_CRT" ] || [ ! -f "$CERT_PERSONAL_KEY" ]; then
-    echo -e "${RED}No se encuentran certificadoPersonal.crt o certificadoPersonal.key en $SALIDA${NC}"
-    echo -e "${RED}Ejecuta primero la sección 1.1 para generarlos.${NC}"
-    exit 1
-fi
-
-# ─────────────────────────────────────────────────────────────────────────────
-# 1.3.1 – Descifrar el mensaje cifrado y firmado (SMIME.P7M → SMIME.P7S)
-# ─────────────────────────────────────────────────────────────────────────────
-echo -e "${GREEN}[1.3.1] Descifrando el mensaje S/MIME del compañero...${NC}"
-echo        "(Se pedirá la contraseña de tu clave privada certificadoPersonal.key)"
-echo        "Nota: -recip requiere el certificado PEM (.crt) y -inkey la clave privada (.key)"
-echo ""
-
-openssl smime -decrypt \
-    -in "$EML_COMPANERO" \
-    -recip "$CERT_PERSONAL_CRT" \
-    -inkey "$CERT_PERSONAL_KEY" \
-    -out "$MENSAJE_DESCIFRADO"
-# Nota: NO usar el .p12 directamente con -recip; usar .crt + .key por separado
-
-if [ $? -eq 0 ]; then
-    echo -e "${GREEN}Mensaje descifrado correctamente → $MENSAJE_DESCIFRADO${NC}"
+# Comprobar ripmime (no obligatorio, pero avisamos)
+RIPMIME_OK=true
+if ! command -v ripmime &>/dev/null; then
+    echo -e "${YELLOW}⚠ 'ripmime' no está instalado (se usará solo si la salida es MIME/Base64).${NC}"
+    echo "  · En macOS:  brew install ripmime"
+    echo "  · En Debian: sudo apt install ripmime"
+    RIPMIME_OK=false
 else
-    echo -e "${RED}Error al descifrar el mensaje. Comprueba que el mensaje fue cifrado con tu certificado.${NC}"
+    echo -e "${GREEN}✓ ripmime encontrado: $(ripmime --version 2>&1 | head -1)${NC}"
+fi
+
+echo ""
+
+# Comprobar ficheros de entrada
+FALTAN=false
+for f in "$CLAVE_PRIVADA" "$CLAVE_PUBLICA" "$MENSAJE_EML"; do
+    if [ ! -f "$f" ]; then
+        echo -e "${RED}ERROR: No se encuentra el fichero: $f${NC}"
+        FALTAN=true
+    else
+        echo -e "${GREEN}✓ Encontrado: $f${NC}"
+    fi
+done
+
+if [ "$FALTAN" = true ]; then
+    echo ""
+    echo -e "${RED}Coloca los ficheros que faltan en $ORIGINALES/ y vuelve a ejecutar.${NC}"
+    echo "  · claveprivada.asc → exportar desde Thunderbird > OpenPGP Key Manager > tu clave > Exportar clave secreta"
+    echo "  · clave.asc        → exportar la clave pública del compañero desde Thunderbird"
+    echo "  · mensaje.eml      → Guardar como... el correo cifrado recibido en Thunderbird"
     exit 1
 fi
 
 echo ""
 
-# ─────────────────────────────────────────────────────────────────────────────
-# 1.3.2 – Verificar la firma del mensaje descifrado (SMIME.P7S → texto plano)
-# ─────────────────────────────────────────────────────────────────────────────
-echo -e "${GREEN}[1.3.2] Verificando la firma del mensaje descifrado...${NC}"
+################################################################################
+# PASO 1 – Importar nuestra clave privada en el llavero gpg
+################################################################################
+echo -e "${YELLOW}═══════════════════════════════════════════════════════════════${NC}"
+echo -e "${YELLOW}PASO 1: Importar clave privada propia${NC}"
+echo -e "${YELLOW}═══════════════════════════════════════════════════════════════${NC}"
+echo ""
+echo -e "${GREEN}Importando $CLAVE_PRIVADA ...${NC}"
+echo "(Se pedirá la contraseña de tu clave OpenPGP)"
 echo ""
 
-# El certificado del compañero puede haber sido emitido por una CA externa.
-# Con -noverify se omite la verificación de la cadena de CA y se comprueba
-# únicamente que la firma corresponde al certificado del firmante.
-openssl smime -verify \
-    -in "$MENSAJE_DESCIFRADO" \
-    -signer "$CERT_COMPANERO" \
-    -noverify \
-    -out "$MENSAJE_PLANO"
+gpg --import "$CLAVE_PRIVADA"
 
-if [ $? -eq 0 ]; then
-    echo -e "${GREEN}Firma verificada correctamente.${NC}"
+if [ $? -ne 0 ]; then
+    echo -e "${RED}Error al importar la clave privada.${NC}"
+    exit 1
+fi
+echo -e "${GREEN}Clave privada importada correctamente.${NC}"
+echo ""
+
+################################################################################
+# PASO 2 – Importar la clave pública del compañero
+################################################################################
+echo -e "${YELLOW}═══════════════════════════════════════════════════════════════${NC}"
+echo -e "${YELLOW}PASO 2: Importar clave pública del compañero${NC}"
+echo -e "${YELLOW}═══════════════════════════════════════════════════════════════${NC}"
+echo ""
+echo -e "${GREEN}Importando $CLAVE_PUBLICA ...${NC}"
+echo ""
+
+gpg --import "$CLAVE_PUBLICA"
+
+if [ $? -ne 0 ]; then
+    # Puede fallar por caracteres inconsistentes; intentamos --dearmor primero
+    echo -e "${YELLOW}Primer intento fallido. Probando con --dearmor ...${NC}"
+    gpg --dearmor "$CLAVE_PUBLICA"          # genera clave.asc.gpg
+    gpg --import "${CLAVE_PUBLICA}.gpg"
+
+    if [ $? -ne 0 ]; then
+        echo -e "${RED}Error al importar la clave pública del compañero.${NC}"
+        exit 1
+    fi
+    rm -f "${CLAVE_PUBLICA}.gpg"
+fi
+echo -e "${GREEN}Clave pública del compañero importada correctamente.${NC}"
+echo ""
+
+################################################################################
+# PASO 3 – Gestión de confianza de la clave del compañero
+################################################################################
+echo -e "${YELLOW}═══════════════════════════════════════════════════════════════${NC}"
+echo -e "${YELLOW}PASO 3: Conferir confianza máxima a la clave del compañero${NC}"
+echo -e "${YELLOW}═══════════════════════════════════════════════════════════════${NC}"
+echo ""
+
+# Mostrar las claves disponibles para que el usuario identifique la del compañero
+echo -e "${BLUE}Claves públicas en el llavero:${NC}"
+gpg --list-keys
+echo ""
+
+# Obtener el fingerprint de la primera clave que no sea la propia (heurística simple)
+# En la práctica, el estudiante puede conocer el fingerprint de antemano.
+echo -e "${YELLOW}Para conferir confianza máxima (nivel 5) a la clave del compañero,${NC}"
+echo -e "${YELLOW}copia el fingerprint de su clave (40 caracteres hex) y ejecuta:${NC}"
+echo ""
+echo -e "    ${BLUE}gpg --edit-key <FINGERPRINT_O_EMAIL_COMPANERO>${NC}"
+echo -e "    gpg> trust"
+echo -e "    Your decision? ${BLUE}5${NC}   (confianza absoluta)"
+echo -e "    Do you really want to set this key to ultimate trust? ${BLUE}y${NC}"
+echo -e "    gpg> quit"
+echo ""
+
+# Intento automático: si el usuario exportó solo la clave del compañero,
+# obtenemos su key-id para automatizar la asignación de confianza vía --import-ownertrust
+COMPANERO_KEYID=$(gpg --with-colons --import-options show-only --import "$CLAVE_PUBLICA" 2>/dev/null \
+    | awk -F: '/^pub/{print $5}' | head -1)
+
+if [ -n "$COMPANERO_KEYID" ]; then
+    echo -e "${GREEN}Key-ID del compañero detectado: $COMPANERO_KEYID${NC}"
+    echo -e "${YELLOW}Configurando confianza máxima (ultimate) automáticamente...${NC}"
+    # ownertrust: 6 = ultimate en el protocolo de gpg
+    echo "${COMPANERO_KEYID}:6:" | gpg --import-ownertrust
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}Confianza máxima asignada a $COMPANERO_KEYID.${NC}"
+    else
+        echo -e "${YELLOW}No se pudo asignar confianza automáticamente. Hazlo de forma manual (ver instrucciones arriba).${NC}"
+    fi
 else
-    echo -e "${RED}Error al verificar la firma. Comprueba que el certificado del compañero es correcto.${NC}"
+    echo -e "${YELLOW}No se pudo detectar el Key-ID automáticamente. Asigna la confianza de forma manual.${NC}"
+fi
+echo ""
+
+################################################################################
+# PASO 4 – Descifrar y verificar la firma del mensaje
+################################################################################
+echo -e "${YELLOW}═══════════════════════════════════════════════════════════════${NC}"
+echo -e "${YELLOW}PASO 4: Descifrar y verificar la firma${NC}"
+echo -e "${YELLOW}═══════════════════════════════════════════════════════════════${NC}"
+echo ""
+echo -e "${GREEN}Ejecutando: gpg --decrypt $MENSAJE_EML${NC}"
+echo "(Se pedirá la contraseña de tu clave privada OpenPGP)"
+echo ""
+
+gpg --decrypt "$MENSAJE_EML" > "$MENSAJE_MIME" 2>&1
+
+GPG_EXIT=$?
+
+# Mostrar la salida (contiene también los mensajes de verificación de firma)
+cat "$MENSAJE_MIME"
+echo ""
+
+if [ $GPG_EXIT -ne 0 ]; then
+    echo -e "${RED}gpg --decrypt devolvió código de error $GPG_EXIT.${NC}"
+    echo -e "${YELLOW}Causas comunes:${NC}"
+    echo "  · La clave privada no coincide con el receptor del mensaje."
+    echo "  · Contraseña incorrecta."
+    echo "  · El mensaje no está cifrado con OpenPGP (¿es S/MIME?)."
     exit 1
 fi
 
+echo -e "${GREEN}Descifrado completado → $MENSAJE_MIME${NC}"
 echo ""
-echo -e "${GREEN}Mensaje en texto plano guardado en: $MENSAJE_PLANO${NC}"
+
+################################################################################
+# PASO 5 – Extracción de adjuntos MIME (si el contenido está en Base64/MIME)
+################################################################################
+echo -e "${YELLOW}═══════════════════════════════════════════════════════════════${NC}"
+echo -e "${YELLOW}PASO 5: Extracción de adjuntos MIME con ripmime (si aplica)${NC}"
+echo -e "${YELLOW}═══════════════════════════════════════════════════════════════${NC}"
 echo ""
-cat "$MENSAJE_PLANO"
+
+# Detectar si la salida contiene cabeceras MIME (Content-Type, etc.)
+if grep -qi "Content-Type:" "$MENSAJE_MIME"; then
+    echo -e "${GREEN}Se detectaron cabeceras MIME en el mensaje descifrado.${NC}"
+
+    if [ "$RIPMIME_OK" = true ]; then
+        mkdir -p "$DIR_FINAL"
+        echo -e "${GREEN}Extrayendo adjuntos con ripmime en $DIR_FINAL ...${NC}"
+        ripmime "$MENSAJE_MIME" "$DIR_FINAL"
+
+        if [ $? -eq 0 ]; then
+            echo -e "${GREEN}Adjuntos extraídos:${NC}"
+            ls -lh "$DIR_FINAL"
+        else
+            echo -e "${RED}ripmime devolvió un error. Revisa $MENSAJE_MIME manualmente.${NC}"
+        fi
+    else
+        echo -e "${YELLOW}ripmime no está instalado. Instálalo y ejecuta manualmente:${NC}"
+        echo "  ripmime \"$MENSAJE_MIME\" \"$DIR_FINAL\""
+    fi
+else
+    echo -e "${GREEN}El mensaje descifrado no parece MIME codificado; el texto es legible directamente.${NC}"
+    echo -e "${GREEN}Contenido:${NC}"
+    echo "---"
+    cat "$MENSAJE_MIME"
+    echo "---"
+fi
+
 echo ""
-echo -e "${BLUE}═══════════════════════════════════════════════════════════════${NC}"
-echo -e "${BLUE}Proceso 1.3 completado.${NC}"
-echo -e "${BLUE}  · Descifrado (SMIME.P7M → SMIME.P7S): $MENSAJE_DESCIFRADO${NC}"
-echo -e "${BLUE}  · Texto plano verificado:              $MENSAJE_PLANO${NC}"
-echo -e "${BLUE}═══════════════════════════════════════════════════════════════${NC}"
+echo -e "${BLUE}╔═══════════════════════════════════════════════════════════════╗${NC}"
+echo -e "${BLUE}║  Resumen de ficheros generados                               ║${NC}"
+echo -e "${BLUE}╠═══════════════════════════════════════════════════════════════╣${NC}"
+echo -e "${BLUE}║  · Mensaje descifrado (raw): $MENSAJE_MIME${NC}"
+if [ -d "$DIR_FINAL" ]; then
+echo -e "${BLUE}║  · Adjuntos MIME extraídos:  $DIR_FINAL/${NC}"
+fi
+echo -e "${BLUE}╚═══════════════════════════════════════════════════════════════╝${NC}"
