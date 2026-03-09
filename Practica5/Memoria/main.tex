@@ -86,7 +86,7 @@
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\textcolor{darkblue}{Práctica 4: CORREO ELECTRÓNICO SEGURO S/MIME}}
+\fancyhead[L]{\textcolor{darkblue}{Práctica 5: CORREO ELECTRÓNICO SEGURO OpenPGP}}
 \fancyhead[R]{\textcolor{darkblue}{SI}}
 \fancyfoot[C]{\thepage\ de \pageref{LastPage}}
 \renewcommand{\headrulewidth}{0.5pt}
@@ -110,8 +110,8 @@
     \vspace{1cm}
     {\rule{\textwidth}{2pt}}\\
     \vspace{0.5cm}
-    {\LARGE \textbf{Práctica 4:}}\\
-    {\LARGE \textbf{Correo Electrónico Seguro S/MIME}}\\
+    {\LARGE \textbf{Práctica 5:}}\\
+    {\LARGE \textbf{Correo Electrónico Seguro OpenPGP}}\\
     \vspace{0.5cm}
     {\rule{\textwidth}{2pt}}\\
     \vspace{1cm}
@@ -128,7 +128,7 @@
 
 \date{
     \vspace{1cm}
-    \textbf{Fecha:} Febrero 2026
+    \textbf{Fecha:} Marzo 2026
 }
 
 %% ============================================================================
@@ -141,16 +141,15 @@
 \maketitle
 \thispagestyle{firststyle}
 
-
 % Tabla de contenidos
 \include{indice}
 \include{intro}
-\include{certificadoPersonal}
-\include{instalacionThunderbird}
-\include{decodificacionSMIME}
+\include{configuracionOpenPGP}
+\include{intercambioOpenPGP}
+\include{decodificacionGnuPG}
 
 %% ============================================================================
-%% CAPÍTULO 4: CONCLUSIONES
+%% CAPÍTULO 5: CONCLUSIONES
 %% ============================================================================
 
 \chapter{Conclusiones}
@@ -160,28 +159,37 @@
 A través de esta práctica se han consolidado los siguientes conceptos:
 
 \begin{enumerate}
-    \item \textbf{Certificados X.509:} Creación de un certificado personal firmado por una CA raíz, comprendiendo la cadena de confianza y el proceso CSR $\rightarrow$ firma $\rightarrow$ certificado.
-    \item \textbf{Formato PKCS\#12:} Empaquetado de clave privada y certificado en un único fichero protegido para su importación en aplicaciones.
-    \item \textbf{Configuración de S/MIME en Thunderbird:} Instalación de certificados (raíz en Autoridades, personal en Sus certificados, compañero en Otras personas) y configuración de firma y cifrado.
-    \item \textbf{Intercambio de certificados:} Necesidad de enviar primero mensajes solo firmados para que ambas partes dispongan del certificado del otro antes de poder cifrar.
-    \item \textbf{Esquema de doble envolvente S/MIME:} Firma + cifrado al enviar, descifrado + verificación al recibir, como operaciones separadas.
-    \item \textbf{Decodificación con OpenSSL:} Uso de \texttt{openssl smime} para descifrar y verificar mensajes S/MIME desde línea de comandos.
+    \item \textbf{Modelo de confianza descentralizado (Web of Trust):} A diferencia de S/MIME, OpenPGP no depende de una jerarquía de CAs; la confianza se establece directamente entre usuarios.
+    \item \textbf{Generación de claves OpenPGP:} Creación de pares de claves ECC (Elliptic Curve) en Thunderbird, con subclave de cifrado independiente de la clave maestra de firma.
+    \item \textbf{Intercambio de claves públicas:} Envío de la clave pública propia al compañero y recepción e importación de la suya en Thunderbird y en GnuPG.
+    \item \textbf{Envío de correo cifrado y firmado con OpenPGP:} Configuración de Thunderbird para cifrar y firmar digitalmente los mensajes, verificando que tanto \texttt{Encrypt} como \texttt{Digitally Sign} están activos.
+    \item \textbf{Gestión de confianza:} Proceso de aceptar una clave del compañero con confianza máxima (ultimate), tanto en Thunderbird como en GnuPG con \texttt{gpg --edit-key}.
+    \item \textbf{Decodificación manual con GnuPG:} Uso de \texttt{gpg --import} y \texttt{gpg --decrypt} para descifrar y verificar mensajes fuera del cliente de correo.
 \end{enumerate}
 
-\section{Conclusiones sobre la práctica}
+\section{Comparativa OpenPGP vs S/MIME}
 
-El estándar S/MIME proporciona una solución completa para asegurar comunicaciones por correo electrónico, combinando cifrado (confidencialidad), firma digital (autenticación e integridad) y certificados X.509 (confianza).
+\begin{table}[H]
+    \centering
+    \caption{Comparativa entre OpenPGP y S/MIME}
+    \begin{tabularx}{\textwidth}{l|X|X}
+        \toprule
+        \textbf{Aspecto} & \textbf{OpenPGP} & \textbf{S/MIME} \\
+        \midrule
+        Modelo de confianza & Web of Trust (descentralizado) & Jerarquía de CAs (centralizado) \\
+        Certificado & Clave pública autofirmada o firmada por otros & Certificado X.509 firmado por CA \\
+        Formato de clave & .asc (ASCII Armored) & .crt/.p12 (PEM/PKCS\#12) \\
+        Herramienta CLI & GnuPG (\texttt{gpg}) & OpenSSL (\texttt{openssl smime}) \\
+        Integración & Thunderbird (nativo) & Thunderbird, Outlook \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
 
-Un aspecto fundamental es la gestión de la cadena de confianza: para que la verificación de firma sea completa, ambos interlocutores deben compartir una CA raíz común o disponer de la cadena de certificados intermedia adecuada. En entornos donde esto no es posible, la opción \texttt{-noverify} permite comprobar la firma sin validar la cadena de CA.
-
-El formato de los ficheros es crítico: \texttt{-recip} de \texttt{openssl smime} requiere certificados en formato PEM (\texttt{.crt}), no PKCS\#12 (\texttt{.p12}), lo que obliga a separar clave y certificado.
-
-\section{Problemas encontrados y soluciones}
+\section{Detalles de interes}
 
 \begin{itemize}[label=\textbullet]
-    \item \textbf{Uso de .p12 con \texttt{-recip}:} Inicialmente se intentó usar el fichero \texttt{.p12} directamente con \texttt{openssl smime -decrypt}, lo que provocaba errores. La solución fue usar los ficheros \texttt{.crt} y \texttt{.key} por separado.
-    \item \textbf{Verificación de cadena de CA:} Al verificar la firma, el error \texttt{unable to get local issuer certificate} se resolvió utilizando \texttt{-CAfile} con el certificado raíz compartido.
-    \item \textbf{Intercambio previo de certificados:} No fue posible cifrar mensajes hasta que ambas partes intercambiaron mensajes firmados, permitiendo que Thunderbird almacenara los certificados.
+    \item \textbf{Clave no confiable al verificar firma:} Tras importar la clave pública del compañero en GnuPG, la verificación indicaba que la clave no era de confianza. Se resolvió asignando confianza máxima con \texttt{gpg --edit-key} $\rightarrow$ \texttt{trust} $\rightarrow$ \texttt{5} (ultimate).
+    \item \textbf{Contenido MIME en Base64 tras descifrar:} Al ejecutar \texttt{gpg --decrypt}, el texto del mensaje aparecía codificado en Base64 dentro de una estructura MIME. Se usó \texttt{ripmime} para extraer los adjuntos legibles.
 \end{itemize}
 
 %% ============================================================================
@@ -190,19 +198,14 @@ El formato de los ficheros es crítico: \texttt{-recip} de \texttt{openssl smime
 
 \begin{thebibliography}{99}
 
-\bibitem{openssl_docs} OpenSSL Documentation, \textit{https://www.openssl.org/docs/man3.2/}, 2024.
+\bibitem{gnupg_docs} GnuPG Documentation, \url{https://gnupg.org/documentation/}, 2025.
 
-\bibitem{openssl_wiki} Wiki HowTo OpenSSL -- CICEI, \textit{https://openssl.cicei.com}, 2025.
+\bibitem{thunderbird_openpgp} Mozilla, \textit{OpenPGP in Thunderbird -- HOWTO and FAQ}, \url{https://support.mozilla.org/kb/openpgp-thunderbird-howto-and-faq}.
 
-\bibitem{smime_rfc} Ramsdell, B., Turner, S., \textit{Secure/Multipurpose Internet Mail Extensions (S/MIME) Version 4.0 Message Specification}, RFC 8551, 2019.
+\bibitem{thunderbird_supported_ECC} crypto.stackexchange.com, \textit{ECC Key Support in Thunderbird}, \url{https://crypto.stackexchange.com/questions/97688/which-elliptic-curve-was-used-by-thunderbird-openpgp-and-which-bitlength#:~:text=It%20is%20one%20of%20the,Add%20a%20comment}.
 
-\bibitem{x509} Cooper, D. et al., \textit{Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile}, RFC 5280, 2008.
+\bibitem{Chatgpt-5.3} OpenAI, \textit{Dudas generales}, \url{https://chat.openai.com}.
 
-\bibitem{pkcs12} RSA Laboratories, \textit{PKCS \#12: Personal Information Exchange Syntax Standard}, v1.1, 2014.
-
-\bibitem{pkcs7} RSA Laboratories, \textit{PKCS \#7: Cryptographic Message Syntax Standard}, RFC 2315, 1998.
-
-\bibitem{thunderbird} Mozilla, \textit{Thunderbird -- Documentación de soporte}, \textit{https://support.mozilla.org/products/thunderbird}.
 
 \end{thebibliography}
 
@@ -212,52 +215,46 @@ El formato de los ficheros es crítico: \texttt{-recip} de \texttt{openssl smime
 
 \appendix
 
-\chapter{Comandos OpenSSL Utilizados}
+\chapter{Comandos GnuPG Utilizados}
 
-\section{Creación de certificados}
+\section{Importación de claves}
 
-\begin{lstlisting}[caption=Comandos para creación del certificado personal]
-# Paso b) Generar clave privada RSA con contraseña
-openssl genpkey -algorithm RSA -out certificadoPersonal.key -aes256
+\begin{lstlisting}[caption=Comandos para importación de claves en GnuPG]
+# Importar clave privada propia
+gpg --import claveprivada.asc
 
-# Paso c) Crear CSR (solicitud de firma)
-openssl req -new -key certificadoPersonal.key \
-    -out certificadoPersonal.csr
+# Importar clave publica del companero
+gpg --import clave.asc
 
-# Paso d) Firmar CSR con certificado raiz
-openssl x509 -req -in certificadoPersonal.csr \
-    -CA certificadoRaiz.crt -CAkey certificadoRaiz.key \
-    -CAcreateserial -out certificadoPersonal.crt -days 365
-
-# Paso e) Crear fichero PKCS#12
-openssl pkcs12 -export -in certificadoPersonal.crt \
-    -inkey certificadoPersonal.key \
-    -out certificadoPersonal.p12 -name "Certificado Personal"
+# Si falla por caracteres inconsistentes:
+gpg --dearmor clave.asc
+gpg --import clave.asc.gpg
 \end{lstlisting}
 
-\section{Operaciones S/MIME}
+\section{Gestión de confianza}
 
-\begin{lstlisting}[caption=Comandos S/MIME para descifrado y verificación]
-# Descifrar mensaje S/MIME (P7M -> P7S)
-openssl smime -decrypt \
-    -in mensaje_cifrado.eml \
-    -recip certificadoPersonal.crt \
-    -inkey certificadoPersonal.key \
-    -out mensaje_descifrado.eml
+\begin{lstlisting}[caption=Asignación de confianza máxima a una clave]
+# Listar claves disponibles
+gpg --list-keys
 
-# Verificar firma S/MIME con CA raiz compartida
-openssl smime -verify \
-    -in mensaje_descifrado.eml \
-    -signer certificadoCompanero.crt \
-    -CAfile certificadoRaiz.crt \
-    -out mensaje_plano.txt
+# Editar clave para asignar confianza
+gpg --edit-key <FINGERPRINT_O_EMAIL>
+gpg> trust
+Your decision? 5     # confianza absoluta (ultimate)
+Do you really want...? y
+gpg> quit
+\end{lstlisting}
 
-# Verificar firma sin verificacion de cadena de CA
-openssl smime -verify \
-    -in mensaje_descifrado.eml \
-    -signer certificadoCompanero.crt \
-    -noverify \
-    -out mensaje_plano.txt
+\section{Descifrado y verificación}
+
+\begin{lstlisting}[caption=Comandos para descifrado y extracción de adjuntos]
+# Descifrar y verificar firma
+gpg --decrypt mensaje.eml
+
+# Si la salida es MIME/Base64, redirigir y extraer:
+gpg --decrypt mensaje.eml > mensaje.mime
+mkdir dir_final
+ripmime mensaje.mime dir_final
 \end{lstlisting}
 
 \end{document}

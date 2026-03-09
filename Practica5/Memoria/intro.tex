@@ -2,64 +2,67 @@
 
 \section{Objetivo de la práctica}
 
-El objetivo principal de esta práctica es configurar y utilizar \textbf{correo electrónico seguro} mediante el estándar \textbf{S/MIME} (\textit{Secure/Multipurpose Internet Mail Extensions}), incluyendo:
+El objetivo principal de esta práctica es configurar y utilizar \textbf{correo electrónico seguro} mediante el estándar \textbf{OpenPGP}, incluyendo:
 
 \begin{itemize}[label=\textbullet]
-    \item Creación de un certificado digital personal X.509 firmado por una CA raíz
-    \item Instalación de certificados en el cliente de correo Mozilla Thunderbird
-    \item Intercambio de mensajes firmados y cifrados con otro compañero
-    \item Decodificación de mensajes S/MIME cifrados y firmados desde línea de comandos con \texttt{openssl smime}
+    \item Generación de un par de claves OpenPGP personal en Mozilla Thunderbird
+    \item Intercambio de claves públicas con la compañera (Wafa Azdad Triki)
+    \item Envío y recepción de mensajes firmados y cifrados con OpenPGP
+    \item Gestión de la confianza de claves (Web of Trust)
+    \item Decodificación manual de mensajes cifrados con OpenPGP usando la utilidad \texttt{gpg} de GnuPG
 \end{itemize}
 
 \section{Conceptos fundamentales}
 
-\subsection{Certificados digitales X.509}
+\subsection{OpenPGP y el modelo Web of Trust}
 
-Un \textbf{certificado digital} vincula la identidad de un sujeto (nombre, correo electrónico, organización) con su \textbf{clave pública}. Esta vinculación está firmada digitalmente por una \textbf{Autoridad de Certificación (CA)}, lo que permite a cualquier parte que confíe en esa CA verificar la autenticidad del certificado.
-
-La estructura básica de un certificado X.509 incluye:
+\textbf{OpenPGP} es un estándar criptográfico (RFC 4880 / RFC 9580) para cifrado y firma digital basado en clave pública. A diferencia de S/MIME, que confía en una jerarquía de Autoridades de Certificación (CA), OpenPGP utiliza un modelo denominado \textbf{Web of Trust} (red de confianza):
 
 \begin{itemize}[label=\textbullet]
-    \item \textbf{Sujeto (Subject):} Identidad del titular (CN, O, OU, C, Email)
-    \item \textbf{Emisor (Issuer):} CA que firma el certificado
-    \item \textbf{Clave pública:} La clave pública del titular
-    \item \textbf{Periodo de validez:} Fechas de inicio y expiración
-    \item \textbf{Firma digital:} Firma de la CA sobre todos los campos anteriores
+    \item No existe una CA central: cada usuario genera su propio par de claves.
+    \item La confianza se establece entre individuos: otros usuarios firman tu clave pública para atestiguarla.
+    \item Los niveles de confianza son configurables: desconocida, marginal, completa, o absoluta (\textit{ultimate}).
 \end{itemize}
 
-\subsection{S/MIME: Correo electrónico seguro}
+\subsection{Estructura de una clave OpenPGP}
 
-S/MIME utiliza criptografía de clave pública y certificados X.509 para proporcionar tres servicios de seguridad al correo electrónico:
+Un par de claves OpenPGP típico en Thunderbird contiene:
 
 \begin{table}[H]
     \centering
-    \caption{Serviciones de seguridad de S/MIME}
+    \caption{Componentes de un par de claves OpenPGP}
     \begin{tabularx}{\textwidth}{l|l|X}
         \toprule
-        \textbf{Servicio} & \textbf{Mecanismo} & \textbf{Descripción} \\
+        \textbf{Componente} & \textbf{Uso} & \textbf{Descripción} \\
         \midrule
-        Confidencialidad & Cifrado & Solo el destinatario puede leer el mensaje (cifrado con su clave pública) \\
-        Autenticación & Firma digital & Se verifica la identidad del emisor \\
-        Integridad & Firma digital & Se detecta si el mensaje fue alterado \\
+        Clave maestra (SC) & Sign + Certify & Firma mensajes y certifica otras claves \\
+        Subclave (E) & Encrypt & Se usa exclusivamente para cifrar \\
         \bottomrule
     \end{tabularx}
 \end{table}
 
-\subsection{Estructura de un mensaje cifrado y firmado}
+En esta práctica se observa que la clave de mi compañera, ``Wafa'' tiene:
+\begin{itemize}[label=\textbullet]
+    \item Clave maestra \texttt{0x62C2D55D111C2F3C} (SC -- firma y certificación)
+    \item Subclave \texttt{0xE1B59CED1F89D16C} (E -- cifrado)
+\end{itemize}
+Y nuestra clave tiene ID \texttt{0x4B0E6E00A737A803}, con subclave de descifrado \texttt{0xB809E1B2EC24D298}.
 
-Cuando un mensaje S/MIME es tanto firmado como cifrado, se crea una estructura de \textbf{doble envolvente}:
+\subsection{Servicios de seguridad de OpenPGP}
 
-\begin{enumerate}
-    \item El emisor \textbf{firma} el mensaje con su clave privada $\rightarrow$ genera estructura \texttt{signed-data} (SMIME.P7S)
-    \item El resultado se \textbf{cifra} con la clave pública del destinatario $\rightarrow$ genera estructura \texttt{enveloped-data} (SMIME.P7M)
-\end{enumerate}
-
-Para decodificarlo, el receptor realiza el proceso inverso:
-
-\begin{enumerate}
-    \item \textbf{Descifra} con su clave privada (SMIME.P7M $\rightarrow$ SMIME.P7S)
-    \item \textbf{Verifica la firma} con el certificado del emisor (SMIME.P7S $\rightarrow$ texto plano)
-\end{enumerate}
+\begin{table}[H]
+    \centering
+    \caption{Servicios de seguridad proporcionados por OpenPGP}
+    \begin{tabularx}{\textwidth}{l|l|X}
+        \toprule
+        \textbf{Servicio} & \textbf{Mecanismo} & \textbf{Descripción} \\
+        \midrule
+        Confidencialidad & Cifrado híbrido & Cifrado simétrico de sesión, protegido con clave pública del destinatario \\
+        Autenticación & Firma digital & Se verifica la identidad del emisor mediante su clave pública \\
+        Integridad & Firma digital & Se detecta cualquier alteración del mensaje \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
 
 \subsection{Formatos de ficheros}
 
@@ -70,13 +73,10 @@ Para decodificarlo, el receptor realiza el proceso inverso:
         \toprule
         \textbf{Extensión} & \textbf{Formato} & \textbf{Contenido} \\
         \midrule
-        .crt & PEM (Base64) & Certificado X.509 (solo parte pública) \\
-        .key & PEM (Base64) & Clave privada (puede estar cifrada con contraseña) \\
-        .csr & PEM (Base64) & Solicitud de firma de certificado \\
-        .p12 & PKCS\#12 (binario) & Certificado + clave privada empaquetados \\
+        .asc & ASCII Armored (Base64) & Clave pública o privada OpenPGP exportada \\
         .eml & Texto & Mensaje de correo completo (cabeceras + cuerpo MIME) \\
-        .p7m & PKCS\#7 (binario) & Mensaje cifrado S/MIME (\texttt{enveloped-data}) \\
-        .p7s & PKCS\#7 (binario) & Mensaje firmado S/MIME (\texttt{signed-data}) \\
+        .mime & Texto & Salida MIME del mensaje descifrado por gpg \\
+        .gpg & Binario & Clave OpenPGP en formato binario (tras \texttt{--dearmor}) \\
         \bottomrule
     \end{tabularx}
 \end{table}
@@ -84,8 +84,8 @@ Para decodificarlo, el receptor realiza el proceso inverso:
 \section{Herramientas utilizadas}
 
 \begin{itemize}[label=\textbullet]
-    \item \textbf{OpenSSL 3.x:} Herramienta de criptografía en línea de comandos
-    \item Comandos principales: \texttt{genpkey}, \texttt{req}, \texttt{x509}, \texttt{pkcs12}, \texttt{smime}
-    \item \textbf{Mozilla Thunderbird:} Cliente de correo electrónico con soporte S/MIME
+    \item \textbf{Mozilla Thunderbird} con soporte nativo OpenPGP: generación de claves, envío y recepción de mensajes cifrados y firmados.
+    \item \textbf{GnuPG (gpg)}: herramienta de línea de comandos para importar claves, gestionar el llavero y descifrar/verificar mensajes manualmente incluida en la mayoría de distribuciones Linux.
+    \item \textbf{ripmime}: utilidad para extraer adjuntos de mensajes MIME, usada cuando el mensaje descifrado contiene contenido codificado en Base64.
 \end{itemize}
 
