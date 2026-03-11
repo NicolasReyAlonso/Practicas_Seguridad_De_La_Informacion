@@ -166,7 +166,9 @@ A través de esta práctica se han consolidado los siguientes conceptos:
 \begin{itemize}[label=\textbullet]
     \item \textbf{Formatos binarios:} Importancia de usar \texttt{-binary} en OpenSSL
      para evitar problemas de codificación cundo se requiere un formato específico.
-    \item \textbf{Imágenes comprimidas:} No funcionan bien con el experimento ECB
+    \item \textbf{Imágenes comprimidas:} No funcionan bien con el experimento ECB y la primera vez guardé la imagen
+     cifrada en formato JPEG, lo que hizo que no se apreciaran los patrones. La solución fue convertir a PGM, cifrar, y luego convertir 
+     de nuevo a PNG.
 \end{itemize}
 
 

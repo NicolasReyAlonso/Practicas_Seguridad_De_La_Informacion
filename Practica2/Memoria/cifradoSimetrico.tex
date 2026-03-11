@@ -2,14 +2,15 @@
 
 \section{Descripción teórica}
 
-El cifrado simétrico es una técnica criptográfica en la que se utiliza la misma clave tanto para cifrar como para descifrar. Los elementos principales son:
+El cifrado simétrico es una técnica criptográfica en la que se utiliza la misma clave tanto para cifrar como para descifrar. 
+Los elementos principales son:
 
 \begin{itemize}[label=\textbullet]
     \item \textbf{Texto claro:} Documento original sin cifrar
     \item \textbf{Algoritmo de cifrado:} Función matemática que transforma el texto
     \item \textbf{Clave:} Información secreta que controla la transformación
     \item \textbf{Texto cifrado:} Resultado ilegible del proceso
-    \item \textbf{Vector de inicialización (IV):} Valor aleatorio para ciertos modos
+    \item \textbf{Vector de inicialización (IV):} Valor aleatorio que evita que el mismo texto claro produzca el mismo texto cifrado.
 \end{itemize}
 
 \section{Algoritmos de cifrado simétrico}
@@ -23,8 +24,8 @@ El cifrado simétrico es una técnica criptográfica en la que se utiliza la mis
         \toprule
         \textbf{Algoritmo} & \textbf{Tamaño bloque} & \textbf{Tamaño clave} & \textbf{Estado} \\
         \midrule
-        AES-256 & 128 bits & 256 bits & Recomendado \\
-        3DES/TDES & 64 bits & 168 bits & Deprecado \\
+        AES-256 & 128 bits & 256 bits & Seguro \\
+        3DES/TDES & 64 bits & 168 bits & Anticuado \\
         \bottomrule
     \end{tabularx}
 \end{table}
@@ -38,8 +39,8 @@ El cifrado simétrico es una técnica criptográfica en la que se utiliza la mis
         \toprule
         \textbf{Algoritmo} & \textbf{Tamaño clave} & \textbf{Observaciones} \\
         \midrule
-        RC4 & Variable & Débil, deprecado \\
-        ChaCha20 & 256 bits & Moderno, recomendado \\
+        RC4 & Variable & Débil \\
+        ChaCha20 & 256 bits & Moderno \\
         \bottomrule
     \end{tabularx}
 \end{table}
@@ -81,7 +82,8 @@ Donde:
 \begin{itemize}
     \item $PRF$: Función de pseudoaleatoriedad (ej.\@ HMAC-SHA256)
     \item $Pass$: Contraseña
-    \item $Salt$: Sal (salt) - mínimo 8 bytes
+    \item $Salt$: Sal (salt) única para cada contraseña con el fin de evitar ataques de diccionario de forma que el mismo password no 
+    genere la misma hash.
     \item $c$: Número de iteraciones (por defecto 10000)
     \item $dkLen$: Longitud deseada de la clave
 \end{itemize}
@@ -143,7 +145,7 @@ El tamaño de los archivos cifrados incluye:
 
 \subsection{Cifrado con clave e IV explícitos}
 
-Se demostró cómo descifrar utilizando la clave y el IV en lugar de la contraseña:
+Se descifró utilizando la clave y el IV en lugar de la contraseña:
 
 \begin{lstlisting}[caption=Cifrado con información de derivación]
 # Obtener clave e IV derivados

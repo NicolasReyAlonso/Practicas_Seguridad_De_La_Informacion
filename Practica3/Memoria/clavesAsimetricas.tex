@@ -4,7 +4,8 @@
 
 \subsection{Descripción teórica}
 
-RSA (\textit{Rivest-Shamir-Adleman}) es un algoritmo de criptografía asimétrica basado en la dificultad de factorizar el producto de dos números primos grandes. Permite tanto cifrado como firma digital.
+RSA (\textit{Rivest-Shamir-Adleman}) es un algoritmo de criptografía asimétrica basado en la dificultad de factorizar el producto de 
+dos números primos grandes. Permite tanto cifrado como firma digital.
 
 La generación de claves RSA consiste en:
 
@@ -32,7 +33,8 @@ openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 \
     -out rsa_privkey.pem
 \end{lstlisting}
 
-La clave privada generada está cifrada con AES-256-CBC y protegida con la contraseña proporcionada. La cabecera del archivo PEM indica que está cifrada:
+La clave privada generada está cifrada con AES-256-CBC y protegida con la contraseña proporcionada. 
+La cabecera del archivo PEM indica que está cifrada:
 
 \begin{lstlisting}[caption=Cabecera de clave privada cifrada]
 -----BEGIN ENCRYPTED PRIVATE KEY-----
@@ -47,7 +49,8 @@ openssl pkey -in rsa_privkey.pem -passin pass:"rsapassword123" \
 
 \subsection{Conversión a formato DER y de vuelta a PEM}
 
-El formato DER es la representación binaria de la clave. Una característica importante es que \textbf{DER no soporta cifrado con contraseña}:
+El formato DER es la representación binaria de la clave. Una característica importante es que \textbf{DER no soporta cifrado
+ con contraseña}:
 
 \begin{lstlisting}[caption=Conversión RSA: PEM $\rightarrow$ DER $\rightarrow$ PEM]
 # Exportar a DER (se pierde la contraseña)
@@ -65,7 +68,8 @@ openssl pkey -in rsa_privkey.der -inform DER \
 -----BEGIN PRIVATE KEY-----
 \end{lstlisting}
 
-En lugar de \texttt{-----BEGIN ENCRYPTED PRIVATE KEY-----}, lo que demuestra que la conversión a formato DER \textbf{elimina la protección con contraseña} de la clave privada.
+En lugar de \texttt{-----BEGIN ENCRYPTED PRIVATE KEY-----}, lo que demuestra que la conversión a formato DER \textbf{elimina la 
+protección con contraseña} de la clave privada.
 
 \subsection{Firma y verificación RSA}
 
@@ -94,15 +98,12 @@ Signature Verified Successfully
 
 \textbf{Tamaño de la firma RSA-2048:} 256 bytes (igual al tamaño de la clave en bytes: $2048 / 8 = 256$).
 
-%% ============================================================================
-%% DSA
-%% ============================================================================
-
 \section{Claves DSA}
 
 \subsection{Descripción teórica}
 
-DSA (\textit{Digital Signature Algorithm}) es un algoritmo de firma digital estandarizado por el NIST. A diferencia de RSA, DSA \textbf{solo permite firmar}, no cifrar.
+DSA (\textit{Digital Signature Algorithm}) es un algoritmo de firma digital estandarizado por el NIST. 
+A diferencia de RSA, DSA \textbf{solo permite firmar}, no cifrar.
 
 La generación de claves DSA requiere dos pasos:
 \begin{enumerate}
@@ -157,7 +158,8 @@ openssl pkeyutl -verify -in dsa_digest.bin \
     -pubin -inkey dsa_pubkey.pem
 \end{lstlisting}
 
-\textbf{Nota:} El tamaño de la firma DSA es variable (entre 46-48 bytes típicamente), ya que DSA codifica la firma como estructura ASN.1 con dos valores $(r, s)$.
+\textbf{Nota:} El tamaño de la firma DSA es variable (entre 46-48 bytes típicamente), ya que DSA codifica la firma como estructura 
+ASN.1 con dos valores $(r, s)$.
 
 \subsection{Comparación RSA vs DSA}
 
@@ -178,15 +180,13 @@ openssl pkeyutl -verify -in dsa_digest.bin \
     \end{tabularx}
 \end{table}
 
-%% ============================================================================
-%% DH
-%% ============================================================================
 
 \section{Derivación de secretos: Diffie-Hellman (DH)}
 
 \subsection{Descripción teórica}
 
-El protocolo \textbf{Diffie-Hellman} permite a dos partes derivar un \textbf{secreto compartido} sin necesidad de transmitirlo. El principio se basa en la propiedad:
+El protocolo \textbf{Diffie-Hellman} permite a dos partes derivar un \textbf{secreto compartido} sin necesidad de transmitirlo. 
+El principio se basa en la propiedad:
 
 \begin{equation}
 (g^a \bmod p)^b \bmod p = (g^b \bmod p)^a \bmod p = g^{ab} \bmod p
@@ -227,15 +227,12 @@ openssl pkeyutl -derive -inkey dh_privkey2.pem \
 
 \textbf{Resultado:} Ambos secretos son \textbf{idénticos}, demostrando la propiedad fundamental de Diffie-Hellman.
 
-%% ============================================================================
-%% X25519
-%% ============================================================================
-
 \section{Derivación de secretos: ECDH con X25519}
 
 \subsection{Descripción teórica}
 
-X25519 es una implementación del protocolo Diffie-Hellman usando la \textbf{curva elíptica Curve25519}, diseñada por Daniel J. Bernstein. Es el algoritmo utilizado por aplicaciones como \textbf{WhatsApp}, Signal y TLS 1.3.
+X25519 es una implementación del protocolo Diffie-Hellman usando la \textbf{curva elíptica Curve25519}, diseñada por Daniel J. Bernstein. 
+Es el algoritmo utilizado por aplicaciones como \textbf{WhatsApp} y \textbf{Signal}.
 
 La ventaja principal es que ofrece seguridad equivalente a claves RSA/DH mucho más grandes:
 
@@ -291,4 +288,6 @@ openssl pkeyutl -derive -inkey x25519_privkey2.pem \
     \end{tabularx}
 \end{table}
 
-\textbf{Conclusión:} X25519 genera un secreto de \textbf{32 bytes} (256 bits) frente a los \textbf{256 bytes} (2048 bits) de DH estándar, logrando seguridad equivalente con un secreto \textbf{8 veces menor}. Esto se debe a que la seguridad en curvas elípticas crece mucho más rápido con el tamaño de la clave que en DH clásico.
+\textbf{Conclusión:} X25519 genera un secreto de \textbf{32 bytes} (256 bits) frente a los \textbf{256 bytes} (2048 bits) de 
+DH estándar, logrando seguridad equivalente con un secreto \textbf{8 veces menor}. 
+Esto se debe a que la seguridad en curvas elípticas crece mucho más rápido con el tamaño de la clave que en DH clásico.

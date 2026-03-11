@@ -2,7 +2,8 @@
 
 \section{Descripción del escenario}
 
-En este apartado se reproduce un intercambio seguro de información entre dos agentes, \textbf{Ana} y \textbf{Berto}, utilizando un esquema híbrido que combina:
+En este apartado se reproduce un intercambio seguro de información entre dos agentes, \textbf{Ana} y \textbf{Berto}, utilizando un 
+esquema híbrido que combina:
 
 \begin{itemize}[label=\textbullet]
     \item \textbf{Cifrado simétrico} (AES-256-CBC): Para cifrar el documento (eficiente)
@@ -99,7 +100,8 @@ openssl pkeyutl -encrypt -in claves.hex \
 openssl enc -a -in claves.bin -out claves.txt
 \end{lstlisting}
 
-\textbf{Formato de \texttt{claves.hex}:} Los primeros 64 caracteres hexadecimales corresponden a la clave AES-256 (32 bytes) y los siguientes 32 caracteres al IV (16 bytes).
+\textbf{Formato de \texttt{claves.hex}:} Los primeros 64 caracteres hexadecimales corresponden a la clave AES-256 (32 bytes) y 
+los siguientes 32 caracteres al IV (16 bytes).
 
 \subsection{Paso 3: Firma digital}
 
@@ -137,10 +139,6 @@ Ana envía a Berto los tres ficheros junto con la meta-información:
 \end{table}
 
 \textbf{Meta-información:} Algoritmo AES-256-CBC, concatenación clave (64 hex) + IV (32 hex).
-
-%% ============================================================================
-%% Trabajo de Berto
-%% ============================================================================
 
 \section{Trabajo de Berto: Descifrado y verificación}
 
@@ -232,7 +230,9 @@ diff resumen_ana.bin resumen_berto.bin
 \subsection{Limitaciones}
 
 \begin{itemize}[label=\textbullet]
-    \item \textbf{Sin certificados:} No hay una autoridad de certificación que garantice la identidad. Ana y Berto confían directamente en las claves intercambiadas.
-    \item \textbf{Sin protección contra ataques de repetición:} Un atacante podría reenviar los mismos tres ficheros.
-    \item \textbf{Sin forward secrecy:} Si la clave privada de Berto se compromete en el futuro, comunicaciones pasadas pueden ser descifradas.
+    \item \textbf{Sin certificados:} No hay una autoridad de certificación que garantice la identidad. Ana y Berto confían directamente
+     en las claves intercambiadas.
+    \item \textbf{Sin protección contra ataques de repetición ni man in the middle:} Un atacante podría reenviar los mismos tres ficheros.
+    \item \textbf{Sin forward secrecy:} Si la clave privada de Berto se compromete en el futuro, comunicaciones pasadas pueden ser 
+    descifradas.
 \end{itemize}
