@@ -14,10 +14,10 @@ documento de cualquier tamaño en una cadena de longitud fija, denominada \texti
         \toprule
         \textbf{Algoritmo} & \textbf{Bits} & \textbf{Bytes} & \textbf{Observaciones} \\
         \midrule
-        MD5 & 128 & 16 & Desfasado \\
+        MD5 & 128 & 16 & Obsoleto \\
         SHA-1 & 160 & 20 & Débil \\
-        SHA-256 & 256 & 32 & Usado en la actualidad \\
-        SHA-512 & 512 & 64 & Sucesor de SHA-256, muy seguro \\
+        SHA-256 & 256 & 32 & Recomendado y usado en la actualidad \\
+        SHA-512 & 512 & 64 & Muy seguro \\
         Whirlpool & 512 & 64 & Alternativa a SHA-512 \\
         \bottomrule
     \end{tabularx}
@@ -27,8 +27,13 @@ documento de cualquier tamaño en una cadena de longitud fija, denominada \texti
 
 \subsection{Archivo de prueba}
 
-Se utilizará un archivo de texto plano de 170 caracteres con contenido legible y sin caracteres especiales para facilitar la 
-interpretación de los resultados.
+Se utilizará un archivo de texto plano con las siguientes características:
+
+\begin{itemize}[label=\textbullet]
+    \item Tamaño: 170 caracteres-
+    \item Contenido legible.
+    \item Sin caracteres especiales.
+\end{itemize}
 
 \begin{lstlisting}[caption=Contenido del archivo de prueba]
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
@@ -98,7 +103,7 @@ Whirlpool en formato binario \\ \includegraphics[width=\linewidth]{imagenes/scre
 
 \subsection{Verificación de tamaño}
 
-Los tamaños de los resúmenes coinciden con las especificaciones técnicas:
+Los tamaños de los resúmenes coinciden con las especificaciones teóricas:
 
 \begin{itemize}[label=\textbullet]
     \item MD5: 32 caracteres hexadecimales (128 bits)

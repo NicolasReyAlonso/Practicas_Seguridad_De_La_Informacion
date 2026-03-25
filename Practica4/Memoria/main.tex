@@ -170,19 +170,16 @@ A través de esta práctica se han consolidado los siguientes conceptos:
 
 \section{Conclusiones sobre la práctica}
 
-El estándar S/MIME proporciona una solución completa para asegurar comunicaciones por correo electrónico, 
-combinando cifrado (confidencialidad), firma digital (autenticación e integridad) y certificados X.509 (confianza).
+El estándar S/MIME proporciona una solución completa para asegurar comunicaciones por correo electrónico, combinando cifrado (confidencialidad), firma digital (autenticación e integridad) y certificados X.509 (confianza).
 
-Un aspecto fundamental es la gestión de la cadena de confianza: para que la verificación de firma sea completa, 
-ambos interlocutores deben compartir una CA raíz común o disponer de la cadena de certificados intermedia adecuada. 
-En entornos donde esto no es posible, la opción \texttt{-noverify} permite comprobar la firma sin validar la cadena de CA.
+Un aspecto fundamental es la gestión de la cadena de confianza: para que la verificación de firma sea completa, ambos interlocutores deben compartir una CA raíz común o disponer de la cadena de certificados intermedia adecuada. En entornos donde esto no es posible, la opción \texttt{-noverify} permite comprobar la firma sin validar la cadena de CA.
 
-El formato de los ficheros es crítico: \texttt{-recip} de \texttt{openssl smime} requiere certificados en formato 
-PEM (\texttt{.crt}), no PKCS\#12 (\texttt{.p12}), lo que obliga a separar clave y certificado.
+El formato de los ficheros es crítico: \texttt{-recip} de \texttt{openssl smime} requiere certificados en formato PEM (\texttt{.crt}), no PKCS\#12 (\texttt{.p12}), lo que obliga a separar clave y certificado.
 
 \section{Problemas encontrados y soluciones}
 
 \begin{itemize}[label=\textbullet]
+    \item \textbf{Uso de .p12 con \texttt{-recip}:} Inicialmente se intentó usar el fichero \texttt{.p12} directamente con \texttt{openssl smime -decrypt}, lo que provocaba errores. La solución fue usar los ficheros \texttt{.crt} y \texttt{.key} por separado.
     \item \textbf{Verificación de cadena de CA:} Al verificar la firma, el error \texttt{unable to get local issuer certificate} se resolvió utilizando \texttt{-CAfile} con el certificado raíz compartido.
     \item \textbf{Intercambio previo de certificados:} No fue posible cifrar mensajes hasta que ambas partes intercambiaron mensajes firmados, permitiendo que Thunderbird almacenara los certificados.
 \end{itemize}
@@ -193,19 +190,19 @@ PEM (\texttt{.crt}), no PKCS\#12 (\texttt{.p12}), lo que obliga a separar clave 
 
 \begin{thebibliography}{99}
 
-\bibitem{openssl_docs} OpenSSL Documentation, \textit{\url{https://www.openssl.org/docs/man3.2/}}, 2024.
+\bibitem{openssl_docs} OpenSSL Documentation, \textit{https://www.openssl.org/docs/man3.2/}, 2024.
 
-\bibitem{openssl_wiki} Wiki HowTo OpenSSL -- CICEI, \textit{\url{https://openssl.cicei.com}}, 2025.
+\bibitem{openssl_wiki} Wiki HowTo OpenSSL -- CICEI, \textit{https://openssl.cicei.com}, 2025.
 
-\bibitem{smime} S/MIME, \textit{\url{https://es.wikipedia.org/wiki/S/MIME}}, 2021.
+\bibitem{smime_rfc} Ramsdell, B., Turner, S., \textit{Secure/Multipurpose Internet Mail Extensions (S/MIME) Version 4.0 Message Specification}, RFC 8551, 2019.
 
-\bibitem{x509} x.509, \textit{\url{https://es.wikipedia.org/wiki/X.509}}, 2025.
+\bibitem{x509} Cooper, D. et al., \textit{Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile}, RFC 5280, 2008.
 
-\bibitem{pkcs} PKCS, \textit{\url{https://en.wikipedia.org/wiki/PKCS}}, 2026.
+\bibitem{pkcs12} RSA Laboratories, \textit{PKCS \#12: Personal Information Exchange Syntax Standard}, v1.1, 2014.
 
-\bibitem{rsa} RSA, \textit{\url{https://en.wikipedia.org/wiki/RSA_(cryptosystem)}}, 2026.
+\bibitem{pkcs7} RSA Laboratories, \textit{PKCS \#7: Cryptographic Message Syntax Standard}, RFC 2315, 1998.
 
-\bibitem{thunderbird} Mozilla, \textit{Thunderbird -- Documentación de soporte}, \textit{\url{https://support.mozilla.org/products/thunderbird}}.
+\bibitem{thunderbird} Mozilla, \textit{Thunderbird -- Documentación de soporte}, \textit{https://support.mozilla.org/products/thunderbird}.
 
 \end{thebibliography}
 

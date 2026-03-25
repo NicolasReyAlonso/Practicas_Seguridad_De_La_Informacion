@@ -11,7 +11,11 @@ echo "1. Comandos básicos OpenSSL"
 echo "========================================"
 echo "Versión de OpenSSL:"
 openssl version
-openssl speed
+
+echo ""
+echo "Nota: 'openssl speed' ejecuta pruebas de rendimiento para todos los algoritmos y tarda mucho."
+echo "Ejecutando prueba rápida solo para rsa y md5 como demostración..."
+openssl speed rsa md5
 # Para ejecutar todos: openssl speed
 
 echo ""
