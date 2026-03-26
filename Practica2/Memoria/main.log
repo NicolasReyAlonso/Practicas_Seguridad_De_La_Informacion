@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2026.1.30)  26 FEB 2026 15:16
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2026.1.30)  26 MAR 2026 17:23
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -703,7 +703,7 @@ Capítulo 1.
  (./resumenes.tex
 Capítulo 2.
 
-Underfull \hbox (badness 10000) in alignment at lines 23--23
+Underfull \hbox (badness 10000) in alignment at lines 37--37
 [][][][] 
  []
 
@@ -715,7 +715,17 @@ Underfull \hbox (badness 10000) in alignment at lines 23--23
 
 
 ]
-Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 38.
+Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 53.
+
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[5]
 File: imagenes/screenshots/resumenes/md5.png Graphic file (type bmp)
 <imagenes/screenshots/resumenes/md5.png>
 File: imagenes/screenshots/resumenes/md5-separator.png Graphic file (type bmp)
@@ -748,15 +758,6 @@ File: imagenes/screenshots/resumenes/whirlpool-binary.png Graphic file (type bmp
 <imagenes/screenshots/resumenes/whirlpool-binary.png>
 
 
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[5]
-
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
 (fancyhdr)                \setlength{\headheight}{14.49998pt}.
@@ -764,10 +765,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [6]
-File: imagenes/screenshots/resumenes/DiferenciasShaEdicion1caracter.png Graphic file (type bmp)
-<imagenes/screenshots/resumenes/DiferenciasShaEdicion1caracter.png>
-)
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -776,6 +773,9 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [7]
+File: imagenes/screenshots/resumenes/DiferenciasShaEdicion1caracter.png Graphic file (type bmp)
+<imagenes/screenshots/resumenes/DiferenciasShaEdicion1caracter.png>
+)
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -789,16 +789,9 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
  (./cifradoSimetrico.tex
 Capítulo 3.
-
-Underfull \hbox (badness 10000) in alignment at lines 29--29
-[][][][] 
- []
-
-
-Underfull \hbox (badness 10000) in alignment at lines 44--44
-[][][] 
- []
-
+Missing character: There is no – ("2013) in font ptmr8t!
+Missing character: There is no – ("2013) in font ptmr8t!
+Missing character: There is no – ("2013) in font ptmr8t!
 
 
 [9
@@ -807,7 +800,22 @@ Underfull \hbox (badness 10000) in alignment at lines 44--44
 
 
 ]
-Underfull \hbox (badness 10000) in alignment at lines 62--62
+Missing character: There is no “ ("201C) in font ptmr8t!
+Missing character: There is no ” ("201D) in font ptmr8t!
+Missing character: There is no “ ("201C) in font ptmr8t!
+Missing character: There is no ” ("201D) in font ptmr8t!
+
+Underfull \hbox (badness 10000) in alignment at lines 51--51
+[][][][] 
+ []
+
+
+Underfull \hbox (badness 10000) in alignment at lines 66--66
+[][][] 
+ []
+
+
+Underfull \hbox (badness 10000) in alignment at lines 84--84
 [][][] 
  []
 
@@ -821,7 +829,20 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [10]
-Underfull \hbox (badness 10000) in alignment at lines 131--131
+Missing character: There is no – ("2013) in font ptmr8t!
+Missing character: There is no – ("2013) in font ptmr8t!
+Missing character: There is no – ("2013) in font ptmr8t!
+
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[11]
+Underfull \hbox (badness 10000) in alignment at lines 164--164
 [][][][] 
  []
 
@@ -834,7 +855,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[11])
+[12]
+Missing character: There is no “ ("201C) in font ptmr8t!
+Missing character: There is no ” ("201D) in font ptmr8t!
+Missing character: There is no “ ("201C) in font ptmr8t!
+Missing character: There is no ” ("201D) in font ptmr8t!
+)
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -843,14 +869,14 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[12]
+[13]
 \openout2 = `ecbPeligro.aux'.
 
  (./ecbPeligro.tex
 Capítulo 4.
 
 
-[13
+[14
 
 
 
@@ -891,16 +917,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[14])
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[15]
+[15])
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -910,10 +927,19 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [16]
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[17]
 Capítulo 5.
 
 
-[17
+[18
 
 
 
@@ -929,13 +955,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 189--190
 
 
 
-[18
+[19
 
 ]
 Apéndice A.
 
 
-[19
+[20
 
 ]
 
@@ -946,11 +972,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[20]
+[21]
 Apéndice B.
 
 
-[21
+[22
 
 ] 
 enddocument/afterlastpage (AED): lastpage setting LastPage.
@@ -963,15 +989,15 @@ LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: F45FFFDB233F31245965DB1827EC2E83;8180.
+(rerunfilecheck)             Checksum: ADE219EE7E8A07D39C159964C9BA067D;8514.
  ) 
 Here is how much of TeX's memory you used:
  17762 strings out of 473832
  291146 string characters out of 5729481
- 963291 words of memory out of 5000000
+ 945291 words of memory out of 5000000
  40514 multiletter control sequences out of 15000+600000
  596901 words of font info for 97 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  72i,15n,79p,607b,1823s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main.pdf (22 pages).
+Output written on main.pdf (23 pages).

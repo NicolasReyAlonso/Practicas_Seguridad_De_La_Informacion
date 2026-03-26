@@ -221,14 +221,14 @@ openssl enc -chacha20 -d -pbkdf2 -in "$SALIDA/cifrado_chacha20.bin" -out "$SALID
 echo "   Resultado: $(cat "$SALIDA/descifrado_chacha20.txt")"
 echo ""
 
-# 7. AES-256-GCM (modo autenticado)
-echo "7. AES-256-GCM (modo autenticado):"
-openssl enc -aes-256-gcm -pbkdf2 -in "$TEXTO_CIFRADO" -out "$SALIDA/cifrado_aes256gcm.bin" -pass pass:"$PASSWORD"
-TAMANO_GCM=$(wc -c < "$SALIDA/cifrado_aes256gcm.bin")
-echo "   Archivo cifrado: cifrado_aes256gcm.bin (Tamaño: $TAMANO_GCM bytes)"
+# 7. AES-256-CFB (modo flujo)
+echo "7. AES-256-CFB (modo flujo):"
+openssl enc -aes-256-cfb -pbkdf2 -in "$TEXTO_CIFRADO" -out "$SALIDA/cifrado_aes256cfb.bin" -pass pass:"$PASSWORD"
+TAMANO_CFB=$(wc -c < "$SALIDA/cifrado_aes256cfb.bin")
+echo "   Archivo cifrado: cifrado_aes256cfb.bin (Tamaño: $TAMANO_CFB bytes)"
 echo "   Descifrado:"
-openssl enc -aes-256-gcm -d -pbkdf2 -in "$SALIDA/cifrado_aes256gcm.bin" -out "$SALIDA/descifrado_aes256gcm.txt" -pass pass:"$PASSWORD"
-echo "   Resultado: $(cat "$SALIDA/descifrado_aes256gcm.txt")"
+openssl enc -aes-256-cfb -d -pbkdf2 -in "$SALIDA/cifrado_aes256cfb.bin" -out "$SALIDA/descifrado_aes256cfb.txt" -pass pass:"$PASSWORD"
+echo "   Resultado: $(cat "$SALIDA/descifrado_aes256cfb.txt")"
 echo ""
 
 # Análisis de tamaños
@@ -245,7 +245,7 @@ echo "3DES-CBC             | $TAMANO_3DES    | $(($TAMANO_3DES - $TAMANO_ORIGINA
 echo "3DES-OFB             | $TAMANO_3DES_OFB    | $(($TAMANO_3DES_OFB - $TAMANO_ORIGINAL))      | No aplica     | 16 (sal) + sin padding"
 echo "RC4                  | $TAMANO_RC4    | $(($TAMANO_RC4 - $TAMANO_ORIGINAL))      | No aplica     | 16 (sal) + sin padding"
 echo "ChaCha20             | $TAMANO_CHACHA20    | $(($TAMANO_CHACHA20 - $TAMANO_ORIGINAL))      | No aplica     | 16 (sal) + sin padding"
-echo "AES-256-GCM          | $TAMANO_GCM    | $(($TAMANO_GCM - $TAMANO_ORIGINAL))      | No aplica     | 16 (sal) + tag autenticación"
+echo "AES-256-CFB          | $TAMANO_CFB    | $(($TAMANO_CFB - $TAMANO_ORIGINAL))      | No aplica     | 16 (sal) + sin padding"
 echo ""
 echo -e "${BLUE}Nota: El prefijo 'Salted__' + 8 bytes de sal = 16 bytes de overhead${NC}"
 echo ""

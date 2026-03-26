@@ -5,6 +5,20 @@
 Los algoritmos de resumen (\textit{hash}) son funciones criptográficas que transforman un 
 documento de cualquier tamaño en una cadena de longitud fija, denominada \textit{hash} o \textit{resumen}. 
 
+\section{Enunciados:}
+2.1 Generación y comprobación de Resúmenes
+Una vez entendido el empleo del comando openssl-dgst y sus opciones básicas (-help, -list):
+1. Crear un archivo de texto legible de entre 150 y 200 caracteres
+
+2. Aplicar un mínimo de CINCO algoritmos de resumen distintos (md5, SHA-1, SHA-2 y
+Whirlpool son obligatorios) sobre ese archivo de texto, verificar que el tamaño coincide con
+la descripción del algoritmo de resumen empleado y comprobar cómo varían los resúmenes
+obtenidos con el mismo algoritmo ante mínimas modificaciones del fichero (cambiando un
+solo carácter, por ejemplo).
+
+3. Alternar entre salida hexadecimal, hexadecimal con : y binaria
+
+
 \section{Algoritmos utilizados}
 
 \begin{table}[H]
@@ -34,7 +48,8 @@ Se utilizará un archivo de texto plano con las siguientes características:
     \item Contenido legible.
     \item Sin caracteres especiales.
 \end{itemize}
-
+\subsubsection{ Enunciado:}
+1. Crear un archivo de texto legible de entre 150 y 200 caracteres
 \begin{lstlisting}[caption=Contenido del archivo de prueba]
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
 Vivamus bibendum iaculis ante, quis sagittis eros eleifend 
@@ -48,7 +63,12 @@ iaculis. Sed egestas consequat feugiat. Lorem aliquas.
 \end{lstlisting}
 
 \subsection{Comandos utilizados}
-
+\subsubsection{Enunciado:}
+2. Aplicar un mínimo de CINCO algoritmos de resumen distintos (md5, SHA-1, SHA-2 y
+Whirlpool son obligatorios) sobre ese archivo de texto, verificar que el tamaño coincide con
+la descripción del algoritmo de resumen empleado y comprobar cómo varían los resúmenes
+obtenidos con el mismo algoritmo ante mínimas modificaciones del fichero (cambiando un
+solo carácter, por ejemplo).
 \begin{lstlisting}[caption=Cálculo de resúmenes con OpenSSL]
 # MD5
 openssl dgst -md5 archivo.txt
@@ -69,7 +89,8 @@ openssl dgst -sha256 -binary archivo.txt > hash.bin
 \section{Resultados}
 
 \subsection{Resúmenes obtenidos}
-
+\subsubsection{Enunciado:}
+3. Alternar entre salida hexadecimal, hexadecimal con : y binaria
 % Tabla larga: usa longtable para permitir saltos de página
 \begin{longtable}{@{}p{\textwidth}@{}}
 \caption{Resúmenes calculados para el archivo de prueba}\\
