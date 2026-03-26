@@ -1,5 +1,55 @@
 \chapter{Intercambio de Información Segura}
 
+\section{Enunciado}
+
+\textbf{3.2 Intercambio de información segura (cifrado asimétrico de clave simétrica y firma)}
+
+En este apartado vamos a reproducir en una secuencia de operaciones el intercambio de información
+segura entre dos agentes utilizando cifrado simétrico, cifrado asimétrico de las claves simétricas y
+firma digital (cifrado asimétrico de un resumen del documento original).
+
+Para ello, generaremos dos parejas de claves RSA de 2048 bits que serán utilizadas por dos agentes
+(Ana y Berto) de forma que Ana construirá tres ficheros de texto a partir del fichero de texto original,
+el primero con el fichero cifrado, el segundo con las claves utilizadas y el tercero con la firma digital.
+
+Así, primero generaremos las dos claves:
+\begin{itemize}[label=\textbullet]
+    \item Generar una pareja de claves RSA de 2048 bits en ficheros anapub.pem y anapriv.pem y otra
+    pareja de claves del mismo tipo bertopub.pem y bertopriv.pem.
+    \item Proteger ambas claves privadas con contraseña ``anak'' y ``bertok'' respectivamente.
+\end{itemize}
+
+Se supone que Ana y Berto han intercambiado sus claves públicas. A continuación, realizaremos el
+trabajo de Ana:
+\begin{itemize}[label=\textbullet]
+    \item Cifrar un fichero de texto (texto.txt) de los apartados anteriores con AES-256 en modo CBC,
+    con clave y vector escogidos por el estudiante y sin sal, con salida en formato BASE64 a un
+    fichero llamado cifrado.txt.
+    \item Crear un fichero de texto (hexadecimal) con la concatenación de la clave y el vector
+    utilizados, de nombre claves.hex y cifrarlo con la clave pública bertopub.pem, con salida en
+    formato binario a un fichero claves.bin
+    \item Convertir claves.bin a claves.txt en formato BASE64 (mediante \texttt{openssl enc -a \dots})
+    \item Obtener un resumen sha256 en binario del fichero de texto original con nombre resumen.bin
+    y firmarlo (es decir, cifrarlo con la clave privada anapriv.pem -clave anak-), con salida en
+    formato BASE64 a un fichero llamado firma.txt.
+\end{itemize}
+
+En este momento, Ana enviaría los tres ficheros obtenidos cifrado.txt, claves.txt y firma.txt (junto a
+la meta-información relativa a los algoritmos utilizados, cómo se concatenan clave y vector\dots) a
+Berto\dots que seremos nosotros mismos. Actuando como Berto, procederemos a:
+\begin{itemize}[label=\textbullet]
+    \item Convertir el fichero claves.txt a fichero binario claves2.bin con \texttt{openssl enc -a\dots}
+    \item Descifrar el fichero claves2.bin con la clave privada bertopriv.pem (contraseña bertok) y
+    salida a un fichero claves2.hex (debería ser idéntico a claves.hex).
+    \item Extraer de claves2.hex la clave y el vector en formato hexadecimal, siguiendo la meta-información que le envió Ana junto con los tres ficheros).
+    \item Descifrar el fichero cifrado.txt con la clave y el vector obtenidos (de claves2.hex) y salida al
+    fichero mensaje2.txt (que debería ser igual al fichero original mensaje.txt utilizado por Ana).
+    \item Verificar que el fichero firma.txt, convertido a binario y descifrado con la clave pública de
+    Ana (anapub.pem), coincide con un resumen sha256 del fichero mensaje2.txt. Muy
+    importante: asegurarse de que utilizan la opción \texttt{-verifyrestore} para recuperar el resumen
+    obtenido por Ana descifrando su firma y compararlo con un resumen obtenido por Berto.
+\end{itemize}
+
 \section{Descripción del escenario}
 
 En este apartado se reproduce un intercambio seguro de información entre dos agentes, \textbf{Ana} y \textbf{Berto}, utilizando un esquema híbrido que combina:

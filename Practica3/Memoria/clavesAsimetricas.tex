@@ -1,5 +1,20 @@
 \chapter{Generación de Claves Asimétricas, Firma y Derivación de Secretos}
 
+\section{Enunciado}
+
+\textbf{3.1 Generación de claves asimétricas (pública-privada), firmado de resúmenes (RSA y DSA) y derivación de secretos con claves DH y ECDH (X25519)}
+
+\begin{itemize}[label=\textbullet]
+    \item Generar un par de claves asimétricas RSA de 2048 bits en formato PEM con contraseña.
+    \item Exportar la clave pública a otro fichero PEM.
+    \item Exportar la clave privada a formato DER (binario) y de vuelta a PEM, con otro nombre de fichero. Comprobar que la conversión a formato DER desprotege la clave privada (elimina la contraseña).
+    \item Con el par de claves asimétricas creadas, firmar y comprobar la firma del resumen (con SHA-256) de uno de los ficheros de texto de la práctica anterior.
+    \item Repetir los cuatro pasos anteriores con claves DSA.
+    \item Generar dos pares de claves DH estándar y demostrar que la combinación pública1-privada2 genera el mismo secreto que la combinación privada1-pública2.
+    \item Generar dos pares de claves DH con curva elíptica X25519 (las utilizadas por Whatsapp) y demostrar que la combinación pública1-privada2 genera el mismo secreto que la combinación privada1-pública2.
+    \item Comparar los tamaños de los dos secretos (DH y X25519) generados anteriormente.
+\end{itemize}
+
 \section{Claves RSA}
 
 \subsection{Descripción teórica}

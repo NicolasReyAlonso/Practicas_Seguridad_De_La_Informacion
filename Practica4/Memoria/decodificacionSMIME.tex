@@ -1,5 +1,23 @@
 \chapter{Decodificación S/MIME desde Línea de Comandos}
 
+\section{Enunciado}
+
+\textbf{1.3 - Decodificación con la utilidad ``openssl smime'' del mensaje cifrado y firmado que recibimos del compañero}
+
+1.3.1. Una vez el mensaje cifrado y firmado del compañero, se trata de decodificar ese mensaje desde la
+utilidad ``openssl smime''. Para ello, hemos de guardar desde Thunderbird el mensaje completo como texto en
+formato ``.eml'' (seleccionar mensaje, botón de la derecha, Guardar cómo\dots), exportar nuestro certificado
+completo (o utilizar nuestro fichero \texttt{certificadoPersonal.p12}) y el certificado del compañero (Exportar en
+formato \texttt{.crt}) y procesar estos tres ficheros (mensaje de texto y los dos certificados) a través de la citada
+utilidad ``openssl smime''.
+
+1.3.2. El apartado 5.- S/MIME de la Wiki explica con detalle cómo procesar correos S/MIME desde línea de
+comandos openssl, lo que pedimos ahora está explicado en el apartado 5.2.4. -- Descifrar mensaje cifrado y
+firmado de la citada Wiki. Obsérvese que el descifrado y la verificación de firma han de hacerse por
+separado. Documentar este proceso en detalle, mostrando en capturas de pantalla la cabecera de correo
+con los adjuntos, tanto del fichero cifrado y firmado (SMIME.P7M) como del fichero resultado de
+descifrado (SMIME. P7S).
+
 \section{Descripción del proceso}
 
 El estándar \textbf{S/MIME} (\textit{Secure/Multipurpose Internet Mail Extensions}) permite firmar y cifrar correos electrónicos mediante certificados X.509. Un mensaje que ha sido \textbf{cifrado y firmado} contiene una estructura anidada:

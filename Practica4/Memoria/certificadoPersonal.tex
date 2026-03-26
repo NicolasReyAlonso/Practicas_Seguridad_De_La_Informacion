@@ -1,5 +1,51 @@
 \chapter{Creación del Certificado Personal}
 
+\section{Enunciado}
+
+\textbf{1.1 -- Creación de nuestro certificado personal:}
+
+1.1.1. Leer con mucha atención el apartado ``Generación y verificación de certificados'' de la Wiki ``HowTo
+OpenSSL'' (https://openssl.cicei.com). En ese apartado se explica cómo crear un certificado raíz autofirmado
+que firma un certificado intermedio y este último firma un certificado final. Comprender todo lo que se explica.
+
+1.1.2.- Entendido el proceso, lo que se nos pide es que utilizando un certificado raíz ya existente y su fichero
+de clave (\texttt{certificadoRaiz.cert} y \texttt{certificadoRaiz.key}, disponibles en la página de la asignatura en formato PEM
+-- la contraseña de protección de la clave es \texttt{SEGURIDAD}) generemos nuestro certificado personal con los
+datos de C, O, OU que se estimen, pero con nuestro nombre y apellidos en CN (common Name) y nuestra
+dirección de correo personal en el campo Email Address, los pasos serán:
+
+\begin{itemize}
+    \item[a)] Descargar \texttt{certificadoRaiz.crt} y \texttt{certificadoRaiz.key} de la página de la asignatura
+    \item[b)] Crear la clave de nuestro certificado (\texttt{openssl genpkey \dots}) $\rightarrow$ \texttt{certificadoPersonal.key}
+    (hay que crear una contraseña que protege esta clave -- ANOTARLA)
+    \item[c)] Crear el CSR de nuestro certificado (\texttt{openssl req -new \dots}) $\rightarrow$ \texttt{certificadoPersonal.csr}
+    \item[d)] Crear nuestro certificado personal a partir del CSR, el certificado raíz y su clave, para ello habrá
+    que introducir la contraseña SEGURIDAD que protege la clave de la raíz, el comando será del
+    tipo (\texttt{openssl x509 -req -days 365 \dots}) $\rightarrow$ \texttt{certificadoPersonal.crt}
+\end{itemize}
+
+Los comandos openssl de los pasos b, c y d están incompletos, pero entendiendo lo que se explica en el apartado
+6.2: Certificado intermedio de la Wiki y reemplazando los nombres de ``certificadoIntermedio'' por
+``certificadoPersonal'', es fácil de realizar.
+
+Una vez realizados correctamente los pasos anteriores, además del certificado raíz y su clave, tendremos los
+ficheros \texttt{certificadoPersonal.key} (protegido con la contraseña que hayan escogido), \texttt{certificadoPersonal.csr}
+(ya no nos hace falta, se podría eliminar) y \texttt{certificadoPersonal.crt} (la parte pública de nuestro certificado).
+
+Ya solo nos queda crear un fichero PKCS\#12 con la parte pública y privada de nuestro certificado personal
+para poder importarlo en el agente de correo:
+
+\begin{itemize}
+    \item[e)] El último apartado de la Wiki, 6.6: PEM a PKCS\#12 explica cómo crear un fichero ``inter.p12'' a
+    partir de \texttt{certificadoIntermedio.crt} y \texttt{certificadoIntermedio.key}, tendremos que hacer un comando
+    similar, cambiando ``Intermedio'' por ``Personal'' para crear un fichero llamado
+    \texttt{certificadoPersonal.p12}. Atención: el comando nos pedirá la clave que protege
+    certificadoPersonal y a continuación otra clave (podría ser la misma) para proteger el fichero de
+    salida, \texttt{certificadoPersonal.p12}
+\end{itemize}
+
+El comando será del tipo (\texttt{openssl pkcs12 export \dots}) $\rightarrow$ \texttt{certificadoPersonal.p12}
+
 \section{Descripción teórica}
 
 Un \textbf{certificado digital X.509} es un documento electrónico que vincula una identidad (nombre, correo electrónico, organización) con una clave pública. Esta vinculación está firmada por una \textbf{Autoridad de Certificación (CA)}, lo que permite a terceros confiar en que esa clave pública pertenece realmente a la identidad indicada.

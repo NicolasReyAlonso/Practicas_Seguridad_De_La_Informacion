@@ -149,7 +149,7 @@ echo ""
 
 # Crear archivo de texto pequeño (31-81 caracteres, número impar)
 TEXTO_CIFRADO="$SALIDA/texto_cifrado_original.txt"
-echo "Este es un texto de prueba para cifrado simétrico." > "$TEXTO_CIFRADO"
+echo "Este es un texto de prueba para cifrado simétrico" > "$TEXTO_CIFRADO"
 echo "Archivo para cifrado: $TEXTO_CIFRADO"
 echo "Contenido: $(cat "$TEXTO_CIFRADO")"
 echo "Tamaño: $(wc -c < "$TEXTO_CIFRADO") caracteres"
