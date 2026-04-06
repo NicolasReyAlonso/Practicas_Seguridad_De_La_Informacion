@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2026.1.30)  26 MAR 2026 17:49
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2026.1.30)  6 APR 2026 18:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -690,7 +690,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
  (./intro.tex
 Capítulo 1.
-)
+
 
 [3
 
@@ -698,24 +698,17 @@ Capítulo 1.
 
 
 ]
-\openout2 = `resumenes.aux'.
-
- (./resumenes.tex
-Capítulo 2.
-
-Underfull \hbox (badness 10000) in alignment at lines 37--37
-[][][][] 
- []
-
-
-
-[4
-
-
-
-
-]
-Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 53.
+Missing character: There is no – ("2013) in font ptmr8t!
+Missing character: There is no – ("2013) in font ptmr8t!
+Missing character: There is no – ("2013) in font ptmr8t!
+Missing character: There is no “ ("201C) in font ptmr8t!
+Missing character: There is no ” ("201D) in font ptmr8t!
+Missing character: There is no “ ("201C) in font ptmr8t!
+Missing character: There is no ” ("201D) in font ptmr8t!
+Missing character: There is no “ ("201C) in font ptmr8t!
+Missing character: There is no ” ("201D) in font ptmr8t!
+Missing character: There is no “ ("201C) in font ptmr8t!
+Missing character: There is no ” ("201D) in font ptmr8t!
 
 
 
@@ -725,7 +718,54 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
+[4]
+Missing character: There is no “ ("201C) in font ptmr8t!
+Missing character: There is no ” ("201D) in font ptmr8t!
+Missing character: There is no “ ("201C) in font ptmr8t!
+Missing character: There is no ” ("201D) in font ptmr8t!
+
+Overfull \hbox (3.37115pt too wide) in paragraph at lines 64--66
+\T1/ptm/m/n/12 plo de Wi-ki-pe-dia [][]$\T1/pcr/m/n/12 https : / / en . wikipedia . org / wiki / Block _ cipher _ mode _
+ []
+
+)
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
 [5]
+\openout2 = `resumenes.aux'.
+
+ (./resumenes.tex
+Capítulo 2.
+
+Underfull \hbox (badness 10000) in alignment at lines 35--35
+[][][][] 
+ []
+
+
+
+[6
+
+
+
+
+]
+Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 51.
+
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[7]
 File: imagenes/screenshots/resumenes/md5.png Graphic file (type bmp)
 <imagenes/screenshots/resumenes/md5.png>
 File: imagenes/screenshots/resumenes/md5-separator.png Graphic file (type bmp)
@@ -764,7 +804,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[6]
+[8]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -772,7 +812,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[7]
+[9]
 File: imagenes/screenshots/resumenes/DiferenciasShaEdicion1caracter.png Graphic file (type bmp)
 <imagenes/screenshots/resumenes/DiferenciasShaEdicion1caracter.png>
 )
@@ -784,66 +824,31 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[8]
+[10]
 \openout2 = `cifradoSimetrico.aux'.
 
  (./cifradoSimetrico.tex
 Capítulo 3.
-Missing character: There is no – ("2013) in font ptmr8t!
-Missing character: There is no – ("2013) in font ptmr8t!
-Missing character: There is no – ("2013) in font ptmr8t!
+
+Underfull \hbox (badness 10000) in alignment at lines 28--28
+[][][][] 
+ []
 
 
-[9
+Underfull \hbox (badness 10000) in alignment at lines 43--43
+[][][] 
+ []
+
+
+
+[11
 
 
 
 
 ]
-Missing character: There is no “ ("201C) in font ptmr8t!
-Missing character: There is no ” ("201D) in font ptmr8t!
-Missing character: There is no “ ("201C) in font ptmr8t!
-Missing character: There is no ” ("201D) in font ptmr8t!
-
-Underfull \hbox (badness 10000) in alignment at lines 51--51
-[][][][] 
- []
-
-
-Underfull \hbox (badness 10000) in alignment at lines 66--66
+Underfull \hbox (badness 10000) in alignment at lines 61--61
 [][][] 
- []
-
-
-Underfull \hbox (badness 10000) in alignment at lines 84--84
-[][][] 
- []
-
-
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[10]
-Missing character: There is no – ("2013) in font ptmr8t!
-Missing character: There is no – ("2013) in font ptmr8t!
-Missing character: There is no – ("2013) in font ptmr8t!
-
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[11]
-Underfull \hbox (badness 10000) in alignment at lines 164--164
-[][][][] 
  []
 
 
@@ -856,11 +861,15 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [12]
-Missing character: There is no “ ("201C) in font ptmr8t!
-Missing character: There is no ” ("201D) in font ptmr8t!
-Missing character: There is no “ ("201C) in font ptmr8t!
-Missing character: There is no ” ("201D) in font ptmr8t!
-)
+Missing character: There is no – ("2013) in font ptmr8t!
+Missing character: There is no – ("2013) in font ptmr8t!
+Missing character: There is no – ("2013) in font ptmr8t!
+
+Underfull \hbox (badness 10000) in alignment at lines 140--140
+[][][][] 
+ []
+
+
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -870,30 +879,20 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [13]
-\openout2 = `ecbPeligro.aux'.
-
- (./ecbPeligro.tex
-Capítulo 4.
-
-Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 3.
-
-Missing character: There is no “ ("201C) in font ptmr8t!
-Missing character: There is no ” ("201D) in font ptmr8t!
-Missing character: There is no “ ("201C) in font ptmr8t!
-Missing character: There is no ” ("201D) in font ptmr8t!
 Missing character: There is no “ ("201C) in font ptmr8t!
 Missing character: There is no ” ("201D) in font ptmr8t!
 Missing character: There is no “ ("201C) in font ptmr8t!
 Missing character: There is no ” ("201D) in font ptmr8t!
 
 
-[14
 
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-
-
-]
+[14])
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -903,36 +902,65 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [15]
+\openout2 = `ecbPeligro.aux'.
+
+ (./ecbPeligro.tex
+Capítulo 4.
+
+
+[16
+
+
+
+
+]
+Missing character: There is no “ ("201C) in font ptmr8t!
+Missing character: There is no ” ("201D) in font ptmr8t!
+Missing character: There is no “ ("201C) in font ptmr8t!
+Missing character: There is no ” ("201D) in font ptmr8t!
+
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[17]
 File: imagenes/ImagenesEncriptadas/kalili.png Graphic file (type bmp)
 <imagenes/ImagenesEncriptadas/kalili.png>
+
+Missing character: There is no “ ("201C) in font ptmr8t!
+Missing character: There is no ” ("201D) in font ptmr8t!
 File: imagenes/ImagenesEncriptadas/imagen_cifrada_des_ecb.png Graphic file (type bmp)
 <imagenes/ImagenesEncriptadas/imagen_cifrada_des_ecb.png>
 
-Overfull \hbox (96.7366pt too wide) in paragraph at lines 101--101
+Overfull \hbox (96.7366pt too wide) in paragraph at lines 94--94
 []|[]| 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 101--101
+Underfull \hbox (badness 10000) in paragraph at lines 94--94
 []|\T1/ptm/m/it/12 Imagen com-ple-
  []
 
 File: imagenes/ImagenesEncriptadas/imagen_cifrada_cbc.png Graphic file (type bmp)
 <imagenes/ImagenesEncriptadas/imagen_cifrada_cbc.png>
 
-Overfull \hbox (96.7366pt too wide) in paragraph at lines 101--101
+Overfull \hbox (96.7366pt too wide) in paragraph at lines 94--94
 []|[]| 
  []
 
 File: imagenes/ImagenesEncriptadas/Tux_encrypted_ecb.png Graphic file (type bmp)
 <imagenes/ImagenesEncriptadas/Tux_encrypted_ecb.png>
 
-Overfull \hbox (96.7366pt too wide) in paragraph at lines 101--101
+Overfull \hbox (96.7366pt too wide) in paragraph at lines 94--94
 []|[]| 
  []
 
 
-Underfull \hbox (badness 10000) in alignment at lines 101--101
+Underfull \hbox (badness 10000) in alignment at lines 94--94
 [][][] 
  []
 
@@ -945,29 +973,29 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[16]
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[17])
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
 [18]
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[19])
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[20]
 Capítulo 5.
 
 
-[19
+[21
 
 
 
@@ -983,13 +1011,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 189--190
 
 
 
-[20
+[22
 
 ]
 Apéndice A.
 
 
-[21
+[23
 
 ]
 
@@ -1000,11 +1028,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[22]
+[24]
 Apéndice B.
 
 
-[23
+[25
 
 ] 
 enddocument/afterlastpage (AED): lastpage setting LastPage.
@@ -1017,15 +1045,15 @@ LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: D2D3E26A4587999FA442251505BA4B59;8741.
+(rerunfilecheck)             Checksum: A9FD12229CE86BE1F895D2ECC29393A5;9378.
  ) 
 Here is how much of TeX's memory you used:
  17772 strings out of 473832
- 291633 string characters out of 5729481
- 945291 words of memory out of 5000000
+ 291628 string characters out of 5729481
+ 945297 words of memory out of 5000000
  40523 multiletter control sequences out of 15000+600000
  596901 words of font info for 97 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 72i,15n,79p,607b,1821s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 72i,15n,79p,607b,1825s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main.pdf (24 pages).
+Output written on main.pdf (26 pages).

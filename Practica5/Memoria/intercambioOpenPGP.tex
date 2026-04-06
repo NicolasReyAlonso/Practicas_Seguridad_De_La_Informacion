@@ -39,6 +39,22 @@ Wafa nos envía su clave pública OpenPGP en un correo con asunto \textit{``Mi c
 
 Se importa la clave de Wafa en Thunderbird a través del \textit{OpenPGP Key Manager} $\rightarrow$ \textit{Import Public Key(s) from File}. Su Key ID es \texttt{0x62C2D55D111C2F3C}.
 
+\subsection{Corrección puntual:}
+Como se puede observar en la imagen, mi compañera Wafa ha incluido en el 
+mensaje un adjunto con su clave pública, pero no ha firmado digitalmente el 
+correo. Esto supone una desviación del guión original de la práctica aunque el 
+resto de los pasos se mantienen intactos. Para suplir este punto 
+instalé thunderbird en el sistema anfitrión y me envié un correo a modo de
+corrección para que se observé el comportamiento de que debiese haberse visto.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Imagenes/6.2.png}
+    \caption{Correo recibido de mi mismo firmado}
+    \label{fig:clave_publica_yo}
+\end{figure}
+
+
 \section{Paso 3 -- Envío de mensaje cifrado y firmado}
 
 Una vez que disponemos de la clave pública de Wafa, componemos el mensaje cifrado y firmado. En la ventana de composición se observa los botones \textbf{Encrypt} y \textbf{OpenPGP} en la barra de herramientas. El mensaje de ejemplo tiene asunto \textit{``Ahora encriptado con tu clave''} y cuerpo \textit{``hola wafa''}.

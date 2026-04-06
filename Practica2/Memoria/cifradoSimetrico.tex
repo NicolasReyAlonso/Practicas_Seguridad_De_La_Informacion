@@ -13,29 +13,6 @@ El cifrado simétrico es una técnica criptográfica en la que se utiliza la mis
 \end{itemize}
 
 \section{Algoritmos de cifrado simétrico}
-\subsection{Enunciado:}
-2.2 Cifrado Simétrico de documentos
-Una vez entendido el empleo del comando openssl-enc para cifrar y descifrar, sus opciones básicas
-(-help y -list) con diferentes algoritmos y modos de operación, el empleo de ficheros binarios y
-BASE64, la derivación de claves a partir de contraseñas y sal, detallada en el estándar PKCS \#5
-(PBKDF1 y PBKDF2) y su aplicación a las claves de cifrado simétrico y vectores de inicialización:
-1. Crear un archivo de texto legible de pequeño tamaño – entre 31 y 81 caracteres (número impar).
-
-2. Cifrarlo (con salida en modo binario) con SIETE algoritmos simétricos (AES y TDES
-obligatorios, en modo bloque y flujo y dos cifradores de flujo -rc4 y –chacha20 o similar-).
-
-3. Descifrarlos y comprobar el resultado
-
-4. Explicar el tamaño de los diferentes ficheros cifrados en virtud del tamaño de bloque del cifrador
-(o no, si se cifra en flujo), y sabiendo que el empleo de sal añade 16 bits de más al inicio del
-fichero cifrado –Salted\_\_XXXXXXXX-.
-
-5. Cifrar el archivo con aes-256-cbc y contraseña y descifrarlo NO con dicha contraseña, sino con
-su conjunto equivalente de clave (key) y vector de inicialización (iv). Para ello habrá que usar “-
-p” en el cifrado y eliminar los 16 bits iniciales del fichero cifrado que contienen la sal aleatoria
-utilizada por el comando de cifrado (con el comando dd bs=1 skip=16 if= of= o similar) antes de
-descifrarlo con -k y -iv, poniendo sus valores mostrados al cifrarlo por la opción “-p”.
-
 \subsection{Cifradores de bloque}
 
 \begin{table}[H]
@@ -109,19 +86,9 @@ Donde:
 \end{itemize}
 
 \section{Metodología experimental}
-\subsection{Enunciado:}
-1. Crear un archivo de texto legible de pequeño tamaño – entre 31 y 81 caracteres (número impar).
-
-2. Cifrarlo (con salida en modo binario) con SIETE algoritmos simétricos (AES y TDES
-obligatorios, en modo bloque y flujo y dos cifradores de flujo -rc4 y –chacha20 o similar-).
-
-3. Descifrarlos y comprobar el resultado
-
-4. Explicar el tamaño de los diferentes ficheros cifrados en virtud del tamaño de bloque del cifrador
-(o no, si se cifra en flujo), y sabiendo que el empleo de sal añade 16 bits de más al inicio del
-fichero cifrado –Salted\_\_XXXXXXXX-.
-
 \subsection{Archivo de prueba}
+\subsubsection{Enunciado:}
+1. Crear un archivo de texto legible de pequeño tamaño – entre 31 y 81 caracteres (número impar).
 
 Se utiliza un archivo de texto pequeño (31-81 caracteres):
 
@@ -133,16 +100,25 @@ Este es un texto de prueba para cifrado simétrico
 
 \begin{lstlisting}[caption=Cifrado con contraseña y PBKDF2]
 openssl enc -aes-256-cbc -pbkdf2 -in archivo.txt \
-    -out archivo.bin -pass pass:"contraseña"
+    -out archivo.bin -pass pass:"contraseña" --binary
 
 # Con información de derivación
 openssl enc -aes-256-cbc -pbkdf2 -in archivo.txt \
-    -out archivo.bin -pass pass:"contraseña" -p
+    -out archivo.bin -pass pass:"contraseña" -p --binary
 \end{lstlisting}
 
 \section{Resultados}
 
 \subsection{Cifrado con diferentes algoritmos}
+\subsubsection{Enunciado:}
+2. Cifrarlo (con salida en modo binario) con SIETE algoritmos simétricos (AES y TDES
+obligatorios, en modo bloque y flujo y dos cifradores de flujo -rc4 y –chacha20 o similar-).
+
+3. Descifrarlos y comprobar el resultado
+
+4. Explicar el tamaño de los diferentes ficheros cifrados en virtud del tamaño de bloque del cifrador
+(o no, si se cifra en flujo), y sabiendo que el empleo de sal añade 16 bits de más al inicio del
+fichero cifrado –Salted\_\_XXXXXXXX-.
 
 Se realizaron cifrados con los siguientes algoritmos:
 

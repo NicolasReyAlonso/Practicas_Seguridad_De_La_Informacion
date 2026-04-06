@@ -1,33 +1,5 @@
 
 \chapter{Demostración de la Peligrosidad del Modo ECB}
-\subsection{Enunciado:}
-\subsection{Enunciado:}
-2.3 Aplicación: Demostración de la peligrosidad del modo de operación ECB
-
-En este apartado demostraremos que el modo de operación “ecb” con cifradores simétricos es muy
-peligroso, repitiendo el ejemplo de Wikipedia con el pingüino Tux, utilizando una imagen pequeña
-con colores sólidos como entrada. Para ello:
-
-1. Escogeremos una imagen de entre 20 y 50 Kb de colores sólidos (gif, png, etc.)
-
-2. Con la utilidad “convert” del paquete ImageMagick o similar la convertiremos a formato PGM
-(ver https://en.wikipedia.org/wiki/Netpbm)
-
-3. Separaremos la cabecera (3 primeras líneas de texto) y el cuerpo (binario) de la imagen
-
-4. Cifraremos el cuerpo con el cifrador de bloques más potente en la actualidad (AES-256) en modo
-ECB y una clave o contraseña aleatorias, si se usa contraseña, realizar el cifrado sin sal (-nosalt).
-
-5. Crearemos la nueva imagen con la cabecera anterior y el cuerpo cifrado
-
-6. Convertiremos la nueva imagen al formato original con Imagemagick “convert”
-
-7. Verificaremos que la nueva imagen puede ser “vista” de la misma forma que Tux en el ejemplo
-de Wikipedia \url{https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation}.
-
-8. Realizar la operación con otro cifrador de 64 bits de bloque (des, des-ede3, etc) en modo ECB
-y comparar los resultados. El menor tamaño de bloque debería acentuar las diferencias en los
-cambios de color en la imagen original.
 \section{Fundamento teórico: El problema del modo ECB}
 
 El modo ECB (\textit{Electronic Codebook}) es uno de los modos de operación más simples e inseguros. Su funcionamiento es:
@@ -49,6 +21,8 @@ Donde cada bloque de texto plano $P_i$ se cifra independientemente con la misma 
 \section{Experimento: Cifrado de imágenes}
 
 \subsection{Procedimiento}
+\subsubsection{Enunciado:}
+1. Escogeremos una imagen de entre 20 y 50 Kb de colores sólidos (gif, png, etc.)
 
 Se utilizó una imagen del logo de kali linux con colores sólidos para maximizar 
 la visibilidad de los patrones. El proceso fue:
@@ -63,7 +37,18 @@ la visibilidad de los patrones. El proceso fue:
 \end{enumerate}
 
 \subsection{Comandos utilizados}
+\subsubsection{Enunciados:}
+2. Con la utilidad “convert” del paquete ImageMagick o similar la convertiremos a formato PGM
+(ver https://en.wikipedia.org/wiki/Netpbm)
 
+3. Separaremos la cabecera (3 primeras líneas de texto) y el cuerpo (binario) de la imagen
+
+4. Cifraremos el cuerpo con el cifrador de bloques más potente en la actualidad (AES-256) en modo
+ECB y una clave o contraseña aleatorias, si se usa contraseña, realizar el cifrado sin sal (-nosalt).
+
+5. Crearemos la nueva imagen con la cabecera anterior y el cuerpo cifrado
+
+6. Convertiremos la nueva imagen al formato original con Imagemagick “convert”
 \begin{lstlisting}[caption=Cifrado ECB de imágenes]
 # Convertir a PGM
 convert imagen.png imagen.pgm
@@ -86,6 +71,14 @@ Imagen original:
 \begin{center}
     \includegraphics[width=0.4\textwidth]{imagenes/ImagenesEncriptadas/kalili.png}
 \end{center}
+
+\subsubsection{Enunciado:}
+7. Verificaremos que la nueva imagen puede ser “vista” de la misma forma que Tux en el ejemplo
+de Wikipedia \url{https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation}.
+
+8. Realizar la operación con otro cifrador de 64 bits de bloque (des, des-ede3, etc) en modo ECB
+y comparar los resultados. El menor tamaño de bloque debería acentuar las diferencias en los
+cambios de color en la imagen original.
 
 \begin{table}[H]
     \centering

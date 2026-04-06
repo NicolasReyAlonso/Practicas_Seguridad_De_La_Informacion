@@ -11,3 +11,59 @@ operaciones criptográficas utilizando:
     \item Diferentes modos de operación
     \item Derivación de claves a partir de contraseñas
 \end{itemize}
+
+\section{Enunciado entero:}
+\subsection{Generación y comprobación de Resúmenes}
+Una vez entendido el empleo del comando openssl-dgst y sus opciones básicas (-help, -list):
+\begin{enumerate}
+    \item Crear un archivo de texto legible de entre 150 y 200 caracteres.
+    \item Aplicar un mínimo de CINCO algoritmos de resumen distintos (md5, SHA-1, SHA-2 y
+    Whirlpool son obligatorios) sobre ese archivo de texto, verificar que el tamaño coincide con
+    la descripción del algoritmo de resumen empleado y comprobar cómo varían los resúmenes
+    obtenidos con el mismo algoritmo ante mínimas modificaciones del fichero (cambiando un
+    solo carácter, por ejemplo).
+    \item Alternar entre salida hexadecimal, hexadecimal con : y binaria
+\end{enumerate}
+\subsection{Cifrado Simétrico de documentos}
+Una vez entendido el empleo del comando openssl-enc para cifrar y descifrar, sus opciones básicas
+(-help y -list) con diferentes algoritmos y modos de operación, el empleo de 
+ficheros binarios y BASE64, la derivación de claves a partir de contraseñas 
+y sal, detallada en el estándar PKCS \#5 (PBKDF1 y PBKDF2) y su aplicación a 
+las claves de cifrado simétrico y vectores de inicialización:
+\begin{enumerate}
+    \item Crear un archivo de texto legible de pequeño tamaño – entre 31 y 81 caracteres (número impar).
+    \item Cifrarlo (con salida en modo binario) con SIETE algoritmos simétricos (AES y TDES
+    obligatorios, en modo bloque y flujo y dos cifradores de flujo -rc4 y –chacha20 o similar-).
+    \item Descifrarlos y comprobar el resultado
+    \item Explicar el tamaño de los diferentes ficheros cifrados en virtud del tamaño de bloque del cifrador
+    (o no, si se cifra en flujo), y sabiendo que el empleo de sal añade 16 bits de más al inicio del
+    fichero cifrado –Salted\_\_XXXXXXXX-.
+    \item Cifrar el archivo con aes-256-cbc y contraseña y 
+    descifrarlo NO con dicha contraseña, sino con su conjunto 
+    equivalente de clave (key) y vector de inicialización (iv). 
+    Para ello habrá que usar “-p” en el cifrado y eliminar los 16 
+    bits iniciales del fichero cifrado que contienen la sal aleatoria 
+    utilizada por el comando de cifrado (con el comando dd bs=1 skip=16 if= of= o 
+    similar) antes de descifrarlo con -k y -iv, poniendo sus valores 
+    mostrados al cifrarlo por la opción “-p”.
+\end{enumerate}
+
+\subsection{Aplicación: Demostración de la peligrosidad del modo de operación ECB}
+En este apartado demostraremos que el modo de operación “ecb” con cifradores simétricos es muy
+peligroso, repitiendo el ejemplo de Wikipedia con el pingüino Tux, utilizando una imagen pequeña
+con colores sólidos como entrada. Para ello:
+\begin{enumerate}
+    \item Escogeremos una imagen de entre 20 y 50 Kb de colores sólidos (gif, png, etc.)
+    \item Con la utilidad “convert” del paquete ImageMagick o similar la convertiremos a formato PGM
+    (ver \url{https://en.wikipedia.org/wiki/Netpbm}).
+    \item Separaremos la cabecera (3 primeras líneas de texto) y el cuerpo (binario) de la imagen
+    \item Cifraremos el cuerpo con el cifrador de bloques más potente en la actualidad (AES-256) en modo
+    ECB y una clave o contraseña aleatorias, si se usa contraseña, realizar el cifrado sin sal (-nosalt).
+    \item Crearemos la nueva imagen con la cabecera anterior y el cuerpo cifrado
+    \item Convertiremos la nueva imagen al formato original con Imagemagick “convert”
+    \item Verificaremos que la nueva imagen puede ser “vista” de la misma forma que Tux en el ejemplo
+    de Wikipedia \url{https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation}.
+    \item Realizar la operación con otro cifrador de 64 bits de bloque (des, des-ede3, etc) en modo ECB
+    y comparar los resultados. El menor tamaño de bloque debería acentuar las diferencias en los
+    cambios de color en la imagen original.
+\end{enumerate}
