@@ -100,11 +100,11 @@ Este es un texto de prueba para cifrado simétrico
 
 \begin{lstlisting}[caption=Cifrado con contraseña y PBKDF2]
 openssl enc -aes-256-cbc -pbkdf2 -in archivo.txt \
-    -out archivo.bin -pass pass:"contraseña" --binary
+    -out archivo.bin -pass pass:"contraseña" 
 
 # Con información de derivación
 openssl enc -aes-256-cbc -pbkdf2 -in archivo.txt \
-    -out archivo.bin -pass pass:"contraseña" -p --binary
+    -out archivo.bin -pass pass:"contraseña" -p 
 \end{lstlisting}
 
 \section{Resultados}
@@ -121,6 +121,10 @@ obligatorios, en modo bloque y flujo y dos cifradores de flujo -rc4 y –chacha2
 fichero cifrado –Salted\_\_XXXXXXXX-.
 
 Se realizaron cifrados con los siguientes algoritmos:
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{imagenes/screenshots/cifrado/1.png}
+\end{center}
 
 \begin{table}[H]
     \centering

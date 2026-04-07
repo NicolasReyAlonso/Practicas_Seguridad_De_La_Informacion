@@ -7,17 +7,16 @@
 \contentsline {subsection}{\numberline {1.2.3}Aplicación: Demostración de la peligrosidad del modo de operación ECB}{4}{subsection.1.2.3}%
 \contentsline {chapter}{\numberline {2}Generación y Comprobación de Resúmenes}{6}{chapter.2}%
 \contentsline {section}{\numberline {2.1}Descripción teórica}{6}{section.2.1}%
-\contentsline {section}{\numberline {2.2}Enunciados:}{6}{section.2.2}%
-\contentsline {section}{\numberline {2.3}Algoritmos utilizados}{7}{section.2.3}%
-\contentsline {section}{\numberline {2.4}Metodología experimental}{7}{section.2.4}%
-\contentsline {subsection}{\numberline {2.4.1}Archivo de prueba}{7}{subsection.2.4.1}%
+\contentsline {section}{\numberline {2.2}Algoritmos utilizados}{6}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Metodología experimental}{6}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Archivo de prueba}{6}{subsection.2.3.1}%
 \contentsline {subsubsection}{ Enunciado:}{7}{section*.3}%
-\contentsline {subsection}{\numberline {2.4.2}Comandos utilizados}{7}{subsection.2.4.2}%
-\contentsline {section}{\numberline {2.5}Resultados}{8}{section.2.5}%
-\contentsline {subsection}{\numberline {2.5.1}Resúmenes obtenidos}{8}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.3.2}Comandos utilizados}{7}{subsection.2.3.2}%
+\contentsline {section}{\numberline {2.4}Resultados}{8}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Resúmenes obtenidos}{8}{subsection.2.4.1}%
 \contentsline {subsubsection}{Enunciado:}{8}{section*.4}%
-\contentsline {subsection}{\numberline {2.5.2}Verificación de tamaño}{10}{subsection.2.5.2}%
-\contentsline {subsection}{\numberline {2.5.3}Sensibilidad del hash}{10}{subsection.2.5.3}%
+\contentsline {subsection}{\numberline {2.4.2}Verificación de tamaño}{9}{subsection.2.4.2}%
+\contentsline {subsection}{\numberline {2.4.3}Sensibilidad del hash}{10}{subsection.2.4.3}%
 \contentsline {chapter}{\numberline {3}Cifrado Simétrico de Documentos}{11}{chapter.3}%
 \contentsline {section}{\numberline {3.1}Descripción teórica}{11}{section.3.1}%
 \contentsline {section}{\numberline {3.2}Algoritmos de cifrado simétrico}{11}{section.3.2}%
