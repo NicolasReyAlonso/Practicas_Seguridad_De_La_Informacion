@@ -5,6 +5,30 @@
 Mozilla Thunderbird incorpora nativo para OpenPGP. Para poder firmar y cifrar correos con OpenPGP es necesario generar un par de claves personal y asociarlo a la cuenta de correo. El proceso se realiza desde la sección \textbf{Ajustes de cuenta $\rightarrow$ Cifrado de extremo a extremo}.
 
 \section{Paso 1 -- Acceso a la sección de cifrado de extremo a extremo}
+\subsection{Enunciado:}
+\begin{itemize}[label=\textbullet]
+    \item Antes de comenzar esta parte el estudiante podría eliminar de la configuración del
+Thunderbird toda la configuración realizada en el apartado anterior, eliminando el certificado
+S/MIME de la parte 2 … pero no lo aconsejamos, ya, el programa Thunderbird permite
+que coexistan configuraciones de S/MIME y OpenPGP, con el empleo habitual de
+mensajes sin cifrar ni firmar por ninguno de los dos sistemas. Es decir, si nuestro interlocutor
+no está almacenado en ninguna de las dos bases de datos de direcciones asociadas a clave
+pública SSL u OpenPGP, el comportamiento del Thunderbird será idéntico al convencional,
+y siempre se podrá configurar Thunderbird para que en su comportamiento por defecto, realice
+envíos cifrados, firmados (mediante OpenPGP y OpenSSL) o sin seguridad a direcciones
+asociadas a una clave pública o certificado X.509.   
+    \item A continuación, acceder en el menú superior a la opción Herramientas / Configuración de
+cuenta que abre una nueva pestaña, y en el menú de la izquierda seleccionar, abriendo la
+configuración de la cuenta escogida, la opción "Generate OpenPGP Key". En la pantalla
+siguiente, indicar que la clave no expira y el tipo de clave y tamaño recomendado. Finalizada
+la generación de las claves, se regresa a la pantalla anterior donde vemos que ya están
+activadas las claves OpenPGP para la cuenta seleccionada. Es importante asegurarnos de que NO hemos activado el cifrado por defecto ni el envío de firmas de manera
+predeterminada,
+\item A partir de ese momento, ya podríamos enviar mensajes firmados (todavía sin cifrar) con
+OpenPGP haciendo uso de la opción "Seguridad" de la pantalla de envío de mensajes y
+activando la casilla correspondiente, pero no tendría mucho sentido hacerlo a quién no tenga
+habilitada esta funcionalidad de correo seguro OpenPGP.
+\end{itemize}
 
 Accedemos a \textbf{Ajustes de cuenta} y seleccionamos \textbf{End-To-End Encryption} en el menú lateral. Thunderbird muestra que no existe ninguna clave OpenPGP asociada a la cuenta y ofrece el botón \textbf{Add Key\ldots} para iniciar el proceso.
 

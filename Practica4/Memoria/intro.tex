@@ -84,8 +84,117 @@ Para decodificarlo, el receptor realiza el proceso inverso:
 \section{Herramientas utilizadas}
 
 \begin{itemize}[label=\textbullet]
-    \item \textbf{OpenSSL 3.x:} Herramienta de criptografía en línea de comandos
+    \item \textbf{OpenSSL:} Herramienta de criptografía en línea de comandos
     \item Comandos principales: \texttt{genpkey}, \texttt{req}, \texttt{x509}, \texttt{pkcs12}, \texttt{smime}
     \item \textbf{Mozilla Thunderbird:} Cliente de correo electrónico con soporte S/MIME
 \end{itemize}
 
+\section{Enunciado completo}
+
+\subsection*{1.1. Creación de nuestro certificado personal}
+
+\subsubsection*{1.1.1.}
+Leer con mucha atención el apartado ``Generación y verificación de certificados'' de la Wiki ``HowTo OpenSSL''
+(\texttt{https://openssl.cicei.com}). En ese apartado se explica cómo crear un certificado raíz autofirmado que
+firma un certificado intermedio y este último firma un certificado final. Comprender todo lo que se explica.
+
+\subsubsection*{1.1.2.}
+Entendido el proceso, lo que se nos pide es que, utilizando un certificado raíz ya existente y su fichero de clave
+(\texttt{certificadoRaiz.cert} y \texttt{certificadoRaiz.key}, disponibles en la página de la asignatura en formato
+PEM; la contraseña de protección de la clave es \texttt{SEGURIDAD}), generemos nuestro certificado personal con
+los datos de C, O, OU que se estimen, pero con nuestro nombre y apellidos en CN (Common Name) y nuestra
+dirección de correo personal en el campo Email Address. Los pasos serán:
+
+\begin{enumerate}[label=\alph*)]
+    \item Descargar \texttt{certificadoRaiz.crt} y \texttt{certificadoRaiz.key} de la página de la asignatura.
+    \item Crear la clave de nuestro certificado (\texttt{openssl genpkey ...}) $\rightarrow$ \texttt{certificadoPersonal.key}.
+
+    (Hay que crear una contraseña que protege esta clave y anotarla.)
+
+    \item Crear el CSR de nuestro certificado (\texttt{openssl req -new ...}) $\rightarrow$ \texttt{certificadoPersonal.csr}.
+    \item Crear nuestro certificado personal a partir del CSR, el certificado raíz y su clave. Para ello habrá que
+    introducir la contraseña \texttt{SEGURIDAD} que protege la clave de la raíz. El comando será del tipo
+    (\texttt{openssl x509 -req -days 365 ...}) $\rightarrow$ \texttt{certificadoPersonal.crt}.
+\end{enumerate}
+
+Los comandos OpenSSL de los pasos b), c) y d) están incompletos, pero entendiendo lo que se explica en el
+apartado 6.2 (``Certificado intermedio'') de la Wiki y reemplazando los nombres de
+\texttt{certificadoIntermedio} por \texttt{certificadoPersonal}, es fácil de realizar.
+
+Una vez realizados correctamente los pasos anteriores, además del certificado raíz y su clave, tendremos los
+ficheros \texttt{certificadoPersonal.key} (protegido con la contraseña que hayan escogido),
+\texttt{certificadoPersonal.csr} (ya no nos hace falta, se podría eliminar) y \texttt{certificadoPersonal.crt}
+(la parte pública de nuestro certificado).
+
+Ya solo nos queda crear un fichero PKCS\#12 con la parte pública y privada de nuestro certificado personal
+para poder importarlo en el agente de correo:
+
+\begin{enumerate}[label=\alph*), start=5]
+    \item El último apartado de la Wiki, 6.6 (``PEM a PKCS\#12''), explica cómo crear un fichero
+    \texttt{inter.p12} a partir de \texttt{certificadoIntermedio.crt} y \texttt{certificadoIntermedio.key}.
+    Tendremos que hacer un comando similar, cambiando ``Intermedio'' por ``Personal'', para crear un fichero
+    llamado \texttt{certificadoPersonal.p12}. Atención: el comando nos pedirá la clave que protege
+    \texttt{certificadoPersonal} y, a continuación, otra clave (podría ser la misma) para proteger el fichero
+    de salida \texttt{certificadoPersonal.p12}.
+\end{enumerate}
+
+El comando será del tipo (\texttt{openssl pkcs12 export ...}) $\rightarrow$ \texttt{certificadoPersonal.p12}.
+
+\subsection*{1.2. Instalación de los certificados en el cliente de correo e intercambio de certificados y correo firmado y cifrado con otro compañero}
+
+\subsubsection*{1.2.1.}
+Una vez creado nuestro certificado digital, hemos de configurar el cliente de correo electrónico Mozilla
+Thunderbird para que pueda firmar y cifrar mensajes con dicho certificado. Los correos a través de web
+(como el de la ULPGC) no permiten el uso de certificados, así que, si no lo tenemos instalado, habrá que
+configurar previamente Mozilla Thunderbird con nuestro correo electrónico personal (no el de la ULPGC).
+
+\subsubsection*{1.2.2.}
+En este cliente de correo electrónico hemos de instalar tanto la parte pública del certificado raíz
+(fichero \texttt{certificadoRaiz.crt}), como nuestro certificado personal completo
+(fichero \texttt{certificadoPersonal.p12}) con la contraseña que le pusimos.
+
+En Thunderbird hay que acceder a Herramientas/Opciones/Avanzado/Administrar certificados. Al importar el
+certificado raíz, asignarle confianza para gestionar correo electrónico y verificar que se encuentra en el
+almacén de ``Autoridades'' (debe aparecer en primer lugar, ya que el nombre de la organización es
+``ULPGC - Seguridad de la Información''). A continuación, hemos de importar nuestro
+\texttt{certificadoPersonal.p12} e introducir la contraseña que lo protege. Verificar que nuestro certificado
+personal aparece en el almacén de ``Sus certificados'' o similar.
+
+\subsubsection*{1.2.3.}
+Con ambos certificados ya instalados, hay que configurar nuestra cuenta de correo electrónico para que utilice
+nuestro certificado personal. En Thunderbird eso se hace en Herramientas/Configuración de cuenta/Seguridad:
+al pulsar el botón de Seleccionar en las opciones de Firmado Digital y Cifrado debe aparecer seleccionado
+nuestro certificado personal que cargamos previamente.
+
+Importante: no seleccionar las opciones de firmar y cifrar siempre; es mejor decidir cuándo se envían mensajes
+firmados y cifrados antes de enviar cada mensaje.
+
+\subsubsection*{1.2.4.}
+Una vez configurado e instalado el certificado, podremos firmar los mensajes que enviemos, pero para cifrar
+correo hacia un destinatario es necesario disponer previamente de su certificado personal (obviamente, solo con
+la clave pública). Por tanto, aconsejamos intercambiar mensajes solo firmados con otro compañero, y así nuestro
+programa de correo almacenará el certificado del compañero que acompaña a su mensaje firmado. Una vez que
+verifiquemos que el certificado del compañero está en nuestro almacén de ``Otras personas'', ya podremos
+intercambiar mensajes cifrados y firmados.
+
+\subsubsection*{1.2.5.}
+Enviar un mensaje con Asunto: (nombre y apellidos) a dicha dirección de correo (la del compañero), con un breve
+texto de salutación y, sobre todo, con las opciones de firmado y cifrado activadas.
+
+\subsection*{1.3. Decodificación con la utilidad \texttt{openssl smime} del mensaje cifrado y firmado que recibimos del compañero}
+
+\subsubsection*{1.3.1.}
+Una vez recibido el mensaje cifrado y firmado del compañero, se trata de decodificar ese mensaje desde la
+utilidad \texttt{openssl smime}. Para ello, hemos de guardar desde Thunderbird el mensaje completo como texto
+en formato \texttt{.eml} (seleccionar mensaje, botón derecho, Guardar como...), exportar nuestro certificado
+completo (o utilizar nuestro fichero \texttt{certificadoPersonal.p12}) y el certificado del compañero (exportar
+en formato \texttt{.crt}), y procesar estos tres ficheros (mensaje de texto y los dos certificados) a través de la
+citada utilidad \texttt{openssl smime}.
+
+\subsubsection*{1.3.2.}
+El apartado 5 (S/MIME) de la Wiki explica con detalle cómo procesar correos S/MIME desde línea de comandos
+OpenSSL. Lo que pedimos ahora está explicado en el apartado 5.2.4 (``Descifrar mensaje cifrado y firmado'')
+de la citada Wiki. Obsérvese que el descifrado y la verificación de firma han de hacerse por separado.
+
+Documentar este proceso en detalle, mostrando en capturas de pantalla la cabecera de correo con los adjuntos,
+tanto del fichero cifrado y firmado (SMIME.P7M) como del fichero resultado de descifrado (SMIME.P7S).

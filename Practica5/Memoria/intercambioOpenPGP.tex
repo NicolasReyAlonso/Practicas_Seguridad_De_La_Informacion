@@ -1,5 +1,25 @@
 \chapter{Intercambio de Correo Seguro OpenPGP}
 
+\section{Enunciado:}
+\begin{itemize}[label=\textbullet]
+    \item Ahora, aconsejamos en esa misma pestaña, pulsar de nuevo el botón de ``OpenPGP Key
+    Manager'' y seleccionando la clave recién creada, usar la opción de ``File/Backup secret keys
+    to file'' para hacer una copia de la clave privada con contraseña, para conservarla en lugar
+    seguro y acto seguido, la opción de ``File/Export Public Key to file''. Este último fichero
+    puede ser enviado a cualquier compañero con el que queramos hacer una prueba de envío de
+    mensaje firmado y cifrado, ya que sólo se puede cifrar un mensaje a una dirección de correo
+    de la que tengamos su clave pública. Si enviamos el fichero de clave pública a un compañero,
+    él podrá desde este mismo programa usar la opción inversa de ``File/Import Public Keys
+    from File'' y validar nuestra clave pública. Es decir, una vez se hayan intercambiado las
+    claves públicas entre dos o más compañeros, también se podrán intercambiar mensajes
+    cifrados.
+    \item Como alternativa más cómoda, se pueden intercambiar mensajes sólo firmados y los
+    receptores de cada mensaje pueden incorporar la clave pública del remitente al almacén de
+    claves de la herramienta ``OpenPGP Key Manager'' antes indicada, a continuación darle
+    validez a la clave, y a partir de ese momento, se pueden enviar mensajes tanto firmados como
+    cifrados.
+\end{itemize}
+
 \section{Descripción del escenario}
 
 Para poder enviar un mensaje \textbf{cifrado} a alguien, es imprescindible disponer de su \textbf{clave pública}. El intercambio de claves se realiza enviando primero la propia clave pública al compañero (adjunta en un correo), y a su vez recibiendo la del compañero. Una vez ambas partes disponen de las claves públicas del otro, es posible enviar mensajes cifrados y firmados.

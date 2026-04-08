@@ -1,42 +1,12 @@
 \chapter{Instalación de Certificados en Thunderbird e Intercambio de Correo S/MIME}
 
-\section{Enunciado}
-
-\textbf{1.2 -- Instalación de los certificados en el cliente de correo e intercambio de certificados y correo firmado y cifrado con otro compañero}
-
+\section{Instalación del certificado raíz}
+\subsection{Enunciado:}
 1.2.1. Una vez creado nuestro certificado digital, hemos de configurar el cliente de correo electrónico
 Mozilla Thunderbird para que pueda firmar y cifrar mensajes con dicho certificado. Los correos a través de
 web (como el de la ULPGC) no permiten el uso de certificados, así que si no lo tenemos instalado, habrá que
 configurar previamente Mozilla Thunderbird con nuestro correo electrónico personal (no el de la ULPGC).
 
-1.2.2. En este cliente de correo electrónico hemos de instalar tanto la parte pública del certificado raíz
-(fichero \texttt{certificadoRaiz.crt}), como nuestro certificado personal completo (fichero
-\texttt{certificadoPersonal.p12}) con la contraseña que le pusimos. En Thunderbird, hay que acceder a
-Herramientas/Opciones/Avanzado/Administrar certificados). Al Importar el certificado raíz, asignarle
-confianza para gestionar correo electrónico y verificar que se encuentra en el almacén de ``Autoridades''
-(debe aparecer en primer lugar, ya que el nombre de la organización es ``ULPGC -- Seguridad de la
-Información''. A continuación, hemos de importar nuestro \texttt{certificadoPersonal.p12} e introducir la
-contraseña que lo protege. Verificar que nuestro certificado personal aparece en el almacén de ``Sus
-certificados'' o similar.
-
-1.2.3. Con ambos certificados ya instalados, hay que configurar nuestra cuenta de correo electrónico para
-que utilice nuestro certificado personal, en Thunderbird eso se hace en Herramientas/Configuración de
-cuenta/Seguridad\dots al pulsar el botón de Seleccionar en las opciones de Firmado Digital y Cifrado debe
-aparecer seleccionado nuestro certificado personal que cargamos previamente. Importante: no seleccionar
-las opciones de firmar y cifrar siempre, es mejor decidir cuándo se envían mensajes firmados y cifrados
-antes de enviar cada mensaje.
-
-1.2.4. Una vez configurado e instalado el certificado, podremos FIRMAR los mensajes que enviemos, pero
-para cifrar correo hacia un destinatario, es necesario disponer previamente de SU certificado personal
-(obviamente, sólo con la clave pública). Por tanto aconsejamos intercambiar mensajes SOLO FIRMADOS
-con otro compañero y así nuestro programa de correo almacenará el certificado del compañero que acompaña
-a su mensaje cifrado. Una vez que verifiquemos que el certificado del compañero está en nuestro almacén de
-``Otras personas'', ya podremos intercambiar mensajes cifrados y firmados.
-
-1.2.5. Enviar un mensaje con Asunto: (nombre y apellidos) a dicha dirección de correo (la del compañero)
-con un breve texto de salutación y sobre todo, con las opciones de firmado y cifrado activadas.
-
-\section{Instalación del certificado raíz}
 
 El primer paso es importar la parte pública del certificado raíz (\texttt{certificadoRaiz.crt}) en Mozilla Thunderbird para que el cliente de correo confíe en los certificados firmados por esta CA.
 
@@ -52,6 +22,16 @@ Al importar el certificado raíz se le asigna confianza para \textit{identificar
 \end{figure}
 
 \section{Instalación del certificado personal}
+\subsection{Enunciado:}
+1.2.2. En este cliente de correo electrónico hemos de instalar tanto la parte pública del certificado raíz
+(fichero \texttt{certificadoRaiz.crt}), como nuestro certificado personal completo (fichero
+\texttt{certificadoPersonal.p12}) con la contraseña que le pusimos. En Thunderbird, hay que acceder a
+Herramientas/Opciones/Avanzado/Administrar certificados). Al Importar el certificado raíz, asignarle
+confianza para gestionar correo electrónico y verificar que se encuentra en el almacén de ``Autoridades''
+(debe aparecer en primer lugar, ya que el nombre de la organización es ``ULPGC -- Seguridad de la
+Información''. A continuación, hemos de importar nuestro \texttt{certificadoPersonal.p12} e introducir la
+contraseña que lo protege. Verificar que nuestro certificado personal aparece en el almacén de ``Sus
+certificados'' o similar.
 
 A continuación se importa el fichero \texttt{certificadoPersonal.p12} que contiene tanto la clave privada como el certificado personal. Thunderbird solicita la contraseña de protección del \texttt{.p12} que establecimos anteriormente.
 
@@ -65,6 +45,13 @@ Tras la importación, nuestro certificado aparece en la pestaña \textbf{Sus cer
 \end{figure}
 
 \section{Configuración de la cuenta de correo}
+\subsection{Enunciado:}
+1.2.3. Con ambos certificados ya instalados, hay que configurar nuestra cuenta de correo electrónico para
+que utilice nuestro certificado personal, en Thunderbird eso se hace en Herramientas/Configuración de
+cuenta/Seguridad\dots al pulsar el botón de Seleccionar en las opciones de Firmado Digital y Cifrado debe
+aparecer seleccionado nuestro certificado personal que cargamos previamente. Importante: no seleccionar
+las opciones de firmar y cifrar siempre, es mejor decidir cuándo se envían mensajes firmados y cifrados
+antes de enviar cada mensaje.
 
 Para que Thunderbird utilice nuestro certificado al firmar y cifrar mensajes, se configura la cuenta:
 
@@ -76,6 +63,13 @@ Para que Thunderbird utilice nuestro certificado al firmar y cifrar mensajes, se
 \end{enumerate}
 
 \section{Intercambio de certificados con la compañera}
+\subsection{Enunciado:}
+1.2.4. Una vez configurado e instalado el certificado, podremos FIRMAR los mensajes que enviemos, pero
+para cifrar correo hacia un destinatario, es necesario disponer previamente de SU certificado personal
+(obviamente, sólo con la clave pública). Por tanto aconsejamos intercambiar mensajes SOLO FIRMADOS
+con otro compañero y así nuestro programa de correo almacenará el certificado del compañero que acompaña
+a su mensaje cifrado. Una vez que verifiquemos que el certificado del compañero está en nuestro almacén de
+``Otras personas'', ya podremos intercambiar mensajes cifrados y firmados.
 
 Para poder enviar correo cifrado a un destinatario, es necesario disponer previamente de su certificado (clave pública). El procedimiento de intercambio es:
 
@@ -116,6 +110,9 @@ Tras recibir un mensaje firmado por la compañera, su certificado queda almacena
 \end{figure}
 
 \section{Envío de mensaje cifrado y firmado}
+\subsection{Enunciado:}
+1.2.5. Enviar un mensaje con Asunto: (nombre y apellidos) a dicha dirección de correo (la del compañero)
+con un breve texto de salutación y sobre todo, con las opciones de firmado y cifrado activadas.
 
 Una vez que disponemos del certificado de la compañera, podemos enviar un mensaje tanto \textbf{firmado} como \textbf{cifrado}. El cifrado se realiza con la clave pública del destinatario, de modo que solo él puede descifrarlo con su clave privada.
 

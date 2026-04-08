@@ -1,5 +1,59 @@
 \chapter{Decodificación Manual con GnuPG}
 
+\section{Enunciado:}
+
+\subsection*{5.2.1. Prerrequisitos}
+
+Para realizar este apartado es necesario tener instalada la utilidad \texttt{gnupg}; es un paquete muy común
+en distribuciones Linux y en muchas está instalado por defecto.
+
+También puede ser necesaria la utilidad \texttt{ripmime} de utilidades MIME, ya citada en la práctica 1.
+
+\subsection*{5.2.2. Secuencia de operaciones}
+
+Una vez intercambiado el mensaje cifrado y firmado con claves OpenPGP entre compañeros,
+hacemos una breve descripción de los pasos necesarios, suponiendo que no se tiene configurado el
+uso de GnuPG en nuestro equipo:
+
+\begin{itemize}[label=\textbullet]
+    \item Descargar del OpenPGP Key Manager de Thunderbird una copia de nuestra clave privada, protegida
+    por contraseña (a un fichero \texttt{claveprivada.asc}).
+    \item Descargar también la clave pública del compañero que envió el mensaje (a un fichero \texttt{clave.asc}).
+    \item Exportar (guardar como\ldots) el mensaje cifrado y firmado como \texttt{mensaje.eml}.
+\end{itemize}
+
+Ahora importamos nuestra clave privada en \texttt{gnupg}:
+
+\begin{itemize}[label=\textbullet]
+    \item \texttt{\# gpg --import claveprivada.asc} \\
+    (debe solicitar contraseña, en algunos sistemas se requiere la instalación previa de \texttt{gpg-agent})
+\end{itemize}
+
+Se importa la clave pública del remitente del mensaje en \texttt{gnupg}:
+
+\begin{itemize}[label=\textbullet]
+    \item \texttt{\# gpg --import clave.asc} \\
+    (en ocasiones se queja de caracteres inconsistentes, en ese caso habría que hacer \texttt{gpg --dearmor clave.asc}, lo que crearía un fichero \texttt{clave.asc.gpg} y se repite el comando con este fichero, \texttt{gpg --import clave.asc.gpg})
+\end{itemize}
+
+Y finalmente se descifra y verifica la firma del mensaje:
+
+\begin{itemize}[label=\textbullet]
+    \item \texttt{\# gpg --decrypt mensaje.eml} \\
+    (se puede leer en pantalla)
+\end{itemize}
+
+En ocasiones, el mensaje descifrado muestra el texto de dicho mensaje codificado en Base64, en ese
+caso lo ideal es utilizar la utilidad \texttt{ripmime} para extraer los adjuntos MIME del mensaje descifrado:
+
+\begin{itemize}[label=\textbullet]
+    \item \texttt{\# gpg --decrypt mensaje.eml > mensaje.mime}
+    \item \texttt{\# mkdir dir\_final}
+    \item \texttt{\# ripmime mensaje.mime dir\_final}
+\end{itemize}
+
+Y esto nos crearía tantos ficheros como adjuntos tenga el mensaje en ese directorio.
+
 \section{Descripción del proceso}
 
 Este apartado describe la decodificación manual de un mensaje cifrado y firmado con OpenPGP utilizando la herramienta de línea de comandos \textbf{GnuPG} (\texttt{gpg}), sin depender del cliente de correo Thunderbird.

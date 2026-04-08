@@ -1,19 +1,5 @@
 \chapter{Intercambio de Información Segura}
 
-\section{Enunciado}
-
-\begin{itemize}[label=\textbullet]
-    \item Convertir el fichero claves.txt a fichero binario claves2.bin con \texttt{openssl enc -a\dots}
-    \item Descifrar el fichero claves2.bin con la clave privada bertopriv.pem (contraseña bertok) y
-    salida a un fichero claves2.hex (debería ser idéntico a claves.hex).
-    \item Extraer de claves2.hex la clave y el vector en formato hexadecimal, siguiendo la meta-información que le envió Ana junto con los tres ficheros).
-    \item Descifrar el fichero cifrado.txt con la clave y el vector obtenidos (de claves2.hex) y salida al
-    fichero mensaje2.txt (que debería ser igual al fichero original mensaje.txt utilizado por Ana).
-    \item Verificar que el fichero firma.txt, convertido a binario y descifrado con la clave pública de
-    Ana (anapub.pem), coincide con un resumen sha256 del fichero mensaje2.txt. Muy
-    importante: asegurarse de que utilizan la opción \texttt{-verifyrestore} para recuperar el resumen
-    obtenido por Ana descifrando su firma y compararlo con un resumen obtenido por Berto.
-\end{itemize}
 
 \section{Descripción del escenario}
 
@@ -182,7 +168,14 @@ Ana envía a Berto los tres ficheros junto con la meta-información:
 %% ============================================================================
 
 \section{Trabajo de Berto: Descifrado y verificación}
-
+\subsection{Enunciado:}
+\begin{itemize}[label=\textbullet]
+    \item Convertir el fichero claves.txt a fichero binario claves2.bin con \texttt{openssl enc -a\dots}
+    \item Descifrar el fichero claves2.bin con la clave privada bertopriv.pem (contraseña bertok) y salida a un fichero claves2.hex (debería ser idéntico a claves.hex).
+    \item Extraer de claves2.hex la clave y el vector en formato hexadecimal, siguiendo la meta-información que le envió Ana junto con los tres ficheros).
+    \item Descifrar el fichero cifrado.txt con la clave y el vector obtenidos (de claves2.hex) y salida al fichero mensaje2.txt (que debería ser igual al fichero original mensaje.txt utilizado por Ana).
+    \item Verificar que el fichero firma.txt, convertido a binario y descifrado con la clave pública de Ana (anapub.pem), coincide con un resumen sha256 del fichero mensaje2.txt. Muy importante: asegurarse de que utilizan la opción \texttt{-verifyrestore} para recuperar el resumen obtenido por Ana descifrando su firma y compararlo con un resumen obtenido por Berto.
+\end{itemize}
 \subsection{Paso 1: Recuperación de las claves simétricas}
 
 Berto convierte \texttt{claves.txt} de BASE64 a binario y descifra con su clave privada:
@@ -244,6 +237,12 @@ diff resumen_ana.bin resumen_berto.bin
 \end{lstlisting}
 
 \textbf{Resultado esperado:}
+
+\begin{center}
+    \includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Intercambio/ExtraccionDeClavesBerto.png}
+    \includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Intercambio/BertoDesencriptaTexto.png}
+    \includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Intercambio/ComprobarResumenes.png}
+\end{center}
 
 \begin{itemize}[label=\textbullet]
     \item Si \texttt{diff} no produce salida: Los resúmenes son \textbf{idénticos}.
