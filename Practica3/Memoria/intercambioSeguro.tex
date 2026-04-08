@@ -69,9 +69,12 @@ openssl pkey -in bertopriv.pem -passin pass:"bertok" \
 
 Ana y Berto intercambian sus claves públicas (\texttt{anapub.pem} y \texttt{bertopub.pem}).
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Intercambio/ClavesAnaBerto.png}
-\end{center}
+    \caption{Generación e ``intercambio'' de claves RSA para Ana y Berto}
+    \label{fig:claves_ana_berto}
+\end{figure}
 
 %% ============================================================================
 %% Trabajo de Ana
@@ -139,9 +142,12 @@ openssl pkeyutl -sign -in resumen.bin \
 openssl enc -a -in firma.bin -out firma.txt
 \end{lstlisting}
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Intercambio/CifradoClaveYFirmaANA.png}
-\end{center}
+    \caption{Proceso de cifrado simétrico, protección de claves y generación de firma digital realizado por Ana}
+    \label{fig:cifrado_clave_firma_ana}
+\end{figure}
 
 \subsection{Envío}
 
@@ -238,11 +244,18 @@ diff resumen_ana.bin resumen_berto.bin
 
 \textbf{Resultado esperado:}
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Intercambio/ExtraccionDeClavesBerto.png}
+    
+    \vspace{0.5cm}
     \includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Intercambio/BertoDesencriptaTexto.png}
+    
+    \vspace{0.5cm}
     \includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Intercambio/ComprobarResumenes.png}
-\end{center}
+    \caption{Proceso completo de Berto: extracción de claves simétricas protegidas, descifrado del documento y verificación de la firma digital de Ana}
+    \label{fig:extraccion_descifrado_verificacion_berto}
+\end{figure}
 
 \begin{itemize}[label=\textbullet]
     \item Si \texttt{diff} no produce salida: Los resúmenes son \textbf{idénticos}.

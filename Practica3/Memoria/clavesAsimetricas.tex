@@ -33,7 +33,14 @@ openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 \
     -aes-256-cbc -pass pass:"rsapassword123" \
     -out rsa_privkey.pem
 \end{lstlisting}
-\includegraphics[width=1\textwidth]{Imagenes/Capturas/Generacion/CrearRSA.png}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{Imagenes/Capturas/Generacion/CrearRSA.png}
+    \caption{Ejecución de la generación de la clave privada RSA de 2048 bits protegida}
+    \label{fig:generacion_rsa}
+\end{figure}
+
 La clave privada generada está cifrada con AES-256-CBC y protegida con la contraseña proporcionada. La cabecera del archivo PEM indica que está cifrada:
 
 \begin{lstlisting}[caption=Cabecera de clave privada cifrada]
@@ -47,9 +54,13 @@ La clave privada generada está cifrada con AES-256-CBC y protegida con la contr
 openssl pkey -in rsa_privkey.pem -passin pass:"rsapassword123" \
     -pubout -out rsa_pubkey.pem
 \end{lstlisting}
-\begin{center}
-\includegraphics[width=1\textwidth]{Imagenes/Capturas/Generacion/ExportarClave.png}    
-\end{center}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{Imagenes/Capturas/Generacion/ExportarClave.png}
+    \caption{Exportación de la clave pública a formato PEM}
+    \label{fig:exportar_rsa_pub}
+\end{figure}
 
 \subsection{Conversión a formato DER y de vuelta a PEM}
 \subsubsection{Enunciado:}
@@ -75,11 +86,14 @@ openssl pkey -in rsa_privkey.der -inform DER \
 
 En lugar de \texttt{-----BEGIN ENCRYPTED PRIVATE KEY-----}, lo que demuestra que la conversión a formato DER \textbf{elimina la protección con contraseña} de la clave privada.
 
-\begin{center}
-\includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Generacion/ExportarDER.png}    
-\includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Generacion/ReconvertirAPEM.png}
-\includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Generacion/ComprobacionDERSinContrasena.png}
-\end{center}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Generacion/ExportarDER.png}    
+    \includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Generacion/ReconvertirAPEM.png}
+    \includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Generacion/ComprobacionDERSinContrasena.png}
+    \caption{Exportación a DER, reconversión a PEM y comprobación de ausencia de contraseña}
+    \label{fig:rsa_der_pem}
+\end{figure}
 
 \subsection{Firma y verificación RSA}
 \subsubsection{Enunciado:}
@@ -111,9 +125,12 @@ Signature Verified Successfully
 
 \textbf{Tamaño de la firma RSA-2048:} 256 bytes (igual al tamaño de la clave en bytes: $2048 / 8 = 256$).
 
-\begin{center}
-\includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Generacion/ResumenFirmaYVerificacion.png}
-\end{center}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Generacion/ResumenFirmaYVerificacion.png}
+    \caption{Proceso de cálculo de resumen, firma y verificación con RSA exitosa}
+    \label{fig:firma_rsa}
+\end{figure}
 
 %% ============================================================================
 %% DSA
@@ -183,10 +200,14 @@ openssl pkeyutl -verify -in dsa_digest.bin \
 \textbf{Nota:} El tamaño de la firma DSA es variable (entre 46-48 bytes típicamente), ya que DSA codifica la firma como estructura ASN.1 con dos valores $(r, s)$.
 
 \subsection{Resultado:}
-\begin{center}
-\includegraphics[width=1\textwidth]{Imagenes/Capturas/Generacion/DSA1.png}
-\includegraphics[width=1\textwidth]{Imagenes/Capturas/Generacion/DSA2.png}
-\end{center}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{Imagenes/Capturas/Generacion/DSA1.png}
+    \includegraphics[width=1\textwidth]{Imagenes/Capturas/Generacion/DSA2.png}
+    \caption{Ejecución de todo el proceso de generación, exportación, conversión, firma y verificación con DSA}
+    \label{fig:proceso_dsa}
+\end{figure}
 
 \subsection{Comparación RSA vs DSA}
 
@@ -258,10 +279,13 @@ openssl pkeyutl -derive -inkey dh_privkey2.pem \
 
 \textbf{Resultado:} Ambos secretos son \textbf{idénticos}, demostrando la propiedad fundamental de Diffie-Hellman.
 
-\begin{center}
-\includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Generacion/ParDH1.png}
-\includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Generacion/DH1ComprobarSecretoKeyKeySecreto.png}
-\end{center}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Generacion/ParDH1.png}
+    \includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Generacion/DH1ComprobarSecretoKeyKeySecreto.png}
+    \caption{Generación de las claves públicas y comprobación de igualdad en el secreto derivado (DH)}
+    \label{fig:derivacion_dh}
+\end{figure}
 
 %% ============================================================================
 %% X25519
@@ -313,9 +337,14 @@ openssl pkeyutl -derive -inkey x25519_privkey2.pem \
 \end{lstlisting}
 
 \textbf{Resultado:} Ambos secretos X25519 son \textbf{idénticos}, confirmando el intercambio correcto.
-\begin{center}
-\includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Generacion/DH2.png}
-\end{center}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Generacion/DH2.png}
+    \caption{Ejecución de la generación y comprobación de igualdad del secreto compartido usando curva elíptica X25519}
+    \label{fig:derivacion_x25519}
+\end{figure}
+
 \subsection{Comparación de tamaños: DH vs X25519}
 
 \begin{table}[H]
@@ -330,7 +359,12 @@ openssl pkeyutl -derive -inkey x25519_privkey2.pem \
         \bottomrule
     \end{tabularx}
 \end{table}
-\begin{center}
-\includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Generacion/ComparaciónTamañoSecretos.png}
-\end{center}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Generacion/ComparaciónTamañoSecretos.png}
+    \caption{Verificación de tamaño de los ficheros binarios de los secretos para DH y X25519}
+    \label{fig:comparacion_tamanios_secretos}
+\end{figure}
+
 \textbf{Conclusión:} X25519 genera un secreto de \textbf{32 bytes} (256 bits) frente a los \textbf{256 bytes} (2048 bits) de DH estándar, logrando seguridad equivalente con un secreto \textbf{8 veces menor}. Esto se debe a que la seguridad en curvas elípticas crece mucho más rápido con el tamaño de la clave que en DH clásico.
