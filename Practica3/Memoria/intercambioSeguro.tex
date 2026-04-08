@@ -2,41 +2,6 @@
 
 \section{Enunciado}
 
-\textbf{3.2 Intercambio de información segura (cifrado asimétrico de clave simétrica y firma)}
-
-En este apartado vamos a reproducir en una secuencia de operaciones el intercambio de información
-segura entre dos agentes utilizando cifrado simétrico, cifrado asimétrico de las claves simétricas y
-firma digital (cifrado asimétrico de un resumen del documento original).
-
-Para ello, generaremos dos parejas de claves RSA de 2048 bits que serán utilizadas por dos agentes
-(Ana y Berto) de forma que Ana construirá tres ficheros de texto a partir del fichero de texto original,
-el primero con el fichero cifrado, el segundo con las claves utilizadas y el tercero con la firma digital.
-
-Así, primero generaremos las dos claves:
-\begin{itemize}[label=\textbullet]
-    \item Generar una pareja de claves RSA de 2048 bits en ficheros anapub.pem y anapriv.pem y otra
-    pareja de claves del mismo tipo bertopub.pem y bertopriv.pem.
-    \item Proteger ambas claves privadas con contraseña ``anak'' y ``bertok'' respectivamente.
-\end{itemize}
-
-Se supone que Ana y Berto han intercambiado sus claves públicas. A continuación, realizaremos el
-trabajo de Ana:
-\begin{itemize}[label=\textbullet]
-    \item Cifrar un fichero de texto (texto.txt) de los apartados anteriores con AES-256 en modo CBC,
-    con clave y vector escogidos por el estudiante y sin sal, con salida en formato BASE64 a un
-    fichero llamado cifrado.txt.
-    \item Crear un fichero de texto (hexadecimal) con la concatenación de la clave y el vector
-    utilizados, de nombre claves.hex y cifrarlo con la clave pública bertopub.pem, con salida en
-    formato binario a un fichero claves.bin
-    \item Convertir claves.bin a claves.txt en formato BASE64 (mediante \texttt{openssl enc -a \dots})
-    \item Obtener un resumen sha256 en binario del fichero de texto original con nombre resumen.bin
-    y firmarlo (es decir, cifrarlo con la clave privada anapriv.pem -clave anak-), con salida en
-    formato BASE64 a un fichero llamado firma.txt.
-\end{itemize}
-
-En este momento, Ana enviaría los tres ficheros obtenidos cifrado.txt, claves.txt y firma.txt (junto a
-la meta-información relativa a los algoritmos utilizados, cómo se concatenan clave y vector\dots) a
-Berto\dots que seremos nosotros mismos. Actuando como Berto, procederemos a:
 \begin{itemize}[label=\textbullet]
     \item Convertir el fichero claves.txt a fichero binario claves2.bin con \texttt{openssl enc -a\dots}
     \item Descifrar el fichero claves2.bin con la clave privada bertopriv.pem (contraseña bertok) y
@@ -94,7 +59,12 @@ El flujo de comunicación es:
 %% ============================================================================
 
 \section{Generación de claves para Ana y Berto}
-
+\subsection{Enunciado:}
+\begin{itemize}[label=\textbullet]
+    \item Generar una pareja de claves RSA de 2048 bits en ficheros anapub.pem y anapriv.pem y otra
+    pareja de claves del mismo tipo bertopub.pem y bertopriv.pem.
+    \item Proteger ambas claves privadas con contraseña ``anak'' y ``bertok'' respectivamente.
+\end{itemize}
 Se generan dos pares de claves RSA de 2048 bits, protegidos con contraseña:
 
 \begin{lstlisting}[caption=Generación de claves RSA para Ana y Berto]
@@ -113,6 +83,10 @@ openssl pkey -in bertopriv.pem -passin pass:"bertok" \
 
 Ana y Berto intercambian sus claves públicas (\texttt{anapub.pem} y \texttt{bertopub.pem}).
 
+\begin{center}
+    \includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Intercambio/ClavesAnaBerto.png}
+\end{center}
+
 %% ============================================================================
 %% Trabajo de Ana
 %% ============================================================================
@@ -120,6 +94,10 @@ Ana y Berto intercambian sus claves públicas (\texttt{anapub.pem} y \texttt{ber
 \section{Trabajo de Ana: Cifrado y firma}
 
 \subsection{Paso 1: Cifrado del documento}
+\subsubsection{Enunciado:}
+\begin{itemize}[label=\textbullet]
+    \item Cifrar un fichero de texto (texto.txt) de los apartados anteriores con AES-256 en modo CBC, con clave y vector escogidos por el estudiante y sin sal, con salida en formato BASE64 a un fichero llamado cifrado.txt.
+\end{itemize}
 
 Ana cifra el fichero \texttt{texto.txt} con AES-256-CBC usando una clave y un IV generados aleatoriamente, sin sal y con salida en BASE64:
 
@@ -134,7 +112,11 @@ openssl enc -aes-256-cbc -in texto.txt -out cifrado.txt \
 \end{lstlisting}
 
 \subsection{Paso 2: Protección de las claves simétricas}
-
+\subsubsection{Enunciado:}
+\begin{itemize}[label=\textbullet]
+    \item Crear un fichero de texto (hexadecimal) con la concatenación de la clave y el vector utilizados, de nombre claves.hex y cifrarlo con la clave pública bertopub.pem, con salida en formato binario a un fichero claves.bin
+    \item Convertir claves.bin a claves.txt en formato BASE64 (mediante \texttt{openssl enc -a \dots})
+\end{itemize}
 Ana concatena la clave y el IV en un fichero de texto hexadecimal y lo cifra con la clave pública de Berto:
 
 \begin{lstlisting}[caption=Cifrado de claves simétricas con RSA]
@@ -152,7 +134,10 @@ openssl enc -a -in claves.bin -out claves.txt
 \textbf{Formato de \texttt{claves.hex}:} Los primeros 64 caracteres hexadecimales corresponden a la clave AES-256 (32 bytes) y los siguientes 32 caracteres al IV (16 bytes).
 
 \subsection{Paso 3: Firma digital}
-
+\subsubsection{Enunciado:}
+\begin{itemize}[label=\textbullet]
+    \item Obtener un resumen sha256 en binario del fichero de texto original con nombre resumen.bin y firmarlo (es decir, cifrarlo con la clave privada anapriv.pem -clave anak-), con salida en formato BASE64 a un fichero llamado firma.txt.
+\end{itemize}
 Ana obtiene el resumen SHA-256 del documento original y lo firma con su clave privada:
 
 \begin{lstlisting}[caption=Firma digital del documento]
@@ -167,6 +152,10 @@ openssl pkeyutl -sign -in resumen.bin \
 # Convertir a BASE64
 openssl enc -a -in firma.bin -out firma.txt
 \end{lstlisting}
+
+\begin{center}
+    \includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Intercambio/CifradoClaveYFirmaANA.png}
+\end{center}
 
 \subsection{Envío}
 

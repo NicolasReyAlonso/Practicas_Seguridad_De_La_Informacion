@@ -1,20 +1,5 @@
 \chapter{Generación de Claves Asimétricas, Firma y Derivación de Secretos}
 
-\section{Enunciado}
-
-\textbf{3.1 Generación de claves asimétricas (pública-privada), firmado de resúmenes (RSA y DSA) y derivación de secretos con claves DH y ECDH (X25519)}
-
-\begin{itemize}[label=\textbullet]
-    \item Generar un par de claves asimétricas RSA de 2048 bits en formato PEM con contraseña.
-    \item Exportar la clave pública a otro fichero PEM.
-    \item Exportar la clave privada a formato DER (binario) y de vuelta a PEM, con otro nombre de fichero. Comprobar que la conversión a formato DER desprotege la clave privada (elimina la contraseña).
-    \item Con el par de claves asimétricas creadas, firmar y comprobar la firma del resumen (con SHA-256) de uno de los ficheros de texto de la práctica anterior.
-    \item Repetir los cuatro pasos anteriores con claves DSA.
-    \item Generar dos pares de claves DH estándar y demostrar que la combinación pública1-privada2 genera el mismo secreto que la combinación privada1-pública2.
-    \item Generar dos pares de claves DH con curva elíptica X25519 (las utilizadas por Whatsapp) y demostrar que la combinación pública1-privada2 genera el mismo secreto que la combinación privada1-pública2.
-    \item Comparar los tamaños de los dos secretos (DH y X25519) generados anteriormente.
-\end{itemize}
-
 \section{Claves RSA}
 
 \subsection{Descripción teórica}
@@ -37,6 +22,8 @@ La generación de claves RSA consiste en:
 \end{itemize}
 
 \subsection{Generación del par de claves RSA}
+\subsubsection{Enunciado:}
+· Generar un par de claves asimétricas RSA de 2048 bits en formato PEM con contraseña.
 
 Se genera un par de claves RSA de 2048 bits protegido con contraseña:
 
@@ -46,7 +33,7 @@ openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 \
     -aes-256-cbc -pass pass:"rsapassword123" \
     -out rsa_privkey.pem
 \end{lstlisting}
-
+\includegraphics[width=1\textwidth]{Imagenes/Capturas/Generacion/CrearRSA.png}
 La clave privada generada está cifrada con AES-256-CBC y protegida con la contraseña proporcionada. La cabecera del archivo PEM indica que está cifrada:
 
 \begin{lstlisting}[caption=Cabecera de clave privada cifrada]
@@ -54,13 +41,19 @@ La clave privada generada está cifrada con AES-256-CBC y protegida con la contr
 \end{lstlisting}
 
 \subsection{Exportación de clave pública}
-
+\subsubsection{Enunciado}
+· Exportar la clave pública a otro fichero PEM.
 \begin{lstlisting}[caption=Exportación de clave pública RSA]
 openssl pkey -in rsa_privkey.pem -passin pass:"rsapassword123" \
     -pubout -out rsa_pubkey.pem
 \end{lstlisting}
+\begin{center}
+\includegraphics[width=1\textwidth]{Imagenes/Capturas/Generacion/ExportarClave.png}    
+\end{center}
 
 \subsection{Conversión a formato DER y de vuelta a PEM}
+\subsubsection{Enunciado:}
+· Exportar la clave privada a formato DER (binario) y de vuelta a PEM, con otro nombre de fichero. Comprobar que la conversión a formato DER desprotege la clave privada (elimina la contraseña).
 
 El formato DER es la representación binaria de la clave. Una característica importante es que \textbf{DER no soporta cifrado con contraseña}:
 
@@ -82,7 +75,16 @@ openssl pkey -in rsa_privkey.der -inform DER \
 
 En lugar de \texttt{-----BEGIN ENCRYPTED PRIVATE KEY-----}, lo que demuestra que la conversión a formato DER \textbf{elimina la protección con contraseña} de la clave privada.
 
+\begin{center}
+\includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Generacion/ExportarDER.png}    
+\includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Generacion/ReconvertirAPEM.png}
+\includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Generacion/ComprobacionDERSinContrasena.png}
+\end{center}
+
 \subsection{Firma y verificación RSA}
+\subsubsection{Enunciado:}
+· Con el par de claves asimétricas creadas, firmar y comprobar la firma del resumen (con SHA-
+256) de uno de los ficheros de texto de la práctica anterior.
 
 Se firma el resumen SHA-256 de un fichero de texto utilizando \texttt{openssl pkeyutl}:
 
@@ -109,11 +111,17 @@ Signature Verified Successfully
 
 \textbf{Tamaño de la firma RSA-2048:} 256 bytes (igual al tamaño de la clave en bytes: $2048 / 8 = 256$).
 
+\begin{center}
+\includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Generacion/ResumenFirmaYVerificacion.png}
+\end{center}
+
 %% ============================================================================
 %% DSA
 %% ============================================================================
 
 \section{Claves DSA}
+\subsection{Enunciado:}
+· Repetir los cuatro pasos anteriores con claves DSA.
 
 \subsection{Descripción teórica}
 
@@ -174,6 +182,12 @@ openssl pkeyutl -verify -in dsa_digest.bin \
 
 \textbf{Nota:} El tamaño de la firma DSA es variable (entre 46-48 bytes típicamente), ya que DSA codifica la firma como estructura ASN.1 con dos valores $(r, s)$.
 
+\subsection{Resultado:}
+\begin{center}
+\includegraphics[width=1\textwidth]{Imagenes/Capturas/Generacion/DSA1.png}
+\includegraphics[width=1\textwidth]{Imagenes/Capturas/Generacion/DSA2.png}
+\end{center}
+
 \subsection{Comparación RSA vs DSA}
 
 \begin{table}[H]
@@ -216,6 +230,8 @@ Donde:
 \end{itemize}
 
 \subsection{Generación de claves y derivación}
+\subsubsection{Enunciado:}
+· Generar dos pares de claves DH estándar y demostrar que la combinación pública1-privada2 genera el mismo secreto que la combinación privada1-pública2.
 
 \begin{lstlisting}[caption=Derivación de secretos DH]
 # Generar parámetros DH compartidos
@@ -241,6 +257,11 @@ openssl pkeyutl -derive -inkey dh_privkey2.pem \
 \end{lstlisting}
 
 \textbf{Resultado:} Ambos secretos son \textbf{idénticos}, demostrando la propiedad fundamental de Diffie-Hellman.
+
+\begin{center}
+\includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Generacion/ParDH1.png}
+\includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Generacion/DH1ComprobarSecretoKeyKeySecreto.png}
+\end{center}
 
 %% ============================================================================
 %% X25519
@@ -269,6 +290,8 @@ La ventaja principal es que ofrece seguridad equivalente a claves RSA/DH mucho m
 \end{table}
 
 \subsection{Generación de claves y derivación}
+\subsubsection{Enunciado:}
+· Generar dos pares de claves DH con curva elíptica X25519 (las utilizadas por Whatsapp) y demostrar que la combinación pública1-privada2 genera el mismo secreto que la combinación privada1-pública2.
 
 A diferencia de DH estándar, X25519 no necesita generar parámetros previos:
 
@@ -290,7 +313,9 @@ openssl pkeyutl -derive -inkey x25519_privkey2.pem \
 \end{lstlisting}
 
 \textbf{Resultado:} Ambos secretos X25519 son \textbf{idénticos}, confirmando el intercambio correcto.
-
+\begin{center}
+\includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Generacion/DH2.png}
+\end{center}
 \subsection{Comparación de tamaños: DH vs X25519}
 
 \begin{table}[H]
@@ -305,5 +330,7 @@ openssl pkeyutl -derive -inkey x25519_privkey2.pem \
         \bottomrule
     \end{tabularx}
 \end{table}
-
+\begin{center}
+\includegraphics[width=0.9\textwidth]{Imagenes/Capturas/Generacion/ComparaciónTamañoSecretos.png}
+\end{center}
 \textbf{Conclusión:} X25519 genera un secreto de \textbf{32 bytes} (256 bits) frente a los \textbf{256 bytes} (2048 bits) de DH estándar, logrando seguridad equivalente con un secreto \textbf{8 veces menor}. Esto se debe a que la seguridad en curvas elípticas crece mucho más rápido con el tamaño de la clave que en DH clásico.

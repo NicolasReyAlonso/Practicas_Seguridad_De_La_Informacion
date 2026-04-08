@@ -176,3 +176,7 @@ dd if=archivo.bin of=archivo_sin_sal.bin bs=1 skip=16
 openssl enc -aes-256-cbc -d -in archivo_sin_sal.bin \
     -out archivo_descifrado.txt -K <clave_hex> -iv <iv_hex>
 \end{lstlisting}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{imagenes/screenshots/cifrado/cifrardescifrariv.png}
+\end{center}
