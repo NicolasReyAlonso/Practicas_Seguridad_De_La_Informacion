@@ -179,7 +179,9 @@ El formato de los ficheros es crítico: \texttt{-recip} de \texttt{openssl smime
 \section{Problemas encontrados y soluciones}
 
 \begin{itemize}[label=\textbullet]
-    \item \textbf{Uso de .p12 con \texttt{-recip}:} Inicialmente se intentó usar el fichero \texttt{.p12} directamente con \texttt{openssl smime -decrypt}, lo que provocaba errores. La solución fue usar los ficheros \texttt{.crt} y \texttt{.key} por separado.
+    \item \textbf{Uso de .p12 con \texttt{-recip}:} Al probar la segunda vez, cuando se tomó la captura, se realizó en
+     kali linux y se pudo observar que a pesar de que las versiones de OpenSSL de macOS y Kali son la misma, y de que las fuentes de compilación
+    son identicas, en macOS no se pudo utilizar el fichero .p12 directamente mientras que en Kali linux sí.
     \item \textbf{Verificación de cadena de CA:} Al verificar la firma, el error \texttt{unable to get local issuer certificate} se resolvió utilizando \texttt{-CAfile} con el certificado raíz compartido.
     \item \textbf{Intercambio previo de certificados:} Debido a un error al recibir un mensaje con el certificado adjunto de la compañera, se obtuvo un resultado diviante del esperado. Se corrigió
     enviando un nuevo mensaje solo firmado desde otra cuenta de correo para apreciar el fujo correcto de la práctica.
@@ -195,15 +197,13 @@ El formato de los ficheros es crítico: \texttt{-recip} de \texttt{openssl smime
 
 \bibitem{openssl_wiki} Wiki HowTo OpenSSL -- CICEI, \textit{https://openssl.cicei.com}, 2025.
 
-\bibitem{smime_rfc} Ramsdell, B., Turner, S., \textit{Secure/Multipurpose Internet Mail Extensions (S/MIME) Version 4.0 Message Specification}, RFC 8551, 2019.
+\bibitem{wikipedia_smime} Wikipedia, \textit{S/MIME}, \url{https://en.wikipedia.org/wiki/S/MIME}, 2026.
 
-\bibitem{x509} Cooper, D. et al., \textit{Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile}, RFC 5280, 2008.
+\bibitem{pkcs1} Wikipedia, \textit{PKCS}, \url{https://en.wikipedia.org/wiki/PKCS}, 2026.
 
-\bibitem{pkcs12} RSA Laboratories, \textit{PKCS \#12: Personal Information Exchange Syntax Standard}, v1.1, 2014.
+\bibitem{Claude} Claude, \textit{Inteligencia Artificial}, \textit{\url{https://claude.ai/}}, 2026.
 
-\bibitem{pkcs7} RSA Laboratories, \textit{PKCS \#7: Cryptographic Message Syntax Standard}, RFC 2315, 1998.
-
-\bibitem{thunderbird} Mozilla, \textit{Thunderbird -- Documentación de soporte}, \textit{https://support.mozilla.org/products/thunderbird}.
+\bibitem{thunderbird} Mozilla, \textit{Thunderbird -- Documentación de soporte}, \textit{\url{https://support.mozilla.org/products/thunderbird}}.
 
 \end{thebibliography}
 

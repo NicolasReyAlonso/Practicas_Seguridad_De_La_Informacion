@@ -68,7 +68,8 @@ openssl smime -decrypt \
     \item \texttt{-out}: Fichero de salida con el contenido descifrado (contiene el SMIME.P7S, es decir, la estructura firmada).
 \end{itemize}
 
-\textbf{Nota importante:} El parámetro \texttt{-recip} requiere el certificado en formato PEM (\texttt{.crt}), \textbf{no} el fichero PKCS\#12 (\texttt{.p12}). Si solo se dispone del \texttt{.p12}, hay que extraer primero el certificado y la clave.
+\textbf{Nota:} El parámetro \texttt{-recip} requiere el certificado en formato PEM (\texttt{.crt}) en macOS, {no} el fichero PKCS\#12 (\texttt{.p12}). Si solo se dispone del \texttt{.p12}, hay que extraer primero el certificado y la clave.
+Sin embargo, al realizar la captura en Kali Linux, se pudo usar el fichero \texttt{.p12} directamente con \texttt{-recip}, lo que sugiere una diferencia en la implementación de OpenSSL entre ambos sistemas operativos.
 
 El resultado es un fichero \texttt{.eml} que contiene la cabecera MIME del mensaje firmado, con el adjunto \texttt{smime.p7s} visible.
 

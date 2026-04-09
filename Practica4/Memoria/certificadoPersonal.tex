@@ -16,17 +16,12 @@ dirección de correo personal en el campo Email Address, los pasos serán:
 
 \begin{itemize}
     \item[a)] Descargar \texttt{certificadoRaiz.crt} y \texttt{certificadoRaiz.key} de la página de la asignatura
-    \item[b)] Crear la clave de nuestro certificado (\texttt{openssl genpkey \dots}) $\rightarrow$ \texttt{certificadoPersonal.key}
-    (hay que crear una contraseña que protege esta clave -- ANOTARLA)
-    \item[c)] Crear el CSR de nuestro certificado (\texttt{openssl req -new \dots}) $\rightarrow$ \texttt{certificadoPersonal.csr}
+    \item[b)] Crear la clave del certificado (\texttt{openssl genpkey \dots}) $\rightarrow$ \texttt{certificadoPersonal.key}
+    \item[c)] Crear el CSR (\texttt{openssl req -new \dots}) $\rightarrow$ \texttt{certificadoPersonal.csr}
     \item[d)] Crear nuestro certificado personal a partir del CSR, el certificado raíz y su clave, para ello habrá
     que introducir la contraseña SEGURIDAD que protege la clave de la raíz, el comando será del
     tipo (\texttt{openssl x509 -req -days 365 \dots}) $\rightarrow$ \texttt{certificadoPersonal.crt}
 \end{itemize}
-
-Los comandos openssl de los pasos b, c y d están incompletos, pero entendiendo lo que se explica en el apartado
-6.2: Certificado intermedio de la Wiki y reemplazando los nombres de ``certificadoIntermedio'' por
-``certificadoPersonal'', es fácil de realizar.
 
 Una vez realizados correctamente los pasos anteriores, además del certificado raíz y su clave, tendremos los
 ficheros \texttt{certificadoPersonal.key} (protegido con la contraseña que hayan escogido), \texttt{certificadoPersonal.csr}
@@ -39,16 +34,17 @@ para poder importarlo en el agente de correo:
     \item[e)] El último apartado de la Wiki, 6.6: PEM a PKCS\#12 explica cómo crear un fichero ``inter.p12'' a
     partir de \texttt{certificadoIntermedio.crt} y \texttt{certificadoIntermedio.key}, tendremos que hacer un comando
     similar, cambiando ``Intermedio'' por ``Personal'' para crear un fichero llamado
-    \texttt{certificadoPersonal.p12}. Atención: el comando nos pedirá la clave que protege
+    \texttt{certificadoPersonal.p12}. E comando nos pedirá la clave que protege
     certificadoPersonal y a continuación otra clave (podría ser la misma) para proteger el fichero de
     salida, \texttt{certificadoPersonal.p12}
 \end{itemize}
 
-El comando será del tipo (\texttt{openssl pkcs12 export \dots}) $\rightarrow$ \texttt{certificadoPersonal.p12}
-
 \section{Descripción teórica}
 
-Un \textbf{certificado digital X.509} es un documento electrónico que vincula una identidad (nombre, correo electrónico, organización) con una clave pública. Esta vinculación está firmada por una \textbf{Autoridad de Certificación (CA)}, lo que permite a terceros confiar en que esa clave pública pertenece realmente a la identidad indicada.
+Un \textbf{certificado digital X.509} es un documento electrónico que vincula una identidad
+ (nombre, correo electrónico, organización) con una clave pública. Esta vinculación está firmada por una 
+ \textbf{Autoridad de Certificación (CA)}, lo que permite a terceros confiar en que esa clave pública pertenece 
+ realmente a la identidad indicada.
 
 El proceso de creación de un certificado personal implica los siguientes pasos:
 
@@ -59,11 +55,15 @@ El proceso de creación de un certificado personal implica los siguientes pasos:
     \item \textbf{Empaquetar en PKCS\#12}: agrupar certificado y clave privada en un único fichero protegido (.p12) para su importación en aplicaciones.
 \end{enumerate}
 
-En esta práctica se utiliza un certificado raíz proporcionado por la asignatura (\texttt{certificadoRaiz.crt} y \texttt{certificadoRaiz.key}, protegido con la contraseña \texttt{SEGURIDAD}) como CA que firma nuestro certificado personal.
+En esta práctica se utiliza un certificado raíz proporcionado por la asignatura (\texttt{certificadoRaiz.crt} 
+y \texttt{certificadoRaiz.key}, protegido con la contraseña \texttt{``SEGURIDAD''}) 
+como CA que firma nuestro certificado personal.
 
 \section{Paso a) -- Descargar el certificado raíz}
 
-Se descargan los ficheros \texttt{certificadoRaiz.crt} (parte pública) y \texttt{certificadoRaiz.key} (clave privada, protegida con contraseña \texttt{SEGURIDAD}) desde la página de la asignatura y se colocan en el directorio de trabajo.
+Se descargan los ficheros \texttt{certificadoRaiz.crt} (parte pública) y \texttt{certificadoRaiz.key} 
+(clave privada, protegida con contraseña \texttt{``SEGURIDAD''}) desde la página de la asignatura y se 
+colocan en el directorio de trabajo.
 
 \section{Paso b) -- Crear la clave del certificado personal}
 
@@ -121,7 +121,8 @@ Se introduce la contraseña \texttt{SEGURIDAD} que protege \texttt{certificadoRa
 
 \section{Paso e) -- Crear el fichero PKCS\#12}
 
-El formato PKCS\#12 (.p12) empaqueta el certificado personal y la clave privada en un único fichero protegido con contraseña, adecuado para importar en clientes de correo como Thunderbird:
+El formato PKCS\#12 (.p12) empaqueta el certificado personal y la clave privada en un único fichero 
+protegido con contraseña, adecuado para importar en clientes de correo como Thunderbird:
 
 \begin{lstlisting}[caption=Creación del fichero PKCS\#12]
 openssl pkcs12 -export -in certificadoPersonal.crt \
