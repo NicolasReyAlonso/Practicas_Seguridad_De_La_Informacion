@@ -23,7 +23,9 @@ La generación de claves RSA consiste en:
 
 \subsection{Generación del par de claves RSA}
 \subsubsection{Enunciado:}
-· Generar un par de claves asimétricas RSA de 2048 bits en formato PEM con contraseña.
+\begin{itemize}[label=\textbullet]
+    \item Generar un par de claves asimétricas RSA de 2048 bits en formato PEM con contraseña.
+\end{itemize}
 
 Se genera un par de claves RSA de 2048 bits protegido con contraseña:
 
@@ -49,7 +51,9 @@ La clave privada generada está cifrada con AES-256-CBC y protegida con la contr
 
 \subsection{Exportación de clave pública}
 \subsubsection{Enunciado}
-· Exportar la clave pública a otro fichero PEM.
+\begin{itemize}[label=\textbullet]
+    \item Exportar la clave pública a otro fichero PEM.
+\end{itemize}
 \begin{lstlisting}[caption=Exportación de clave pública RSA]
 openssl pkey -in rsa_privkey.pem -passin pass:"rsapassword123" \
     -pubout -out rsa_pubkey.pem
@@ -64,7 +68,9 @@ openssl pkey -in rsa_privkey.pem -passin pass:"rsapassword123" \
 
 \subsection{Conversión a formato DER y de vuelta a PEM}
 \subsubsection{Enunciado:}
-· Exportar la clave privada a formato DER (binario) y de vuelta a PEM, con otro nombre de fichero. Comprobar que la conversión a formato DER desprotege la clave privada (elimina la contraseña).
+\begin{itemize}[label=\textbullet]
+    \item Exportar la clave privada a formato DER (binario) y de vuelta a PEM, con otro nombre de fichero. Comprobar que la conversión a formato DER desprotege la clave privada (elimina la contraseña).
+\end{itemize}
 
 El formato DER es la representación binaria de la clave. Una característica importante es que \textbf{DER no soporta cifrado con contraseña}:
 
@@ -97,8 +103,9 @@ En lugar de \texttt{-----BEGIN ENCRYPTED PRIVATE KEY-----}, lo que demuestra que
 
 \subsection{Firma y verificación RSA}
 \subsubsection{Enunciado:}
-· Con el par de claves asimétricas creadas, firmar y comprobar la firma del resumen (con SHA-
-256) de uno de los ficheros de texto de la práctica anterior.
+\begin{itemize}[label=\textbullet]
+    \item Con el par de claves asimétricas creadas, firmar y comprobar la firma del resumen (con SHA-256) de uno de los ficheros de texto de la práctica anterior.
+\end{itemize}
 
 Se firma el resumen SHA-256 de un fichero de texto utilizando \texttt{openssl pkeyutl}:
 
@@ -138,7 +145,9 @@ Signature Verified Successfully
 
 \section{Claves DSA}
 \subsection{Enunciado:}
-· Repetir los cuatro pasos anteriores con claves DSA.
+\begin{itemize}[label=\textbullet]
+    \item Repetir los cuatro pasos anteriores con claves DSA.
+\end{itemize}
 
 \subsection{Descripción teórica}
 
@@ -252,7 +261,9 @@ Donde:
 
 \subsection{Generación de claves y derivación}
 \subsubsection{Enunciado:}
-· Generar dos pares de claves DH estándar y demostrar que la combinación pública1-privada2 genera el mismo secreto que la combinación privada1-pública2.
+\begin{itemize}[label=\textbullet]
+    \item Generar dos pares de claves DH estándar y demostrar que la combinación pública1-privada2 genera el mismo secreto que la combinación privada1-pública2.
+\end{itemize}
 
 \begin{lstlisting}[caption=Derivación de secretos DH]
 # Generar parámetros DH compartidos
@@ -315,7 +326,9 @@ La ventaja principal es que ofrece seguridad equivalente a claves RSA/DH mucho m
 
 \subsection{Generación de claves y derivación}
 \subsubsection{Enunciado:}
-· Generar dos pares de claves DH con curva elíptica X25519 (las utilizadas por Whatsapp) y demostrar que la combinación pública1-privada2 genera el mismo secreto que la combinación privada1-pública2.
+\begin{itemize}[label=\textbullet]
+    \item Generar dos pares de claves DH con curva elíptica X25519 (las utilizadas por Whatsapp) y demostrar que la combinación pública1-privada2 genera el mismo secreto que la combinación privada1-pública2.
+\end{itemize}
 
 A diferencia de DH estándar, X25519 no necesita generar parámetros previos:
 

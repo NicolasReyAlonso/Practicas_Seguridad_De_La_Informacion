@@ -181,16 +181,6 @@ Finalmente, siempre se debe verificar la firma digital antes de confiar en el co
 \section{Problemas encontrados y soluciones}
 
 \begin{itemize}[label=\textbullet]
-    \item \textbf{Formato DER y contraseñas:} La conversión a DER elimina la 
-    protección con contraseña, lo cual hay que tener muy en cuenta al exportar 
-    claves privadas.
-    \item \textbf{Parámetros DH compartidos:} Ambos pares de claves DH deben usar 
-    los mismos parámetros para poder derivar un secreto común, por lo que se genera
-    la duda de cómo asegurar que ambos usuarios usan los mismos parámetros y que estos
-    se mantengan seguros.
-    \item \textbf{Tamaño de datos RSA:} RSA solo puede cifrar datos menores al 
-    tamaño de la clave (por ejemplo, 256 bytes para RSA-2048), lo que justifica 
-    el esquema híbrido.
     \item \textbf{Verificación con \texttt{-verifyrecover}:} Es necesario usar 
     esta opción (exclusiva de RSA) para recuperar el resumen original de una firma
      y compararlo manualmente.
@@ -202,21 +192,19 @@ Finalmente, siempre se debe verificar la firma digital antes de confiar en el co
 
 \begin{thebibliography}{99}
 
-\bibitem{openssl_docs} OpenSSL Documentation, \textit{https://www.openssl.org/docs/man3.2/}, 2024.
+\bibitem{openssl_docs} OpenSSL Documentation, \textit{\url{https://www.openssl.org/docs/man3.2/}}, 2024.
 
-\bibitem{rsa} Rivest, R., Shamir, A., Adleman, L., \textit{A Method for Obtaining Digital Signatures and Public-Key Cryptosystems}, Communications of the ACM, 1978.
+\bibitem{aes} Wikipedia, \textit{Advanced Encryption Standard (AES)}, \url{https://en.wikipedia.org/wiki/Advanced_Encryption_Standard}, 2026.
 
-\bibitem{dsa} NIST, \textit{Digital Signature Standard (DSS)}, FIPS 186-4, 2013.
+\bibitem{RSA} Wikipedia, \textit{RSA (cryptosystem)}, \url{https://en.wikipedia.org/wiki/RSA_cryptosystem}, 2026.
 
-\bibitem{dh} Diffie, W., Hellman, M., \textit{New Directions in Cryptography}, IEEE Transactions on Information Theory, 1976.
+\bibitem{pkcs1} Wikipedia, \textit{PKCS}, \url{https://en.wikipedia.org/wiki/PKCS}, 2026.
 
-\bibitem{x25519} Bernstein, D. J., \textit{Curve25519: New Diffie-Hellman Speed Records}, PKC 2006.
+\bibitem{DSA} Wikipedia, \textit{Digital Signature Algorithm (DSA)}, \url{https://en.wikipedia.org/wiki/Digital_Signature_Algorithm}, 1991.
 
-\bibitem{aes} NIST, \textit{Advanced Encryption Standard (AES)}, FIPS 197, 2001.
+\bibitem{DH} Wikipedia, \textit{Diffie–Hellman key exchange}, \url{https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange}, 1976.
 
-\bibitem{pkcs1} RSA Laboratories, \textit{PKCS \#1: RSA Cryptography Specifications}, RFC 8017, 2016.
-
-\bibitem{hybrid} Menezes, A., van Oorschot, P., Vanstone, S., \textit{Handbook of Applied Cryptography}, CRC Press, 1996.
+\bibitem{Claude} Claude, \textit{Inteligencia Artificial}, \textit{\url{https://claude.ai/}}, 2026.
 
 \end{thebibliography}
 
