@@ -181,7 +181,8 @@ El formato de los ficheros es crítico: \texttt{-recip} de \texttt{openssl smime
 \begin{itemize}[label=\textbullet]
     \item \textbf{Uso de .p12 con \texttt{-recip}:} Inicialmente se intentó usar el fichero \texttt{.p12} directamente con \texttt{openssl smime -decrypt}, lo que provocaba errores. La solución fue usar los ficheros \texttt{.crt} y \texttt{.key} por separado.
     \item \textbf{Verificación de cadena de CA:} Al verificar la firma, el error \texttt{unable to get local issuer certificate} se resolvió utilizando \texttt{-CAfile} con el certificado raíz compartido.
-    \item \textbf{Intercambio previo de certificados:} No fue posible cifrar mensajes hasta que ambas partes intercambiaron mensajes firmados, permitiendo que Thunderbird almacenara los certificados.
+    \item \textbf{Intercambio previo de certificados:} Debido a un error al recibir un mensaje con el certificado adjunto de la compañera, se obtuvo un resultado diviante del esperado. Se corrigió
+    enviando un nuevo mensaje solo firmado desde otra cuenta de correo para apreciar el fujo correcto de la práctica.
 \end{itemize}
 
 %% ============================================================================
