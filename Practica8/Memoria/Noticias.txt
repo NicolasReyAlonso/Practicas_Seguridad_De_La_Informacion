@@ -1,0 +1,17 @@
+1
+https://elpais.com/mexico/2025-07-23/mas-de-13-millones-de-victimas-por-fraudes-ciberneticos-en-mexico.html
+2
+https://www.welivesecurity.com/es/malware/infostealers-presentes-latinoamerica-2025/
+3
+https://industrialcyber.co/manufacturing/manufacturing-absorbs-56-ransomware-surge-of-global-attacks-in-2025-as-raas-legacy-ot-supply-chains-fuel-spike/
+4
+https://www.justice.gov/usao-ak/pr/authorities-disrupt-worlds-largest-iot-ddos-botnets-responsible-record-breaking-attacks
+5*
+https://www.20minutos.es/tecnologia/ciberseguridad/malware-novoice-pone-riesgo-millones-moviles-android-asi-se-esconde_6954367_0.html
+6
+https://socprime.com/es/blog/cve-2025-25257-sql-injection-vulnerability/
+https://medium.com/@chenhaimail/cve-2025-25257-critical-sql-injection-to-rce-vulnerability-in-fortiweb-complete-analysis-and-52a141d6e348
+https://www.picussecurity.com/resource/blog/cve-2026-21643-critical-sql-injection-in-fortinet-forticlient-ems-exploited-in-the-wild#:~:text=On%20February%206,%202026,%20Fortinet,manage%20their%20endpoint%20security%20fleet.
+7
+https://aviatrix.ai/threat-research-center/microsoft-excel-2026-cve-2026-26144-zero-click-xss/
+https://system.plus/2026/03/12/zero-click-microsoft-copilot-bug-cve-2026-26144/#:~:text=This%20week%2C%20we%20saw%20the%20first%20major,Excel%20spreadsheet%20into%20a%20silent%20data%2Dexfiltration%20tool.
