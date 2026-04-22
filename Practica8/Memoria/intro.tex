@@ -1,34 +1,33 @@
 \chapter{Introducción}
 
 \section{Objetivos de la práctica}
-El objetivo fundamental de esta práctica es la configuración de un servidor web seguro (Apache con HTTPS) mediante el uso de certificados digitales firmados por una Autoridad de Certificación (CA) de la asignatura. Para alcanzar este propósito general, la práctica plantea los siguientes objetivos específicos:
-\begin{itemize}
-    \item Generar y firmar un certificado digital para servidor web que valide identidades múltiples (\texttt{ejemplo.com} y \texttt{www.ejemplo.com}) utilizando la extensión \texttt{subjectAltName} de X.509 v3.
-    \item Manipular la resolución de nombres de dominio de forma local modificando el archivo \texttt{/etc/hosts}.
-    \item Incorporar certificados raíz personalizados a la lista de autoridades de confianza del sistema Linux.
-    \item Instalar, configurar y administrar de forma segura un servidor web Apache.
-    \item Comprobar y verificar la robustez de las conexiones seguras TLS a través de herramientas de diagnóstico (\texttt{openssl s\_client}) y navegadores convencionales (Mozilla Firefox).
-\end{itemize}
+El objetivo fundamental de esta práctica es la obtenención de información y 
+familiarización con las amenazas a la seguridad digital.
 
 \section{Fundamentos teóricos}
-Para la realización de esta práctica, se aplican diversos conceptos teóricos clave de la ciberseguridad y la gestión de redes:
+Para la realización de esta práctica, se aplican diversos conceptos teóricos clave 
+de la ciberseguridad y la seguridad de la información, entre los que destacan:
 \begin{itemize}
-    \item \textbf{Certificados Digitales y X.509:} Un certificado digital vincula criptográficamente una clave pública a la identidad de un servidor, dominio o usuario, y es validado por la firma de una Autoridad de Certificación. El estándar \textbf{X.509 v3} permite incluir extensiones avanzadas; una de las más relevantes para servidores web modernos es el \textit{Subject Alternative Name} (SAN), imprescindible para que un único servicio (y certificado) responda e identifique de forma legítima a múltiples nombres DNS.
-    \item \textbf{HTTPS y TLS (Transport Layer Security):} HTTPS no es más que HTTP sobre una capa de seguridad TLS. TLS asegura las comunicaciones aportando confidencialidad (cifrado de datos transmitidos), integridad (protección contra alteraciones de datos en tránsito) y autenticación del lado del servidor (para evitar ataques de intermediarios).
-    \item \textbf{Resolución Local de Dominios:} Antes de interrogar a servidores DNS públicos, los sistemas operativos consultan el archivo \texttt{/etc/hosts} local para la resolución de nombres. Operar sobre este archivo permite emular el control de un dominio legítimo dentro de un entorno de laboratorio o máquina virtual aislada.
+    \item \textbf{Conocimiento de los CVE/CWE:} CVE (Common Vulnerabilities and Exposures) es un sistema de identificación de vulnerabilidades conocido a nivel mundial, mientras que CWE (Common Weakness Enumeration) clasifica las debilidades de software. Familiarizarse con estas bases de datos es esencial para entender las amenazas actuales y cómo mitigarlas.
+    \item \textbf{Phishing:} Técnica de ingeniería social utilizada para engañar a los usuarios y obtener información confidencial, como contraseñas o datos bancarios, a través de correos electrónicos, mensajes o sitios web falsos.
+    \item \textbf{Malware:} Software malicioso diseñado para dañar, explotar o comprometer sistemas informáticos. Puede incluir virus, troyanos, ransomware, spyware, entre otros.
+    \item \textbf{Ransomware:} Tipo de malware que cifra los archivos de la víctima y exige un rescate para restaurar el acceso a los datos. Es una amenaza creciente para empresas y particulares.
+    \item \textbf{Botnets:} Redes de dispositivos comprometidos (ordenadores zombies) controlados por un atacante para realizar actividades maliciosas, como ataques DDoS, envío de spam o minería de criptomonedas.
+    \item \textbf{SQL Injection:} Vulnerabilidad que permite a un atacante ejecutar código SQL malicioso en una base de datos a través de una aplicación web, lo que puede resultar en la exposición o manipulación de datos sensibles.
+    \item \textbf{Cross-Site Scripting (XSS):} Vulnerabilidad que permite a un atacante inyectar scripts maliciosos en páginas web vistas por otros usuarios, lo que puede llevar al robo de cookies, secuest
 \end{itemize}
 
 \section{Enunciado de la práctica}
-El desarrollo del ejercicio y de la presente memoria seguirán el guion de actividades propuesto en el enunciado:
+Esta práctica consiste en la realización de un informe basado en una selección de noticias de prensa digital, posteriores al 1 de enero de 2025, relacionadas con una serie de amenazas informáticas.
 
+Las amenazas objeto de esta actividad serán:
 \begin{enumerate}
-    \item Creación del certificado del servidor \texttt{www.ejemplo.com} (y \texttt{ejemplo.com}) firmado con la autoridad de la asignatura. Asegurarse de que el certificado incorpora correctamente los nombres \texttt{www.ejemplo.com} y \texttt{ejemplo.com} en la extensión \texttt{subjectAltName}.
-    \item Modificación del fichero \texttt{/etc/hosts} de la máquina virtual y verificación de los alias \texttt{www.ejemplo.com} y \texttt{ejemplo.com}.
-    \item Incorporación del certificado RAÍZ de la asignatura a la lista de autoridades reconocidas en el servidor Linux de la máquina virtual.
-    \item Configuración del servidor Apache. Descripción detallada de los ficheros modificados, certificados de cliente y CA.
-    \item Instalación y arranque del servidor Apache. Instalación de paquetes, ejecución de comandos de administración del servicio, etc. Revisión continua del fichero \texttt{error\_log} para detectar warnings y errores; y del \texttt{access\_log} para comprobar accesos.
-    \item Creación y configuración del fichero \texttt{index.html}. Permisos y configuración adicional necesaria.
-    \item Conexión desde \texttt{openssl s\_client} a \texttt{www.ejemplo.com:443} y comparación de las primeras líneas de la conexión con la conexión a \texttt{www.ulpgc.es:443}; asegurarse de que no hay problema en la identificación del servidor y los certificados que presenta.
-    \item Conexión desde el navegador local. Firefox debe acceder sin mostrar ningún error. No permitir la conexión si aparecen errores del tipo ``entiendo los problemas...''.
-    \item Capturas de pantalla del Firefox (cuatro como mínimo) para ambos dominios, una mostrando el contenido del fichero \texttt{index.html} y otra con las propiedades de la conexión (Herramientas / Información de la página / Seguridad en Firefox o bien pulsar en el ``candado'' de la conexión segura en Firefox, más información...), mostrando la versión de TLS y el tipo de cifrado obtenido en cada una de las conexiones.
+    \item Phishing, estafas a través de la red
+    \item Malware difundido en redes sociales
+    \item Ataques de ransomware contra corporaciones y gobiernos
+    \item Botnets, ordenadores zombies
+    \item Malware en dispositivos móviles
+    \item Inyección de código SQL
+    \item Cross-Site Scripting (XSS)
 \end{enumerate}
+

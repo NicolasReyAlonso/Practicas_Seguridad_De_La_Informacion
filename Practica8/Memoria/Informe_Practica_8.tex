@@ -76,6 +76,9 @@
 \setlength{\parskip}{6pt}
 \setlength{\parindent}{1.5em}
 
+% Tarjetas
+\usepackage{tcolorbox}
+
 % Índices
 \usepackage{imakeidx}
 \makeindex
@@ -86,7 +89,7 @@
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\textcolor{darkblue}{Práctica 6: SERVIDOR WEB SEGURO}}
+\fancyhead[L]{\textcolor{darkblue}{Práctica 8: AMENAZAS A LA SEGURIDAD DIGITAL}}
 \fancyhead[R]{\textcolor{darkblue}{SI}}
 \fancyfoot[C]{\thepage\ de \pageref{LastPage}}
 \renewcommand{\headrulewidth}{0.5pt}
@@ -110,8 +113,8 @@
     \vspace{1cm}
     {\rule{\textwidth}{2pt}}\\
     \vspace{0.5cm}
-    {\LARGE \textbf{Práctica 6:}}\\
-    {\LARGE \textbf{Servidor Web Seguro con Certificado de Servidor}}\\
+    {\LARGE \textbf{Práctica 8:}}\\
+    {\LARGE \textbf{Amenazas a la Seguridad Digital}}\\
     \vspace{0.5cm}
     {\rule{\textwidth}{2pt}}\\
     \vspace{1cm}
@@ -131,6 +134,7 @@
     \textbf{Fecha:} Abril 2026
 }
 
+
 %% ============================================================================
 %% DOCUMENTO
 %% ============================================================================
@@ -143,7 +147,7 @@
 
 \include{index}
 \include{intro}
-\include{certificado}
+\include{phishing}
 
 \chapter{Modificación del fichero hosts}
 Se modifica el fichero \texttt{/etc/hosts} para añadir los alias.
