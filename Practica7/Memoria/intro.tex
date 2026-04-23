@@ -1,34 +1,73 @@
 \chapter{Introducción}
 
-\section{Objetivos de la práctica}
-El objetivo fundamental de esta práctica es la configuración de un servidor web seguro (Apache con HTTPS) mediante el uso de certificados digitales firmados por una Autoridad de Certificación (CA) de la asignatura. Para alcanzar este propósito general, la práctica plantea los siguientes objetivos específicos:
+\section{Requisitos Previos}
 \begin{itemize}
-    \item Generar y firmar un certificado digital para servidor web que valide identidades múltiples (\texttt{ejemplo.com} y \texttt{www.ejemplo.com}) utilizando la extensión \texttt{subjectAltName} de X.509 v3.
-    \item Manipular la resolución de nombres de dominio de forma local modificando el archivo \texttt{/etc/hosts}.
-    \item Incorporar certificados raíz personalizados a la lista de autoridades de confianza del sistema Linux.
-    \item Instalar, configurar y administrar de forma segura un servidor web Apache.
-    \item Comprobar y verificar la robustez de las conexiones seguras TLS a través de herramientas de diagnóstico (\texttt{openssl s\_client}) y navegadores convencionales (Mozilla Firefox).
+    \item Servidor web Apache instalado y configurado.
+    \item Certificados de cliente necesarios: certificado de la autoridad de la asignatura y un certificado secundario (ej. FNMT).
+    \item Herramientas OpenSSL disponibles.
+\end{itemize}
+
+\section{Objetivos de la práctica}
+\begin{itemize}
+    \item Modificar la configuración del servidor web Apache para que acepte certificados de cliente firmados por la misma autoridad de certificación y por una autoridad adicional (preferentemente FNMT).
+    \item Habilitar la ejecución de scripts CGI/binarios (bash) o Python para interactuar con los datos del certificado.
+    \item Instalar un script que reemplace el fichero \texttt{index.html} para mostrar los datos más importantes del certificado presentado por el cliente (Common Name, Issuer, Validity, etc.) a través de variables de entorno.
+    \item Demostrar la capacidad del servidor web para aceptar dos conexiones distintas utilizando certificados firmados por autoridades diferentes.
+    \item Verificar la correcta comunicación y aceptación de certificados mediante comandos \texttt{openssl s\_client} y navegadores (Firefox), incluyendo la visualización de los datos del certificado en el script.
 \end{itemize}
 
 \section{Fundamentos teóricos}
 Para la realización de esta práctica, se aplican diversos conceptos teóricos clave de la ciberseguridad y la gestión de redes:
 \begin{itemize}
-    \item \textbf{Certificados Digitales y X.509:} Un certificado digital vincula criptográficamente una clave pública a la identidad de un servidor, dominio o usuario, y es validado por la firma de una Autoridad de Certificación. El estándar \textbf{X.509 v3} permite incluir extensiones avanzadas; una de las más relevantes para servidores web modernos es el \textit{Subject Alternative Name} (SAN), imprescindible para que un único servicio (y certificado) responda e identifique de forma legítima a múltiples nombres DNS.
-    \item \textbf{HTTPS y TLS (Transport Layer Security):} HTTPS no es más que HTTP sobre una capa de seguridad TLS. TLS asegura las comunicaciones aportando confidencialidad (cifrado de datos transmitidos), integridad (protección contra alteraciones de datos en tránsito) y autenticación del lado del servidor (para evitar ataques de intermediarios).
-    \item \textbf{Resolución Local de Dominios:} Antes de interrogar a servidores DNS públicos, los sistemas operativos consultan el archivo \texttt{/etc/hosts} local para la resolución de nombres. Operar sobre este archivo permite emular el control de un dominio legítimo dentro de un entorno de laboratorio o máquina virtual aislada.
+    \item Certificados Digitales y Autoridades de Certificación (CA): Entender cómo funcionan los certificados X.509, la estructura de una cadena de confianza y el rol de las Autoridades de Certificación (como FNMT) en la emisión y validación de identidades digitales.
+    \item Configuración del Servidor Web SSL/TLS: Comprender cómo configurar un servidor web (Apache) para que gestione la autenticación de clientes mediante certificados (usando módulos como \texttt{mod\_ssl}) y cómo gestionar múltiples CAs confiables.
+    \item Validación de Certificados en el Handshake TLS: Analizar el proceso de negociación TLS, donde el cliente presenta su certificado al servidor. Esto implica verificar la validez del certificado del cliente y asegurar que la cadena de confianza (la ruta de la CA) es válida para establecer una conexión segura.
+    \item Interacción con el Sistema Operativo (Scripts CGI/Python): Entender cómo los scripts pueden interactuar con el sistema operativo y extraer metadatos específicos (como Common Name, Issuer, Validity) contenidos dentro del certificado digital para presentarlos al usuario o al servidor web.
+    \item Mecanismos de Autenticación Múltiple: Demostrar la capacidad del servidor para validar certificados emitidos por diferentes CAs simultáneamente, lo que requiere una configuración adecuada en el servidor para manejar múltiples \textit{trust stores}.
+    \item Herramientas de Diagnóstico (OpenSSL y Navegadores): Utilizar herramientas como \texttt{openssl s\_client} para verificar directamente la comunicación SSL/TLS, la presencia de certificados y la correcta validación de las firmas entre cliente y servidor.
 \end{itemize}
 
 \section{Enunciado de la práctica}
 El desarrollo del ejercicio y de la presente memoria seguirán el guion de actividades propuesto en el enunciado:
 
 \begin{enumerate}
-    \item Creación del certificado del servidor \texttt{www.ejemplo.com} (y \texttt{ejemplo.com}) firmado con la autoridad de la asignatura. Asegurarse de que el certificado incorpora correctamente los nombres \texttt{www.ejemplo.com} y \texttt{ejemplo.com} en la extensión \texttt{subjectAltName}.
-    \item Modificación del fichero \texttt{/etc/hosts} de la máquina virtual y verificación de los alias \texttt{www.ejemplo.com} y \texttt{ejemplo.com}.
-    \item Incorporación del certificado RAÍZ de la asignatura a la lista de autoridades reconocidas en el servidor Linux de la máquina virtual.
-    \item Configuración del servidor Apache. Descripción detallada de los ficheros modificados, certificados de cliente y CA.
-    \item Instalación y arranque del servidor Apache. Instalación de paquetes, ejecución de comandos de administración del servicio, etc. Revisión continua del fichero \texttt{error\_log} para detectar warnings y errores; y del \texttt{access\_log} para comprobar accesos.
-    \item Creación y configuración del fichero \texttt{index.html}. Permisos y configuración adicional necesaria.
-    \item Conexión desde \texttt{openssl s\_client} a \texttt{www.ejemplo.com:443} y comparación de las primeras líneas de la conexión con la conexión a \texttt{www.ulpgc.es:443}; asegurarse de que no hay problema en la identificación del servidor y los certificados que presenta.
-    \item Conexión desde el navegador local. Firefox debe acceder sin mostrar ningún error. No permitir la conexión si aparecen errores del tipo ``entiendo los problemas...''.
-    \item Capturas de pantalla del Firefox (cuatro como mínimo) para ambos dominios, una mostrando el contenido del fichero \texttt{index.html} y otra con las propiedades de la conexión (Herramientas / Información de la página / Seguridad en Firefox o bien pulsar en el ``candado'' de la conexión segura en Firefox, más información...), mostrando la versión de TLS y el tipo de cifrado obtenido en cada una de las conexiones.
+    \item \textbf{Modificación de la configuración del Apache}
+    \begin{itemize}
+        \item Configurar el servidor para que solicite certificados de cliente y acepte los firmados por la misma autoridad de la asignatura y por otra autoridad (preferentemente FNMT).
+        \item Habilitar la ejecución de scripts CGI-bin (\texttt{bash}), código Python, etc.
+    \end{itemize}
+    \item \textbf{Instalación del script de sustitución de index.html}
+    \begin{itemize}
+        \item Breve explicación del script utilizado y visualización de sus permisos.
+    \end{itemize}
+    \item \textbf{Carga del segundo certificado de cliente en el Firefox}
+    \begin{itemize}
+        \item Preferentemente, utilizar un certificado FNMT real. Alternativamente, crear una autoridad de certificación nueva, generar un segundo certificado de cliente para el usuario con esta nueva autoridad e instalarlo en el Firefox, junto con el certificado de la autoridad.
+        \item Si se utiliza el certificado FNMT, los certificados de autoridad ya se encuentran en el directorio del sistema Linux (o no) y deben incorporarse a la configuración del Apache.
+        \item Si se utiliza otra autoridad, repetir los pasos para su certificado raíz y asegurarse de que se utiliza la extensión \texttt{-addext "basicConstraints=CA:TRUE"} en el comando de creación del certificado autofirmado de autoridad.
+    \end{itemize}
+    \item \textbf{Rearranque del Apache y verificación del fichero error\_log}
+    \begin{itemize}
+        \item Realizar el reinicio del servicio Apache.
+        \item Verificar el contenido del fichero \texttt{error\_log}.
+    \end{itemize}
+    \item \textbf{Conexión de prueba con el comando “openssl s\_client” libre de errores}
+    \begin{itemize}
+        \item Ejecutar el siguiente comando para verificar la conexión y los certificados:
+        \[
+        \texttt{openssl s\_client www.ejemplo.com:443 -cert certcliente.pem -key certcliente.key -CAfile cert\_raiz.pem}
+        \]
+        \item Verificar que no se producen errores en la conexión ni en los certificados.
+        \item Verificar que NO hay errores en \texttt{error\_log}.
+    \end{itemize}
+    \item \textbf{Conexión sin errores desde Firefox con el servidor, con el certificado de cliente de la autoridad de la asignatura}
+    \begin{itemize}
+        \item Asegurar que el script muestre los datos más importantes del certificado de cliente.
+        \item Mostrar captura de pantalla de la conexión (ejecución del script).
+    \end{itemize}
+    \item \textbf{Conexión sin errores desde Firefox con el servidor, con el certificado de cliente FNMT o uno secundario creado por el estudiante}
+    \begin{itemize}
+        \item Asegurar que el script muestre los datos más importantes del certificado de cliente.
+        \item Mostrar captura de pantalla de la conexión (ejecución del script).
+    \end{itemize}
 \end{enumerate}
