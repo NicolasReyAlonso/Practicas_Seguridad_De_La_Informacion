@@ -18,3 +18,6 @@ Practica2/Memoria/main.log
 *.crt
 !Practica4/ArchivosOriginales/WafaAzdadTriki.crt
 *.srl
+Practica7/ArchivosOriginales/AC_Raiz_FNMT-RCM_SHA256.cer
+Practica7/Salidas/certificados_confiables.pem
+Practica7/ArchivosOriginales/certificado_fnmt.pem
