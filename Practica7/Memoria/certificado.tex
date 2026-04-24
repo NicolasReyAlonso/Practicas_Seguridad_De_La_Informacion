@@ -1,22 +1,2 @@
-\chapter{Creación del certificado del servidor www.ejemplo.com y ejemplo.com}
-En este apartado se detalla la creación del certificado de servidor firmado con 
-la autoridad de la asignatura, asegurándose de que el certificado incorpora 
-correctamente dichos nombres en la extensión \texttt{subjectAltName}.
-
-
-
-Para incluir las extensiones requeridas se crea un fichero \texttt{extensiones\_v3.cnf} con un contenido del estilo:
-\begin{lstlisting}[language=bash]
-#### EXTENSIONES PARA subjectAltName
-[ v3_req ]
-# Extensions to add a certificate request
-subjectAltName = @alt_names
-basicConstraints = CA:FALSE
-keyUsage = nonRepudiation, digitalSignature, keyEncipherment
-[alt_names]
-DNS.1 = www.ejemplo.com
-DNS.2 = ejemplo.com
-\end{lstlisting}
-
-La orden de generación con OpenSSL haría uso de \texttt{-extfile extensiones\_v3.cnf}.
+\chapter{Desarrollo de la práctica}
 

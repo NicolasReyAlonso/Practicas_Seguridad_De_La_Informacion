@@ -1,0 +1,6 @@
+1
+https://nvd.nist.gov/vuln/detail/CVE-2018-6350
+2
+https://nvd.nist.gov/vuln/detail/CVE-2025-53766
+3
+https://nvd.nist.gov/vuln/detail/CVE-2023-51582
