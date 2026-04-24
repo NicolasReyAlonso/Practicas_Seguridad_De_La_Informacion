@@ -4,8 +4,8 @@ la autoridad de la asignatura, asegurándose de que el certificado incorpora
 correctamente dichos nombres en la extensión \texttt{subjectAltName}.
 
 
-
-Para incluir las extensiones requeridas se crea un fichero \texttt{extensiones\_v3.cnf} con un contenido del estilo:
+Para incluir las extensiones requeridas se crea un fichero \texttt{extensiones\_v3.cnf} 
+con el siguiente contenido:
 \begin{lstlisting}[language=bash]
 #### EXTENSIONES PARA subjectAltName
 [ v3_req ]
@@ -18,5 +18,18 @@ DNS.1 = www.ejemplo.com
 DNS.2 = ejemplo.com
 \end{lstlisting}
 
-La orden de generación con OpenSSL haría uso de \texttt{-extfile extensiones\_v3.cnf}.
+La orden de generación con OpenSSL será la siguiente:
+\begin{lstlisting}[language=bash]
+    openssl req -new \
+-subj "/C=ES/ST=LasPalmas/O=Ejemplo/CN=www.ejemplo.com"
+-subj=C=ES/ST=LasPalmas/O=Ejemplo/CN="www.ejemplo.com"
+-in servidor.csr
+-subj=/C=ES/ST=LasPalmas/O=Ejemplo/CN=www.ejemplo.com
+-key servidor.key
+-out servidor.csr
+-subj="/C=ES/ST=LasPalmas/O=Ejemplo/CN=www.ejemplo.com"
+-extfile ext_v3.cnf
+-extensions v3_req
+\end{lstlisting}
+\includegraphics[width=0.8\textwidth]{Imagenes/4.png}
 
