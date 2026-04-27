@@ -2,8 +2,9 @@
 En este apartado se detalla la creación del certificado de servidor firmado con 
 la autoridad de la asignatura, asegurándose de que el certificado incorpora 
 correctamente dichos nombres en la extensión \texttt{subjectAltName}.
-
-
+\section{Enunciado}
+1. Creación del certificado del servidor \texttt{www.ejemplo.com} (y \texttt{ejemplo.com}) firmado con la autoridad de la asignatura. Asegurarse de que el certificado incorpora correctamente los nombres \texttt{www.ejemplo.com} y \texttt{ejemplo.com} en la extensión \texttt{subjectAltName}.
+\section{Resolución}
 Para incluir las extensiones requeridas se crea un fichero \texttt{extensiones\_v3.cnf} 
 con el siguiente contenido:
 \begin{lstlisting}[language=bash]

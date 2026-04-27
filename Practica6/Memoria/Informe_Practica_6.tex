@@ -143,38 +143,11 @@
 
 \include{index}
 \include{intro}
+\include{apache}
 \include{certificado}
-
-\chapter{Modificación del fichero hosts}
-Se modifica el fichero \texttt{/etc/hosts} para añadir los alias.
-\begin{lstlisting}[language=bash]
-127.0.0.1 www.ejemplo.com
-127.0.0.1 ejemplo.com
-\end{lstlisting}
-Verificamos:
-\begin{lstlisting}[language=bash]
-ping -c 2 www.ejemplo.com
-ping -c 2 ejemplo.com
-\end{lstlisting}
-
-
-\chapter{Incorporación del certificado RAÍZ}
-Se incorpora el certificado RAÍZ de la asignatura a la lista de autoridades reconocidas del sistema según las instrucciones.
-
-
-\chapter{Configuración del servidor Apache}
-Descripción detallada de los ficheros modificados, donde se configuran el certificado de servidor, cliente (si fuera necesario) y la entidad CA (Autoridad de Certificación).
-
-
-\chapter{Instalación y arranque del servidor Apache}
-Comandos utilizados:
-\begin{lstlisting}[language=bash]
-sudo apt update
-sudo apt install apache2
-sudo a2enmod ssl
-sudo systemctl restart apache2
-\end{lstlisting}
-Se revisan continuamente \texttt{/var/log/apache2/error\_log} para detectar *warnings* y errores; y \texttt{/var/log/apache2/access\_log} para comprobar accesos.
+\include{hosts}
+\include{CARaiz}
+\include{serviapache}
 
 \chapter{Página index.html}
 Creación de la página principal en el directorio raíz del servidor y configuración de los permisos y cualquier otra modificación adicional necesaria.
