@@ -149,14 +149,9 @@
 \include{CARaiz}
 \include{serviapache}
 \include{web}
+\include{openssl}
 
 
-\chapter{Conexión con openssl s\_client}
-Comprobación mediante \texttt{openssl s\_client}:
-\begin{lstlisting}[language=bash]
-openssl s_client -connect www.ejemplo.com:443
-\end{lstlisting}
-Se compara con al conexión a \texttt{www.ulpgc.es:443} para verificar. Así nos aseguramos de que no hay un problema de identificación del servidor y los certificados que presenta.
 
 \chapter{Conexión desde el navegador local}
 Se realizan pruebas con Firefox, donde deberá accederse de forma transparente, es decir, sin mostrar ningún error y sin generar avisos con la opción de "\textit{Entiendo los riesgos}".

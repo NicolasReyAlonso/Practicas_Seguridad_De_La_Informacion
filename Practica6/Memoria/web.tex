@@ -1,5 +1,5 @@
 \chapter{Página index.html}
-La pagiona web que se utilizó para este ejercicio es un template que reutilicé de la asignatura pwm en angular, por lo que
+La página web que se utilizó para este ejercicio es un template que reutilicé de la asignatura pwm en angular, por lo que
 no posee una estructura html tradicional, sino que se compone de un index.html y un main.js que se encarga de cargar el 
 contenido dinámicamente. Para esta práctica, se ha modificado el index.html para incluir un mensaje de bienvenida y 
 una breve descripción del servidor web seguro que se ha configurado. Además, se han ajustado los permisos del archivo para 
@@ -434,4 +434,30 @@ sean correctos para que Apache pueda servir los archivos sin problemas.
     \centering
     \includegraphics[width=0.8\textwidth]{Imagenes/14.png}
     \caption{Copiado del contenido de dist al directorio raíz del servidor web}
+\end{figure}
+
+Además, debido a que el código que he realizado es angular y no es un simple index.html, 
+es necesario configurar el servidor para que redirija todas las solicitudes al index.html, 
+lo cual se puede hacer con un archivo .htaccess con el siguiente contenido:
+\begin{figure}
+    \centering
+    \begin{lstlisting}[language=bash, caption={Archivo .htaccess para redirigir todas las solicitudes al index.html}]
+<IfModule mod_rewrite.c>
+RewriteEngine On
+# Si el archivo o directorio existe, sírvelo
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -f [OR]
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -d [OR]
+RewriteRule ^(.*)$ $1 [L]
+
+# Si no existe, redirige todo al index.html de Angular
+RewriteRule ^.*$ /index.html [L]
+</IfModule>
+    \end{lstlisting}
+    \caption{Archivo .htaccess para redirigir todas las solicitudes al index.html}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{Imagenes/15.png}
+    \caption{Archivo .htaccess para redirigir todas las solicitudes al index.html}
 \end{figure}
