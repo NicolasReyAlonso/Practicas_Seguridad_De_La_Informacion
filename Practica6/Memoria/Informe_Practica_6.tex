@@ -148,25 +148,18 @@
 \include{hosts}
 \include{CARaiz}
 \include{serviapache}
+\include{web}
+\include{openssl}
+\include{conexionweb}
+\include{page}
+\chapter{Conclusiones}
+En conclusión, se ha demostrado satisfactoriamente la implementación tanto funcional como de seguridad para el acceso al 
+servidor web apache2. Se logró establecer la conexión desde Firefox sin mostrar ningún error o aviso de riesgo, 
+cumpliendo con los estándares de robustez exigidos. Además, mediante la configuración adecuada del archivo .htaccess, 
+se garantizó una redirección exitosa y transparente de todas las solicitudes hacia el index.html principal, 
+asegurando así una navegación fluida tipo SPA (Single Page Application). Estos resultados confirman que el sistema está 
+operativo y seguro para su uso en entorno local.
 
-\chapter{Página index.html}
-Creación de la página principal en el directorio raíz del servidor y configuración de los permisos y cualquier otra modificación adicional necesaria.
 
-\chapter{Conexión con openssl s\_client}
-Comprobación mediante \texttt{openssl s\_client}:
-\begin{lstlisting}[language=bash]
-openssl s_client -connect www.ejemplo.com:443
-\end{lstlisting}
-Se compara con al conexión a \texttt{www.ulpgc.es:443} para verificar. Así nos aseguramos de que no hay un problema de identificación del servidor y los certificados que presenta.
-
-\chapter{Conexión desde el navegador local}
-Se realizan pruebas con Firefox, donde deberá accederse de forma transparente, es decir, sin mostrar ningún error y sin generar avisos con la opción de "\textit{Entiendo los riesgos}".
-
-\chapter{Capturas de Pantalla del acceso web}
-\textit{Se incorporarán las 4 capturas, como mínimo, que muestran la correcta configuración de la web de este servidor virtual:}
-\begin{itemize}
-    \item 2 capturas con el contenido para las descripciones de los dominios (ejemplo.com y www.ejemplo.com).
-    \item 2 capturas de las propiedades de la conexión.
-\end{itemize}
 
 \end{document}
