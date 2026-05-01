@@ -1,79 +1,91 @@
 \chapter{Botnets, ordenadores zombies}
-
 \begin{tcolorbox}[
-    title=Detalles de la Noticia, 
-    colframe=black, % Borde azul oscuro
+    title=Detalles de la Noticia: DoJ Disrumpe Botnets IoT por DDoS Globales,
+    colframe=black, % Borde negro
     colback=gray!5,         % Fondo gris claro
     sharp corners,          % Esquinas afiladas,
     breakable              % Permite que el cuadro se divida en varias páginas si es necesario
 ]
+% 1. Descripción y Título
+\textbf{Breve descripción de la amenaza:}
+Una botnet es una red de dispositivos informáticos (ordenadores, smartphones, routers, 
+IoT) que han sido comprometidos y controlados remotamente por un atacante, 
+conocido como "botmaster". Estos dispositivos infectados se convierten en "bots" o 
+"zombies", que son utilizados para ejecutar tareas maliciosas que benefician al atacante.
 
-    % 1. Descripción y Título
-    \textbf{Breve descripción de la amenaza:}
-    \vspace{0.5em}
-    El Malware (software malicioso) es el término genérico que se utiliza para describir cualquier tipo de software diseñado específicamente para causar daño, obtener acceso no autorizado a sistemas informáticos o realizar acciones maliciosas en un dispositivo. Esta categoría abarca una amplia gama de amenazas, incluyendo virus, troyanos, ransomware, spyware y rootkits. Su objetivo final es explotar vulnerabilidades en los sistemas operativos y aplicaciones para comprometer la confidencialidad, integridad y disponibilidad de los datos. El malware actúa como el vector de ataque, siendo el programa ejecutable que se instala en el sistema víctima para llevar a cabo las operaciones del atacante.
+Los ordenadores zombies (o bots) son los nodos individuales dentro de esta red.
+ Un ordenador zombie es esencialmente una máquina que ha sido infectada con malware 
+ (como bots, worms o Trojans) y se ejecuta silenciosamente, realizando comandos 
+ sin el conocimiento del usuario. El atacante utiliza un servidor central, 
+ llamado infraestructura de comando y control (C2), para enviar órdenes a todos los 
+ zombies simultáneamente.
 
-    El Infostealer (ladrón de información) es una clase específica y muy enfocada de malware. Su función principal no es simplemente destruir datos (como lo hace un ransomware), sino extraer activamente la información sensible almacenada en los sistemas comprometidos. Los infostealers están diseñados para buscar y recopilar credenciales de inicio de sesión (nombres de usuario y contraseñas), tokens de sesión, claves privadas, números de tarjetas de crédito, datos bancarios y archivos personales. Estos programas se especializan en la exfiltración de esta información a un servidor externo controlado por el atacante, buscando facilitar el fraude financiero, el robo de identidad o el espionaje corporativo.
-    \vspace{0.5em}
+\vspace{0.5em}
+\textbf{Fecha de la noticia:}
+20 de Marzo de 2026
 
-    \textbf{Fecha de la noticia:}
-    \vspace{0.5em}
-    02/07/2026
+\vspace{0.5em}
+\textbf{Título de la noticia:}
+DoJ Disrupts 3 Million-Device IoT Botnets Behind Record 31.4 Tbps Global DDoS Attacks
 
-    \textbf{Título de la noticia:}
-    \vspace{0.5em}
-    \href{Los infostealers más presentes en Latinoamérica en 2025}{https://www.welivesecurity.com/es/malware/infostealers-presentes-latinoamerica-2025/}
+\vspace{0.5em}
+\textbf{Enlace a la noticia:}
+\href{https://thehackernews.com/2026/03/doj-disrupts-3-million-device-iot.html}{https://thehackernews.com/2026/03/doj-disrupts-3-million-device-iot.html}
 
-    % 2. Enlaces y Medio
-    \textbf{Enlace a la noticia:}
-    \vspace{0.5em}
-    \href{https://www.welivesecurity.com/es/malware/infostealers-presentes-latinoamerica-2025/}{https://www.welivesecurity.com/es/malware/infostealers-presentes-latinoamerica-2025/}
+\vspace{0.5em}
+\textbf{Medio:}
+The Hacker News
 
-    \textbf{Medio:}
-    \vspace{0.5em}
-    Welivesecurity, blog de seguridad informática de la empresa de ciberseguridad ESET.
+\vspace{0.5em}
+\textbf{Enlace al medio:}
+\href{https://thehackernews.com}{https://thehackernews.com}
 
-    \textbf{Enlace al medio:}
-    \vspace{0.5em}
-    \href{https://www.welivesecurity.com}{https://www.welivesecurity.com}
+\vspace{0.5em}
+\textbf{Nacionalidad del medio:}
+Internacional (EE. UU./Reino Unido)
 
-    \textbf{Nacionalidad del medio:}
-    \vspace{0.5em}
-    Bratislava, Eslovaquia.
-    
-    \textbf{Idioma de la noticia:}
-    \vspace{0.5em}
-    Español
-    % 3. Imagen
-    \textbf{Pequeña imagen de la noticia:}
-    \newline
-    \vspace{1em}
-    \begin{center}
-        \includegraphics[width=0.8\textwidth]{Imagenes/03-malware.jpeg} 
-    \end{center} % Centra el contenido dentro del minipage
-    
+\vspace{0.5em}
+\textbf{Idioma de la noticia:}
+Inglés
 
-    % 4. Resumen y Análisis
-    \textbf{Breve resumen de la noticia:}
-    \vspace{0.5em}
+\vspace{1em}
+% 4. Pequeña imagen de la noticia:
+\begin{center}
+\includegraphics[width=0.8\textwidth]{Imagenes/05-botnet-malware.jpg} 
+\end{center}
 
-    El análisis detalla una evolución sofisticada de diversas familias de malware clave, incluyendo Amadey, reconocido como puerta de entrada inicial; Rozena, un stealer file-less que garantiza una persistencia sigilosa; Guildma, un troyano bancario regional enfocado en la interceptación transaccional; Formbook y su evolución a XLoader, que representan herramientas avanzadas de extracción de datos. El foco central de esta actividad es el robo sistemático de credenciales de acceso y datos financieros sensibles.
+\vspace{1em} % Separador
 
-    Se enfatiza cómo estos actores maliciosos han adoptado un enfoque dual: utilizan métodos de distribución modernos, explotando la confianza humana a través del phishing dirigido y aprovechando canales de comunicación como Discord para la propagación rápida entre comunidades cibernéticas. Esta combinación con técnicas evasivas les permite operar con una eficacia considerable en el entorno latinoamericano, donde las defensas suelen ser menos robustas frente a estas tácticas. La evolución constante de estos malwares demuestra la capacidad adaptativa de los atacantes para sortear las medidas de seguridad tradicionales y maximizar el impacto del fraude cibernético
-    
-    \textbf{Relación con la amenaza:}
-    \vspace{0.5em}
+% 4. Resumen y Análisis
+\textbf{Breve resumen de la noticia:}
+El Departamento de Justicia de EE. UU. anunció la disrupción de la 
+infraestructura de comando y control (C2) de varias botnets de IoT 
+(como AISURU y Kimwolf) que fueron utilizadas para lanzar ataques DDoS globales 
+récord de 31.4 Tbps. Esta operación involucró a autoridades de Canadá y Alemania,
+así como a firmas privadas como Cloudflare y Akamai en la investigación. 
+Los atacantes explotaron dispositivos IoT comprometidos para crear una red 
+de botnets masiva.
 
-    La noticia es un ejemplo práctico y detallado de la clase de malware conocida como **Infostealer**. Mientras que el Malware es el término genérico para cualquier software malicioso, los Infostealers son su subconjunto especializado cuyo objetivo principal es la extracción activa de información sensible (credenciales, tokens, datos bancarios). La noticia ilustra esto al nombrar familias específicas (LummaStealer, Amadey, etc.) y detallar sus métodos de operación. Estos ejemplos demuestran cómo el concepto teórico se aplica en un contexto real: los atacantes utilizan vectores modernos como el *phishing* o canales anónimos como Discord para ejecutar la función central del infostealer—la exfiltración de datos—. La evolución constante de estas amenazas, desde troyanos bancarios hasta herramientas *file-less*, subraya la capacidad adaptativa y el riesgo persistente que representan para la seguridad digital.
+\vspace{0.5em}
+\textbf{Relación con la amenaza:}
+Esta noticia describe un incidente de ciberseguridad masivo donde botnets basadas 
+en dispositivos IoT (como cámaras, routers y televisores inteligentes) se 
+convirtieron en herramientas para ataques DDoS a gran escala. 
+La vulnerabilidad clave reside en el uso de estos dispositivos comprometidos 
+para acceder a redes locales y explotar redes proxy residenciales.
 
-    \textbf{\textquestiondown Existe CVE o CWE asociado a la noticia?}
-    No
-    \vspace{0.5em}
+\vspace{0.5em}
+\textbf{\textquestiondown Existe CVE o CWE asociado a la noticia?}
+La noticia menciona vulnerabilidades relacionadas con proveedores de proxy
+ (como IPIDEA) y la exposición de Android Debug Bridge (ADB), que fueron explotadas 
+ por los actores de la amenaza para obtener acceso a dispositivos de red local.
 
-    \textbf{Impacto ocasionado por la amenaza en esta noticia:}
-    \vspace{0.5em}
-
-    El impacto principal es la exposición masiva de datos sensibles, incluyendo credenciales bancarias, información personal y detalles del sistema comprometido. Las amenazas como Guildma están específicamente diseñadas para interceptar sesiones bancarias, mientras que los infostealers (Formbook, XLoader) se enfocan en extraer credenciales de navegadores y clientes de correo electrónico. La capacidad de estos malwares para operar de manera "file-less" y su distribución a través de plataformas como Discord permiten una persistencia y evasión significativas. Esto pone en riesgo la seguridad financiera de individuos y organizaciones, exigiendo una respuesta urgente mediante inteligencia de amenazas proactiva y mecanismos de detección avanzada.
-
+\vspace{0.5em}
+\textbf{Impacto ocasionado por la amenaza en esta noticia:}
+Los ataques generaron tráfico máximo equivalente a "la población combinada del Reino 
+Unido, Alemania y España" simultáneamente navegando una dirección web, 
+logrando tasas de ataque que superaron los 31.4 Tbps. Estos ataques pueden paralizar
+ la infraestructura de Internet central, causar degradación significativa del 
+ servicio para los ISPs y sobrecargar los servicios de mitigación basados en la nube.
 
 \end{tcolorbox}
