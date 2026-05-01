@@ -1,0 +1,86 @@
+\chapter{Análisis de la conexión a Internet}
+
+% ===========================================================
+% SECCIÓN 1: INFORMACIÓN GENERAL DEL ROUTER Y CONEXIÓN WAN
+% ===========================================================
+
+\section{Descripción General del Router (WAN)}
+Esta sección contiene los detalles básicos y las configuraciones físicas de la conexión a Internet.
+
+% Subsección sobre IPs
+\subsection*{Direccionamiento IP}
+\textbf{1. Dirección IP Pública del Router:} 
+\campo{Obtenida a través de la configuración avanzada del router.}
+88.24.71.160
+\vspace{0.5cm} % Espacio extra para separar grupos de preguntas
+
+\textbf{2. Direcciones Privadas (LAN):} 
+% Se pregunta si tiene y luego pide detalles, usando el comando \campo.
+\campo{¿Tiene direcciones privadas? Si es afirmativo, especificar la dirección IP privada principal o rango.}
+Sí, tiene direcciones privadas. La dirección IP privada principal es 192.168.1.1 y su rango es del 33 al 199
+
+% Subsección sobre filtrado de conexiones
+\subsection*{Filtrado de Tráfico (Firewall)}
+
+\textbf{3. ¿El router tiene filtrado de conexiones entrantes?} 
+\campo{Respuesta: [Sí / No]} Sí
+
+\vspace{0.2cm} % Pequeño espacio extra
+
+% Uso de un entorno condicional simulado para la explicación
+{\bfseries Nota:} En caso afirmativo (y si se especificaron direcciones privadas), responder lo siguiente:
+
+\textbf{4. ¿Hay alguna configuración especial de conexiones entrantes?} 
+\campo{Si es afirmativo, detallar las asignaciones específicas (ej.: Puerto Forwarding XYZ).}
+Si, tengo un port forwarding configurado para el puerto 3000, ya que tenía un servidor node express montado.
+\vspace{0.5cm} % Espacio extra para separar grupos de preguntas
+
+% Subsección sobre contraseña del router
+\subsection*{Credenciales y Acceso al Router}
+
+\textbf{5. Origen de la Contraseña del Router:} 
+\campo{¿La contraseña asignada es por el instalador o es propia?}
+Asignada por el instalador. Ya que es un entorno doméstico no la he cambiado por la falta
+de conocimientos de mis familiares.
+
+% ===========================================================
+% SECCIÓN 2: DETALLE DE LA CONEXIÓN WI-FI (WLAN)
+% ===========================================================
+
+\newpage % Empieza en una nueva página para mejor formato
+
+\section{Configuración de Red Inalámbrica (Wi-Fi / WLAN)}
+Detalle sobre la configuración del acceso inalámbrico.
+
+% Subsección de seguridad y medidas adicionales
+\subsection*{Seguridad y Funcionalidades Wi-Fi}
+
+\textbf{1. Nivel de Seguridad:} 
+\campo{Indicar el nivel utilizado: [WEP / WPA / WPA2 / WPA3]}
+WPA2
+\vspace{0.2cm} % Pequeño espacio extra
+
+\textbf{2. Medidas Adicionales Implementadas:} 
+\campo{Marcar o describir cualquier medida especial (Filtrado de MAC, No anuncio del SSID, desactivación del DHCP/WPS, empleo de 802.X, etc.).}
+
+
+% Subsección de contraseña Wi-Fi
+\subsection*{Credenciales Inalámbricas}
+
+\textbf{3. Origen de la Contraseña WiFi:} 
+\campo{¿La contraseña asignada es por el instalador o es propia?}
+Asignada por el instalador. Ya que es un entorno doméstico no la he cambiado por la falta
+de conocimientos de mis familiares.
+\vspace{1cm} % Gran espacio para el cierre del formulario
+
+% ===========================================================
+% SECCIÓN 3: ANEXOS (CAPTURA DE PANTALLA)
+% ===========================================================
+
+\section*{Anexos y Evidencia Visual}
+Adjuntar captura(s) de pantalla de las opciones básicas de configuración del router. Se requiere evidencia visual para validar la información proporcionada en el documento.
+
+\vspace{1cm} 
+\hrule % Línea horizontal separadora
+\vspace{0.2cm} 
+% Puedes añadir un entorno figure o simplemente dejar espacio:
