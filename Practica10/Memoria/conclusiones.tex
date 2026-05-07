@@ -1,0 +1,36 @@
+\chapter{Conclusiones y Contraste de Políticas de Seguridad}
+
+En este apartado se evaluarán las medidas y políticas de seguridad aplicadas en el entorno doméstico analizado a lo largo del documento, contrastándolas directamente con los fundamentos teóricos expuestos en las unidades 1 a 4 del manual de la asignatura. Así, se podrán identificar tanto los puntos fuertes del ecosistema analizado como las principales debilidades y puntos de mejora.
+
+\section{Análisis frente a Unidades 1 y 2: Principios Básicos y Criptografía}
+Los primeros temas abordan los pilares de la seguridad de la información (Confidencialidad, Integridad y Disponibilidad) y las bases criptográficas. 
+\begin{itemize}
+    \item \textbf{Gestión de contraseñas y MFA:} El manual recalca la importancia de emplear contraseñas largas y complejas. En el sistema analizado (macOS), se emplea una contraseña de más de 14 caracteres y se combinan técnicas de autenticación multifactor (Apple Authenticator) con biometría (Touch ID). Esta configuración se alinea perfectamente con los más altos estándares teóricos para proteger la confidencialidad. 
+    \item \textbf{Cifrado de datos:} Gracias al sistema macOS, el disco se encuentra cifrado protegiendo la información. Esto cumple con las recomendaciones de protección en reposo (evitando la pérdida de confidencialidad en caso de sustracción del dispositivo).
+\end{itemize}
+
+\section{Análisis frente a la Unidad 3: Amenazas a los Sistemas de Información}
+La Unidad 3 clasifica las amenazas en ataques, accidentes y negligencias, e incide en que el mayor peligro en un entorno doméstico suele residir en la configuración del equipo y en el factor humano.
+\begin{itemize}
+    \item \textbf{El usuario como administrador:} El manual advierte explícitamente sobre el peligro de utilizar una única cuenta con privilegios de Administrador para las operaciones diarias. En el sistema objeto de la práctica, solo existe una cuenta y es administradora. Esto supone una de las mayores vulnerabilidades del equipo, pues cualquier código malicioso ejecutado por error heredará de forma directa capacidades administrativas (facilitando instalación de rootkits o ransomware).
+    \item \textbf{Vulnerabilidades e instalación de parches:} Dada la existencia continua de \textit{exploits} (o incluso malwares persistentes avanzados), tener ventanas de exposición largas es fatal. El usuario bloquea las instalaciones automáticas y solo actualiza el sistema cada 3 meses, junto con sus copias de seguridad. Esto es una política deficiente que contradice la necesidad de corrección inmediata de vulnerabilidades críticas. 
+    \item \textbf{Redes domésticas y de acceso al router:} El hecho de mantener las credenciales por defecto puestas por el operador del router es una negligencia ampliamente documentada como peligrosa en la Unidad 3.
+\end{itemize}
+
+\section{Análisis frente a la Unidad 4: Mecanismos de Defensa}
+La Unidad 4 aborda directamente la prevención y resolución de los riesgos expuestos. A la luz de las recomendaciones aplicables al entorno doméstico, se extraen las siguientes valoraciones:
+\begin{itemize}
+    \item \textbf{Copias de seguridad (Backup):} El manual exige disponer de sistemas de recuperación consistentes y almacenados de forma desconectada (offline) para huir del \textit{ransomware}. El procedimiento seguido (Time Machine en disco duro externo) cumple el requisito offline al tratarse de un disco que presuntamente se desconecta tras la copia. Sin embargo, la periodicidad de la copia (cada 3 meses) es a todas luces escasa y pone en grave peligro la Disponibilidad de la información reciente.
+    \item \textbf{Protección contra el Malware:} La teoría indica la conveniencia del empleo de \textit{suites} de seguridad, además del cuidado al navegar e instalar. El entorno auditado se ampara exclusivamente en la seguridad nativa de Apple (XProtect y Gatekeeper), descargando solo software verificado (App Store o desarrolladores con firma). Si bien Apple provee protección de fondo, el ecosistema carece de un antimalware de revisión concurrente o \textit{firewall} de aplicaciones avanzado a nivel del usuario doméstico. La decisión del escaneo profundo en este informe con soluciones temporales como \textit{Malwarebytes} debería, teóricamente, implementarse de forma periódica en vez de anecdótica.
+    \item \textbf{Configuración del router doméstico (WAN/WLAN):} Contrastando con el manual (Tabla 4.1 y 4.2), la defensa perimetral del sistema analizado tiene serias deficiencias. Utiliza NAT y puerto cerrado (salvo redirección al puerto 3000), pero suspende en las medidas denominadas de nivel "Básico" por el texto: no se han cambiado ni la clave de gestión del router ni la clave de la Wifi, ambas asumiendo las etiquetas genéricas del instalador de la ISP.
+\end{itemize}
+
+\section{Conclusión final y recomendaciones}
+Realizando un balance general, el usuario del Mac auditado confía gran parte de su seguridad al propio ecosistema del fabricante (mecanismos nativos, Touch ID) y a su intuición cibernética, mostrando un nivel aceptable en la capa de acceso y criptografía. Sin embargo, analizando el comportamiento bajo el prisma de las Unidades 1 a 4 del manual, presenta graves brechas operativas (negligencias):  
+
+\begin{enumerate}
+    \item \textbf{Uso de cuentas:} Se recomienda la creación de una cuenta estándar sin privilegios administrativos para el uso diario.
+    \item \textbf{Actualizaciones:} Se debería habilitar la instalación de los parches de seguridad de MacOS de manera automática o inmediata.
+    \item \textbf{Frecuencia de backups:} Aumentar el periodo del Time Machine al menos a una copia semanal.
+    \item \textbf{Router local:} Es capital acceder a la interfaz de administración (192.168.1.1) y cambiar inmediatamente la contraseña de administrador por defecto, así como modificar la clave del WPA2 (y si es posible actualizar a WPA3) del Wi-Fi de un entorno que, por estar en casa sin control adicional, forma el límite primario de la red (su propia DMZ particular).
+\end{enumerate}
