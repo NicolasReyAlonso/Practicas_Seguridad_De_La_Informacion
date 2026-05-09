@@ -1,0 +1,52 @@
+\chapter{Cross-Site Scripting (XSS)}
+
+    % 1. Descripción y Título
+    \section{Breve descripción de la amenaza: (más de 100 palabras)}
+    La amenaza descrita se basa en una vulnerabilidad de tipo XSS persistente o almacenado (Stored Cross-Site Scripting), identificada técnicamente como CVE-2025-66376, que afecta a la plataforma de colaboración Zimbra (ZCS). En este tipo de ataque, el actor de la amenaza, en este caso el grupo estatal ruso APT28, inyecta un script malicioso (payload) directamente en el cuerpo HTML de un correo electrónico. A diferencia del XSS reflejado, el código malicioso queda almacenado en el servidor de correo. Cuando un usuario autenticado abre el mensaje en su cliente de webmail, el navegador ejecuta automáticamente el JavaScript malicioso de forma silenciosa. Este script tiene la capacidad de secuestrar la sesión del usuario, acceder al Document Object Model (DOM) de la página y, en última instancia, permitir a un atacante no autenticado lograr la ejecución remota de código (RCE). Al ejecutarse en el contexto de una sesión legítima, el malware puede evadir controles de seguridad tradicionales y realizar acciones en nombre del usuario, como el robo de tokens de acceso y la exfiltración de datos privados.
+
+    \section{Fecha de la noticia:}
+    19 de marzo de 2026
+   
+    \section{Título de la noticia:}
+    Russian hackers exploit Zimbra flaw in Ukrainian govt attacks
+
+    \href{https://www.bleepingcomputer.com/news/security/russian-apt28-military-hackers-exploit-zimbra-flaw-in-ukrainian-govt-attacks/}{https://www.bleepingcomputer.com/news/security/russian-apt28-military-hackers-exploit-zimbra-flaw-in-ukrainian-govt-attacks/}
+
+    % 2. Enlaces y Medio
+    \section{Enlace a la noticia:}
+    \href{https://www.bleepingcomputer.com/news/security/russian-apt28-military-hackers-exploit-zimbra-flaw-in-ukrainian-govt-attacks/}{https://www.bleepingcomputer.com/news/security/russian-apt28-military-hackers-exploit-zimbra-flaw-in-ukrainian-govt-attacks/}
+
+    \section{Medio:}
+    BleepingComputer
+
+    \section{Enlace al medio:}
+    \href{https://www.bleepingcomputer.com/}{https://www.bleepingcomputer.com/}
+
+    \section{Nacionalidad del medio:}
+    Estados Unidos
+    
+    \section{Idioma de la noticia:}
+    Inglés
+    
+    \section{Pequeña imagen de la noticia:}
+    \begin{center}
+        \includegraphics[width=0.8\textwidth]{Imagenes/Russian.jpg} 
+    \end{center} 
+
+    % 4. Resumen y Análisis
+    \section{Breve resumen de la noticia: (más de 100 palabras)}
+    El grupo de hacking APT28, vinculado a la inteligencia militar rusa (GRU), está explotando activamente una vulnerabilidad XSS de alta severidad en Zimbra para atacar entidades gubernamentales en Ucrania. Según investigadores de Seqrite Labs, la campaña denominada "Operation GhostMail" utiliza correos electrónicos de phishing que no contienen archivos adjuntos ni enlaces sospechosos; en su lugar, el ataque reside enteramente en el cuerpo HTML del mensaje. Una vez que el objetivo abre el correo en su sesión de Zimbra, un script de JavaScript ofuscado se ejecuta para recolectar credenciales, tokens de sesión, códigos de respaldo de autenticación de dos factores (2FA) y contraseñas guardadas en el navegador. Además, el malware es capaz de exfiltrar el contenido de los buzones de correo de los últimos 90 días utilizando protocolos DNS e HTTPS. La gravedad del incidente ha llevado a la agencia CISA a incluir esta vulnerabilidad en su catálogo de fallos explotados activamente, ordenando a las agencias federales de EE. UU. securizar sus servidores para evitar compromisos similares.
+
+    \section{Relación con la amenaza:}
+    La noticia demuestra el uso avanzado de XSS almacenado como vector de entrada inicial en operaciones de ciberespionaje. El fallo permite convertir un simple visualizador de correos en una herramienta de ejecución de código, saltándose las defensas convencionales contra malware basado en archivos.
+
+    \section{\textquestiondown Existe CVE o CWE asociado a la noticia?}
+    Sí, la noticia identifica específicamente:
+    \begin{itemize}
+        \item \textbf{CVE-2025-66376}: El identificador de la vulnerabilidad en Zimbra Collaboration Suite.
+        \item \textbf{CWE-79}: Neutralización inadecuada de la entrada durante la generación de páginas web (Cross-Site Scripting).
+        \item \textbf{CWE-80}: XSS donde el script se almacena en el servidor.
+    \end{itemize}
+
+    \section{Impacto ocasionado por la amenaza en esta noticia: (más de 100 palabras)}
+    El impacto de esta amenaza es crítico, afectando directamente a la seguridad nacional de Ucrania y a la integridad de sus infraestructuras esenciales, como la Agencia Estatal de Hidrología. Al comprometer los servidores de Zimbra, los atacantes obtienen acceso total a las comunicaciones diplomáticas, militares y administrativas, permitiendo el robo de información estratégica y de inteligencia. La exfiltración de datos recolectados, que incluye correos de hasta tres meses de antigüedad y códigos 2FA, otorga a APT28 la capacidad de realizar persistencia a largo plazo en las redes gubernamentales. Además, el impacto se extiende globalmente debido a la popularidad de Zimbra, lo que pone en riesgo a miles de empresas y organismos internacionales que utilizan esta suite. La necesidad de respuesta rápida, evidenciada por el mandato de CISA, subraya un impacto operativo significativo, obligando a administradores de todo el mundo a realizar auditorías urgentes y aplicar parches para prevenir el espionaje masivo y la pérdida de soberanía digital.

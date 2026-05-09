@@ -1,0 +1,52 @@
+\chapter{Inyección de código SQL}
+
+    % 1. Descripción y Título
+    \section{Breve descripción de la amenaza: (más de 100 palabras)}
+    La amenaza descrita se centra en una vulnerabilidad de inyección SQL de día cero (zero-day) identificada como CVE-2025-1094, localizada en las funciones de la biblioteca \textit{libpq} de PostgreSQL. Este fallo técnico surge debido a una neutralización inadecuada de la sintaxis de escape en funciones críticas como \textit{PQescapeLiteral()} y \textit{PQescapeString()}. Específicamente, el problema reside en cómo el terminal interactivo de PostgreSQL (\textit{psql}) procesa secuencias de bytes no válidas provenientes de caracteres UTF-8 mal formados. Los atacantes pueden aprovechar este error para manipular consultas SQL y ejecutar comandos arbitrarios en la base de datos cuando la aplicación utiliza estos resultados para construir entradas. En el contexto del ataque a la empresa BeyondTrust, esta vulnerabilidad fue encadenada con otros fallos de inyección de argumentos para lograr la ejecución remota de código (RCE). Lo que hace a esta amenaza particularmente peligrosa es su capacidad de evadir mecanismos de seguridad estándar mediante el uso de codificaciones de caracteres específicas (como BIG5 o EUC\_TW), permitiendo a actores estatales realizar espionaje y robo de datos a gran escala.
+
+    \section{Fecha de la noticia:}
+    14 de febrero de 2025
+   
+    \section{Título de la noticia:}
+    PostgreSQL flaw exploited as zero-day in BeyondTrust breach
+
+    \href{https://www.bleepingcomputer.com/news/security/postgresql-flaw-exploited-as-zero-day-in-beyondtrust-breach/}{https://www.bleepingcomputer.com/news/security/postgresql-flaw-exploited-as-zero-day-in-beyondtrust-breach/}
+
+    % 2. Enlaces y Medio
+    \section{Enlace a la noticia:}
+    \href{https://www.bleepingcomputer.com/news/security/postgresql-flaw-exploited-as-zero-day-in-beyondtrust-breach/}{https://www.bleepingcomputer.com/news/security/postgresql-flaw-exploited-as-zero-day-in-beyondtrust-breach/}
+
+    \section{Medio:}
+    BleepingComputer
+
+    \section{Enlace al medio:}
+    \href{https://www.bleepingcomputer.com/}{https://www.bleepingcomputer.com/}
+
+    \section{Nacionalidad del medio:}
+    Estados Unidos
+    
+    \section{Idioma de la noticia:}
+    Inglés
+    
+    \section{Pequeña imagen de la noticia:}
+    \begin{center}
+        \includegraphics[width=0.8\textwidth]{Imagenes/06-hacker.jpg} 
+    \end{center} 
+
+    % 4. Resumen y Análisis
+    \section{Breve resumen de la noticia: (más de 100 palabras)}
+    La empresa de ciberseguridad Rapid7 reveló que un grupo de hackers vinculados al estado chino, conocido como "Silk Typhoon", explotó una vulnerabilidad de día cero en PostgreSQL para infiltrarse en la red de BeyondTrust y en 17 de sus instancias SaaS de Soporte Remoto. El ataque, ocurrido inicialmente en diciembre, permitió a los atacantes comprometer posteriormente la red del Departamento del Tesoro de los Estados Unidos utilizando claves de API robadas. Según la investigación, el fallo CVE-2025-1094 facilitó inyecciones SQL mediante el procesamiento incorrecto de caracteres UTF-8 inválidos, lo cual fue fundamental para que los atacantes lograran la ejecución de código. Los objetivos principales fueron organismos críticos como el Comité de Inversión Extranjera (CFIUS) y la Oficina de Control de Activos Extranjeros (OFAC). Aunque BeyondTrust lanzó parches de seguridad, la noticia destaca la sofisticación de los atacantes para encadenar múltiples vulnerabilidades (CVE-2024-12356 y CVE-2025-1094) con el fin de extraer información clasificada sobre sanciones económicas y documentos de seguridad nacional antes de que el fallo fuera hecho público.
+
+    \section{Relación con la amenaza:}
+    La noticia ilustra un caso avanzado de inyección SQL donde la vulnerabilidad no reside en el código de la aplicación final, sino en las funciones de escape de la base de datos PostgreSQL. Demuestra cómo una inyección SQL puede ser el catalizador para un compromiso total del sistema (RCE) en infraestructuras críticas de software de acceso privilegiado.
+
+    \section{\textquestiondown Existe CVE o CWE asociado a la noticia?}
+    Sí, la noticia menciona explícitamente:
+    \begin{itemize}
+        \item \textbf{CVE-2025-1094}: Vulnerabilidad de inyección SQL en PostgreSQL.
+        \item \textbf{CWE-89}: Inyección SQL (Improper Neutralization of Special Elements used in an SQL Command).
+        \item \textbf{CWE-88}: Inyección de argumentos (mencionado por Rapid7 como reclasificación de CVE-2024-12356).
+    \end{itemize}
+
+    \section{Impacto ocasionado por la amenaza en esta noticia: (más de 100 palabras)}
+    El impacto de este ataque es de carácter geopolítico y sistémico. A nivel corporativo, BeyondTrust sufrió una brecha en su infraestructura principal y en múltiples instancias de clientes SaaS, afectando su reputación como proveedor de gestión de accesos privilegiados. Sin embargo, el impacto más grave se trasladó al sector público, donde el Departamento del Tesoro de EE. UU. vio comprometida su red. El grupo Silk Typhoon logró acceder a información sensible relativa a sanciones internacionales y documentos de seguridad nacional de oficinas clave como la OFAC y el CFIUS. Este incidente forzó a la agencia CISA a emitir mandatos de parcheo urgente para todas las agencias federales en plazos de menos de una semana. En términos técnicos, el ataque demostró que incluso las bibliotecas de bases de datos maduras como PostgreSQL pueden ocultar fallos de día cero que permiten el movimiento lateral y la exfiltración masiva de datos no clasificados pero críticos para la política exterior de una potencia mundial, subrayando la fragilidad de las cadenas de suministro de software gubernamental.
