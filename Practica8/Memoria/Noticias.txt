@@ -9,6 +9,6 @@ https://www.justice.gov/usao-ak/pr/authorities-disrupt-worlds-largest-iot-ddos-b
 5
 https://latam.kaspersky.com/about/press-releases/estafa-que-usa-celular-como-garantia-de-prestamo-se-expande-por-america-latina
 6
-https://www.rnz.co.nz/news/national/583724/more-than-80-000-impacted-by-manage-my-health-breach-in-northland
+https://www.bleepingcomputer.com/news/security/postgresql-flaw-exploited-as-zero-day-in-beyondtrust-breach/
 7
-https://thehackernews.com/2025/10/zimbra-zero-day-exploited-to-target.html?utm_source=chatgpt.com
+https://www.bleepingcomputer.com/news/security/russian-apt28-military-hackers-exploit-zimbra-flaw-in-ukrainian-govt-attacks/

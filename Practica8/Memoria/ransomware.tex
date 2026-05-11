@@ -1,89 +1,69 @@
 \chapter{Ataques de ransomware contra corporaciones y gobiernos}
 
-\begin{tcolorbox}[
-    title=Detalles de la Noticia, 
-    colframe=black, % Borde azul oscuro
-    colback=gray!5,         % Fondo gris claro
-    sharp corners,          % Esquinas afiladas,
-    breakable              % Permite que el cuadro se divida en varias páginas si es necesario
-]
 
-    % 1. Descripción y Título
-    \textbf{Breve descripción de la amenaza:}
-    \vspace{0.5em}
+    \section{Breve descripción de la amenaza: (más de 100 palabras)}
     
-    El ransomware es una de las amenazas más destructivas y lucrativas en el panorama de la ciberseguridad moderna. Se clasifica como un tipo de malware cuyo objetivo principal no es robar información (como un infostealer), sino denegar el acceso a los datos o sistemas críticos mediante el cifrado criptográfico.
+    La amenaza descrita consiste en un ataque de ransomware de doble extorsión ejecutado por el grupo criminal ``Interlock''. 
+    Esta modalidad de ataque no solo se limita al cifrado de archivos críticos para paralizar las operaciones de la entidad víctima 
+    (en este caso, un ``proveedor'' de servicios de diálisis), sino que incluye la exfiltración previa de volúmenes masivos 
+    de datos sensibles. El grupo Interlock utilizó técnicas avanzadas para infiltrarse en la red de DaVita, logrando permanecer
+     de forma persistente desde el 24 de marzo hasta el 12 de abril de 2025. Durante este periodo, los atacantes extrajeron 
+     aproximadamente 20 terabytes de información, incluyendo bases de datos SQL con más de 200 millones de registros. 
+     El ransomware afectó principalmente a los servidores de laboratorio y bases de datos clínicas. Al no concretarse el 
+     pago del rescate, los atacantes procedieron a la filtración selectiva de los datos en su sitio de la ``Dark Web'', utilizando
+      la exposición de información de salud protegida (PHI) como mecanismo de presión.
 
-Una vez que un atacante logra infiltrarse en una red, el ransomware ejecuta su carga útil: cifra archivos vitales del sistema operativo, bases de datos y copias de seguridad. Este proceso convierte la información legible en galimatías inútiles sin la clave de descifrado. Posteriormente, los atacantes exigen un rescate (el "ransom") a cambio de proporcionar dicha clave.
+    \section{Fecha de la noticia:}
+    22 de agosto de 2025
 
-La sofisticación actual va más allá del simple cifrado; muchos ataques combinan el cifrado con la doble extorsión: además de bloquear el acceso, roban copias de los datos antes de cifrarlos y amenazan con publicarlas si no se paga el rescate. Esto aumenta drásticamente la presión sobre las víctimas, ya que el riesgo pasa de ser solo operativo a reputacional y legal. La prevención requiere una combinación robusta de copias de seguridad offline, sistemas de detección avanzados y políticas de acceso estrictas.
-\vspace{0.5em}
-
-    \textbf{Fecha de la noticia:}
-    \vspace{0.5em}
-    15/04/2026
-
-    \textbf{Título de la noticia:}
-    \vspace{0.5em}
-
-    \href{https://industrialcyber.co/manufacturing/manufacturing-absorbs-56-ransomware-surge-of-global-attacks-in-2025-as-raas-legacy-ot-supply-chains-fuel-spike/}{Manufacturing absorbs 56\% ransomware surge of global attacks in 2025, as RaaS, legacy OT, supply chains fuel spike}
+    \section{Título de la noticia:}
+    \href{https://www.hipaajournal.com/davita-ransomware-attack/}{DaVita Confirms 2.7 Million Individuals Affected by Ransomware Attack}
 
     % 2. Enlaces y Medio
-    \textbf{Enlace a la noticia:}
+    \section{Enlace a la noticia:}
+
+    \href{https://www.hipaajournal.com/davita-ransomware-attack/}{https://www.hipaajournal.com/davita-ransomware-attack/}
+
+    \section{Medio:}
+    The HIPAA Journal
     
-    \vspace{0.5em}
-    \href{https://industrialcyber.co/manufacturing/manufacturing-absorbs-56-ransomware-surge-of-global-attacks-in-2025-as-raas-legacy-ot-supply-chains-fuel-spike/}{https://industrialcyber.co/manufacturing/manufacturing-absorbs-56-ransomware-surge-of-global-attacks-in-2025-as-raas-legacy-ot-supply-chains-fuel-spike/}
+    \section{Enlace al medio:}
+    \href{https://www.hipaajournal.com/}{https://www.hipaajournal.com/}
 
-    \textbf{Medio:}
-    \vspace{0.5em}
-    Industrial Cyber, blog de seguridad informática.
-
-    \textbf{Enlace al medio:}
-    \vspace{0.5em}
-    \href{https://industrialcyber.co}{https://industrialcyber.co}
-
-    \textbf{Nacionalidad del medio:}
-    \vspace{0.5em}
-    Estados Unidos.
+    \section{Nacionalidad del medio:}
+    Estados Unidos
     
-    \textbf{Idioma de la noticia:}
-    \vspace{0.5em}
+    \section{Idioma de la noticia:}
     Inglés
-    % 3. Imagen
-    \textbf{Pequeña imagen de la noticia:}
-    \newline
+    
+    \section{Pequeña imagen de la noticia:}
     \vspace{1em}
     \begin{center}
-        \includegraphics[width=0.8\textwidth]{Imagenes/04-ransomware.png} 
-    \end{center} % Centra el contenido dentro del minipage
-    
+        \includegraphics[width=0.8\textwidth]{Imagenes/04-ran.png} 
+    \end{center} 
 
     % 4. Resumen y Análisis
-    \textbf{Breve resumen de la noticia:}
-    \vspace{0.5em}
+    \section{Breve resumen de la noticia: (más de 100 palabras)}
+    DaVita, uno de los mayores proveedores de servicios de diálisis en EE. UU., confirmó que un ataque de ransomware ocurrido en 
+    abril de 2025 afectó finalmente a 2.689.826 personas. El incidente, atribuido al grupo Interlock, supuso el acceso no autorizado 
+    a servidores de red y bases de datos de laboratorio. Aunque la empresa logró mantener la continuidad del tratamiento 
+    crítico para sus pacientes, la brecha de seguridad resultó en la exfiltración de 20 TB de datos sensibles, incluyendo nombres, números de Seguro Social, información de seguros médicos y resultados de pruebas de laboratorio. El informe financiero de la compañía reveló que el ataque generó costes de remediación de 13,5 millones de dólares solo en el segundo trimestre de 2025. Tras el fracaso de las negociaciones de rescate, el grupo atacante comenzó a publicar archivos robados en su portal de filtraciones. Como respuesta, DaVita ha comenzado a enviar cartas de notificación a los afectados, ofreciendo servicios de monitoreo de crédito y protección de identidad, mientras enfrenta al menos dos demandas colectivas por presunta negligencia en la custodia de los datos.
 
-El sector manufacturero ha sido un objetivo crítico y está absorbiendo una parte desproporcionada del aumento global de ataques de ransomware. Según el informe de Check Point Research, los incidentes en este sector aumentaron un 56% en 2025, representando casi la mitad de todos los ataques globales documentados.
+    \section{Relación con la amenaza:}
+    La noticia es un ejemplo crítico de ataque de ransomware contra una infraestructura corporativa de salud. Ilustra cómo las corporaciones que manejan datos sensibles son objetivos prioritarios debido al alto valor de la información médica y la presión operativa para restaurar servicios vitales.
 
-Este auge se debe a tres factores estructurales: la persistencia de sistemas OT (tecnología operativa) heredados con vulnerabilidades conocidas; la creciente complejidad de las cadenas de suministro que expanden la superficie de ataque; y la maduración del modelo RaaS (ransomware-as-a-service). Los atacantes están utilizando tácticas avanzadas como la doble extorsión, el robo de datos sensibles y el uso de IA para maximizar la presión financiera.
+    \section{\textquestiondown Existe CVE o CWE asociado a la noticia?}
+    La noticia no menciona un código CVE específico.
 
-El impacto es devastador, ya que una interrupción operativa puede costar millones por día. Para mitigar este riesgo, se recomienda urgentemente implementar arquitecturas de confianza cero (zero-trust) en entornos IT y OT, priorizar el parcheo rápido de vulnerabilidades críticas y mantener copias de seguridad inmutables y aisladas para garantizar la capacidad de recuperación sin recurrir al pago de rescates.
-    
-    \textbf{Relación con la amenaza:}
-    \vspace{0.5em}
+    \section{Impacto ocasionado por la amenaza en esta noticia: (más de 100 palabras)}
+    El impacto de este ataque es masivo y se divide en tres vertientes: financiera, operativa y legal. 
+    Financieramente, DaVita reportó pérdidas directas de 13,5 millones de dólares destinados a especialistas en ciberseguridad, 
+    restauración de sistemas y costes administrativos, sin contar las pérdidas potenciales por interrupción de negocio y multas. 
+    Operativamente, aunque la atención al paciente no se detuvo, hubo una interrupción significativa 
+    en los procesos de laboratorio y administrativos que obligó a implementar procesos manuales temporales. 
+    Desde el punto de vista legal y reputacional, la filtración de datos de 2,7 millones de personas ha derivado en demandas 
+    colectivas (como \textit{Reid v. Davita Inc.}) y una investigación de la Oficina de Derechos Civiles (OCR). 
+    La exposición de números de Seguro Social y datos clínicos coloca a los pacientes en un riesgo prolongado de robo de 
+    identidad y fraude médico, lo que erosiona profundamente la confianza en la institución y requiere inversiones a 
+    largo plazo en servicios de protección para los afectados.
 
-    Esta noticia es un ejemplo de cómo el **Ransomware** se manifiesta como una amenaza crítica y altamente disruptiva dentro del espectro general del Malware. Mientras que los Infostealers (como se describió anteriormente) se especializan en la exfiltración silenciosa de datos sensibles para fraude financiero, el Ransomware tiene como objetivo principal negar el acceso a sistemas críticos mediante el cifrado de información vital. El impacto no es solo el robo de datos, sino la paralización operativa completa, lo cual, según el artículo, puede costar millones por día. La noticia proporciona evidencia concreta al reportar un aumento del 56\% en ataques contra el sector manufacturero, señalando que los atacantes explotan vulnerabilidades específicas como sistemas OT (tecnología de operación) y cadenas de suministro complejas para maximizar la presión económica sobre las víctimas. En esencia, demuestra cómo el malware puede evolucionar desde el robo discreto de datos hasta la interrupción masiva de servicios esenciales.
-
-    \textbf{\textquestiondown Existe CVE o CWE asociado a la noticia?}
-    No
-    \vspace{0.5em}
-
-    \textbf{Impacto ocasionado por la amenaza en esta noticia:}
-    \vspace{0.5em}
-
-    El impacto de los ataques de ransomware trasciende la mera pérdida de datos cifrados; es una crisis multifacética que afecta la continuidad operativa, la estabilidad financiera y la confianza en las instituciones.
-
-A nivel operativo, el efecto más inmediato es la paralización total de procesos críticos y los costes de "recuperación" de datos que oscilan de los 4000\$ a los 70000\$. Al cifrar sistemas SCADA o PLCs (controlando maquinaria industrial), se detienen líneas de producción enteras, como ocurrió con productores de acero o fabricantes de dispositivos médicos. Esta interrupción no solo genera pérdidas directas por inactividad, sino que también afecta a toda la cadena de suministro asociada.
-
-Financieramente, el costo es doble: incluye el pago del rescate (si se decide hacerlo) y los gastos masivos en recuperación forense y restauración de sistemas. Sin embargo, el daño más profundo es el impacto reputacional y la pérdida de confianza. Además, con las tácticas modernas de doble extorsión, el robo de datos sensibles—como información de pacientes o secretos comerciales—puede llevar a multas regulatorias millonarias y un colapso en el valor bursátil de la empresa afectada. En esencia, estos ataques amenazan la infraestructura económica y social completa
-
-\end{tcolorbox}
