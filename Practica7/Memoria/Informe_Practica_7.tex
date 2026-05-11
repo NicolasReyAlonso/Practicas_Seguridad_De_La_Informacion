@@ -145,55 +145,253 @@
 \include{intro}
 \include{certificado}
 
-\chapter{Modificación del fichero hosts}
-Se modifica el fichero \texttt{/etc/hosts} para añadir los alias.
-\begin{lstlisting}[language=bash]
-127.0.0.1 www.ejemplo.com
-127.0.0.1 ejemplo.com
-\end{lstlisting}
-Verificamos:
-\begin{lstlisting}[language=bash]
-ping -c 2 www.ejemplo.com
-ping -c 2 ejemplo.com
-\end{lstlisting}
-
-
-\chapter{Incorporación del certificado RAÍZ}
-Se incorpora el certificado RAÍZ de la asignatura a la lista de autoridades reconocidas del sistema según las instrucciones.
-
-
 \chapter{Configuración del servidor Apache}
-Descripción detallada de los ficheros modificados, donde se configuran el certificado de servidor, cliente (si fuera necesario) y la entidad CA (Autoridad de Certificación).
+\section{Enunciado}
+Modificación de la configuración del Apache para que solicite certificados de cliente y acepte los firmados por la misma autoridad de la asignatura y por otra autoridad (preferentemente FNMT). Habilitación de la ejecución de scripts CGI-bin (bash), código Python, etc.
 
+\section{Resolución}
+A partir de la configuración del \texttt{VirtualHost *:443} de la práctica anterior, se modifica el fichero \texttt{/etc/apache2/sites-available/default-ssl.conf} para añadir la verificación del certificado de cliente, el uso del nuevo almacén de CAs confiables y la habilitación del directorio \texttt{cgi-bin}.
 
-\chapter{Instalación y arranque del servidor Apache}
-Comandos utilizados:
+En primer lugar se copia el fichero de CAs confiables al directorio de certificados de Apache:
 \begin{lstlisting}[language=bash]
-sudo apt update
-sudo apt install apache2
-sudo a2enmod ssl
+sudo cp certificados_confiables.pem /etc/apache2/certs/
+sudo gedit /etc/apache2/sites-available/default-ssl.conf
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{Imagenes/06-copiaCertificadosYcreacionSHS.png}
+    \caption{Copia del fichero de CAs confiables y edición de la configuración de Apache.}
+    \label{fig:copia-conf}
+\end{figure}
+
+El contenido del fichero \texttt{default-ssl.conf} queda configurado de la siguiente forma:
+\begin{lstlisting}[language=bash]
+<VirtualHost *:443>
+    ServerName       www.ejemplo.com
+    ServerAlias      ejemplo.com
+    ServerAdmin      nicolasreyalonso@gmail.com
+    DocumentRoot     /var/www/html
+    DirectoryIndex   /cgi-bin/index.sh
+    AddHandler       cgi-script .sh .cgi .pl .py
+    SSLEngine            on
+    SSLCertificateFile   /etc/apache2/certs/servidor.crt
+    SSLCertificateKeyFile /etc/apache2/certs/servidor.key
+    SSLCACertificateFile /etc/apache2/certs/certificados_confiables.pem
+    SSLVerifyClient      require
+    SSLVerifyDepth       2
+    SSLProtocol          all -SSLv3 -TLSv1 -TLSv1.1
+    SSLCipherSuite       HIGH:!aNULL:!MD5
+    ErrorLog             ${APACHE_LOG_DIR}/error_ssl.log
+    CustomLog            ${APACHE_LOG_DIR}/access_ssl.log combined
+    ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+    <Directory "/usr/lib/cgi-bin">
+        AllowOverride None
+        Options +ExecCGI
+        SSLOptions +StdEnvVars
+        Require all granted
+    </Directory>
+</VirtualHost>
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Imagenes/09-DefaultApacheConf.png}
+    \caption{Contenido final del fichero \texttt{default-ssl.conf}.}
+    \label{fig:default-ssl}
+\end{figure}
+
+Las directivas más relevantes son:
+\begin{itemize}
+    \item \texttt{DirectoryIndex /cgi-bin/index.sh}: el script CGI sustituye al \texttt{index.html} como página por defecto.
+    \item \texttt{AddHandler cgi-script .sh .cgi .pl .py}: habilita la ejecución como CGI de scripts en \texttt{bash}, Perl, Python, etc.
+    \item \texttt{SSLCACertificateFile}: apunta al fichero que concatena las CAs (FNMT y asignatura).
+    \item \texttt{SSLVerifyClient require}: obliga al cliente a presentar un certificado válido firmado por alguna de las CAs confiables.
+    \item \texttt{SSLVerifyDepth 2}: profundidad máxima de la cadena de verificación.
+    \item \texttt{SSLOptions +StdEnvVars}: expone los datos del certificado del cliente como variables de entorno (\texttt{SSL\_CLIENT\_S\_DN}, \texttt{SSL\_CLIENT\_I\_DN}, etc.) para que el script CGI pueda consultarlos sin invocar a \texttt{openssl}.
+\end{itemize}
+
+
+\chapter{Instalación del script de sustitución de \texttt{index.html}}
+\section{Enunciado}
+Instalación del script de sustitución de \texttt{index.html}. Breve explicación del script utilizado y comprobación de sus permisos.
+
+\section{Resolución}
+Se crea el script \texttt{/usr/lib/cgi-bin/index.sh}, que sustituye al \texttt{index.html} y muestra los datos del certificado de cliente leyéndolos directamente de las variables de entorno que Apache expone gracias a la directiva \texttt{SSLOptions +StdEnvVars}.
+
+\begin{lstlisting}[language=bash]
+#!/bin/bash
+# Cabecera HTTP obligatoria
+echo "Content-type: text/html"
+echo ""
+
+# Cuerpo de la pagina web
+echo "<!DOCTYPE html>"
+echo "<html><head><title>Datos del Certificado</title></head><body>"
+echo "<h1>Autenticacion de Cliente Exitosa</h1>"
+echo "<ul>"
+echo "<li><strong>Sujeto (A quien pertenece):</strong> $SSL_CLIENT_S_DN</li>"
+echo "<li><strong>Emisor (Quien lo firma):</strong> $SSL_CLIENT_I_DN</li>"
+echo "<li><strong>Validez (Inicio):</strong> $SSL_CLIENT_V_START</li>"
+echo "<li><strong>Validez (Fin):</strong> $SSL_CLIENT_V_END</li>"
+echo "</ul>"
+echo "</body></html>"
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{Imagenes/07-SHellScriptForApache.png}
+    \caption{Contenido del script CGI \texttt{index.sh}.}
+    \label{fig:script-cgi}
+\end{figure}
+
+Funcionamiento del script:
+\begin{itemize}
+    \item Imprime la cabecera HTTP \texttt{Content-type: text/html} seguida de una línea en blanco, requisito imprescindible de la especificación CGI.
+    \item Construye una página HTML mínima a base de comandos \texttt{echo}.
+    \item Lee del entorno las variables \texttt{SSL\_CLIENT\_S\_DN} (sujeto del certificado del cliente), \texttt{SSL\_CLIENT\_I\_DN} (emisor / CA que lo firma), \texttt{SSL\_CLIENT\_V\_START} y \texttt{SSL\_CLIENT\_V\_END} (período de validez).
+    \item \textbf{No} invoca al comando \texttt{openssl}: los datos del certificado son entregados por Apache directamente al script.
+\end{itemize}
+
+Para que Apache pueda ejecutar el script se ajustan los permisos a \texttt{755}:
+\begin{lstlisting}[language=bash]
+sudo chmod 755 index.sh
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{Imagenes/08-PermissionToSHSc.png}
+    \caption{Asignación de permisos de ejecución al script CGI.}
+    \label{fig:chmod-script}
+\end{figure}
+
+
+\chapter{Rearranque del Apache y verificación del \texttt{error\_log}}
+\section{Enunciado}
+Rearranque del Apache y verificación del fichero \texttt{error\_log}.
+
+\section{Resolución}
+Antes de reiniciar el servicio se habilita el módulo \texttt{cgi} (necesario para que Apache ejecute scripts CGI) y, a continuación, se reinicia el servidor para aplicar los cambios de la configuración:
+
+\begin{lstlisting}[language=bash]
+sudo a2enmod cgi
 sudo systemctl restart apache2
 \end{lstlisting}
-Se revisan continuamente \texttt{/var/log/apache2/error\_log} para detectar *warnings* y errores; y \texttt{/var/log/apache2/access\_log} para comprobar accesos.
 
-\chapter{Página index.html}
-Creación de la página principal en el directorio raíz del servidor y configuración de los permisos y cualquier otra modificación adicional necesaria.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Imagenes/10-EnableShellAndRestart.png}
+    \caption{Habilitación del módulo \texttt{cgi} y reinicio de Apache.}
+    \label{fig:enable-cgi}
+\end{figure}
 
-\chapter{Conexión con openssl s\_client}
-Comprobación mediante \texttt{openssl s\_client}:
+Tras el reinicio se inspecciona el fichero \texttt{/var/log/apache2/error\_ssl.log} (definido en la directiva \texttt{ErrorLog} del \texttt{VirtualHost}) y se verifica que no se han producido errores ni \textit{warnings}:
+
 \begin{lstlisting}[language=bash]
-openssl s_client -connect www.ejemplo.com:443
+sudo tail -f /var/log/apache2/error_ssl.log
 \end{lstlisting}
-Se compara con al conexión a \texttt{www.ulpgc.es:443} para verificar. Así nos aseguramos de que no hay un problema de identificación del servidor y los certificados que presenta.
 
-\chapter{Conexión desde el navegador local}
-Se realizan pruebas con Firefox, donde deberá accederse de forma transparente, es decir, sin mostrar ningún error y sin generar avisos con la opción de "\textit{Entiendo los riesgos}".
 
-\chapter{Capturas de Pantalla del acceso web}
-\textit{Se incorporarán las 4 capturas, como mínimo, que muestran la correcta configuración de la web de este servidor virtual:}
+\chapter{Conexión de prueba con \texttt{openssl s\_client}}
+\section{Enunciado}
+Conexión de prueba con un comando \texttt{openssl s\_client} libre de errores. Se emplea un comando del tipo:
+\[
+\texttt{openssl s\_client www.ejemplo.com:443 -cert certcliente.pem -key certcliente.key -CAfile cert\_raiz.pem}
+\]
+Se verifica que no se producen errores en la conexión ni en los certificados y que NO hay errores en \texttt{error\_log}.
+
+\section{Resolución}
+Se realiza la conexión empleando el certificado personal del usuario (formato \texttt{PKCS\#12}) y el certificado raíz de la asignatura como CA:
+
+\begin{lstlisting}[language=bash]
+openssl s_client -connect www.ejemplo.com:443 \
+    -cert /home/nicolo/Desktop/Practicas_Seguridad_De_La_Informacion/Practica7/Salida/certificadoPersonal.p12 \
+    -CAfile /etc/apache2/certs/certificados_confiables.pem
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{Imagenes/11-TestOpenssl.png}
+    \caption{Salida del comando \texttt{openssl s\_client} con el certificado de cliente.}
+    \label{fig:openssl-test}
+\end{figure}
+
+Se aprecia en la salida la cadena de certificación correcta, con el certificado del servidor firmado por la CA \textit{Asignatura Seguridad de la Información} (ULPGC). El \textit{handshake} TLS finaliza con éxito:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{Imagenes/12-OpenssOk.png}
+    \caption{Resultado del \textit{handshake} TLS: \texttt{Verification: OK}.}
+    \label{fig:openssl-ok}
+\end{figure}
+
+El mensaje \texttt{Verification: OK} confirma que el servidor y el cliente se autentican mutuamente sin errores. Una revisión simultánea del fichero \texttt{error\_ssl.log} confirma que no se ha generado ninguna entrada de error durante la conexión.
+
+
+\chapter{Conexión desde Firefox con el certificado de la asignatura}
+\section{Enunciado}
+Conexión sin errores desde Firefox con el servidor, empleando el certificado de cliente de la autoridad de la asignatura. El script debe mostrar los datos más importantes del certificado de cliente.
+
+\section{Resolución}
+Inicialmente, antes de habilitar la verificación de cliente y el script CGI, al acceder a \url{https://www.ejemplo.com} se mostraba la página HTML estática creada en la Práctica 6:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Imagenes/13-PaginaOriginal.png}
+    \caption{Página estática original de la Práctica 6.}
+    \label{fig:pagina-original}
+\end{figure}
+
+Tras aplicar la nueva configuración, al volver a cargar la URL Firefox detecta la directiva \texttt{SSLVerifyClient require} y solicita al usuario que seleccione el certificado de cliente con el que desea identificarse. Se selecciona el certificado \texttt{Nicolas Rey Alonso} firmado por la autoridad de la asignatura.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Imagenes/14-TrasLaActualizacion.png}
+    \caption{Diálogo de selección de certificado de cliente en Firefox.}
+    \label{fig:firefox-dialog}
+\end{figure}
+
+Una vez aceptado el certificado, Apache exporta sus datos en variables de entorno y ejecuta el script \texttt{index.sh}, que genera dinámicamente la siguiente página:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{Imagenes/15-CodigoEjecutado.png}
+    \caption{Página generada por el script CGI con los datos del certificado de cliente.}
+    \label{fig:script-output}
+\end{figure}
+
+Se observa cómo el script muestra correctamente los campos más relevantes del certificado del cliente:
 \begin{itemize}
-    \item 2 capturas con el contenido para las descripciones de los dominios (ejemplo.com y www.ejemplo.com).
-    \item 2 capturas de las propiedades de la conexión.
+    \item \textbf{Sujeto}: \texttt{emailAddress=nicololo738@gmail.com, CN=Nicololo, OU=Student, O=ULPGC, L=Las Palmas, ST=Las Palmas de GC, C=ES}.
+    \item \textbf{Emisor}: \texttt{emailAddress=info@openssl.cicei.com, CN=Asignatura Seguridad de la Informacion, OU=EII, O=ULPGC, L=Las Palmas de Gran Canaria, ST=Las Palmas, C=ES}.
+    \item \textbf{Validez (Inicio)}: Feb 26 17:39:06 2026 GMT.
+    \item \textbf{Validez (Fin)}: Feb 26 17:39:06 2027 GMT.
 \end{itemize}
+
+
+\chapter{Conexión desde Firefox con el segundo certificado de cliente}
+\section{Enunciado}
+Conexión sin errores desde Firefox con el servidor, empleando el certificado de cliente FNMT o uno secundario creado por el estudiante. El script debe mostrar los datos más importantes del certificado de cliente.
+
+\section{Resolución}
+Al haber incorporado la \textbf{AC Raíz FNMT-RCM} dentro del fichero \texttt{certificados\_confiables.pem} (véase el Capítulo 2), Apache acepta indistintamente certificados firmados por la autoridad de la asignatura y por la FNMT. Tras instalar en Firefox el correspondiente certificado FNMT del usuario y reiniciar el navegador, al acceder de nuevo a \url{https://www.ejemplo.com} Firefox vuelve a solicitar el certificado de cliente: en este caso se selecciona el certificado FNMT.
+
+El \textit{handshake} TLS se completa con éxito y el script \texttt{index.sh} muestra ahora los datos del nuevo certificado, donde el campo \textbf{Emisor} se corresponde con \texttt{AC FNMT Usuarios / FNMT-RCM} en lugar de con la autoridad de la asignatura. De esta forma queda demostrado que el servidor es capaz de aceptar dos conexiones distintas firmadas por autoridades de certificación diferentes, tal y como exige el enunciado.
+
+
+\chapter{Conclusiones}
+A lo largo de la práctica se ha extendido el servidor web seguro de la Práctica 6 para que, además de presentar su propio certificado de servidor, exija la presentación y verificación de un certificado de cliente, aceptando certificados firmados por dos Autoridades de Certificación distintas: la autoridad propia de la asignatura y la AC Raíz FNMT-RCM.
+
+Los principales logros del trabajo realizado son:
+\begin{itemize}
+    \item Descarga, verificación de huella SHA-1 y conversión a PEM del certificado raíz FNMT, así como su concatenación con la CA de la asignatura en un único almacén de CAs confiables.
+    \item Reconfiguración del \texttt{VirtualHost *:443} de Apache para activar la verificación obligatoria del certificado del cliente (\texttt{SSLVerifyClient require}) y la ejecución de scripts CGI desde \texttt{/usr/lib/cgi-bin/}.
+    \item Diseño e instalación de un script \texttt{bash} que sustituye al \texttt{index.html} estático y muestra los datos más significativos del certificado presentado por el cliente, leyéndolos exclusivamente de las variables de entorno proporcionadas por Apache, sin invocar a \texttt{openssl}.
+    \item Validación funcional del servidor mediante \texttt{openssl s\_client}, obteniendo un \textit{handshake} TLS con \texttt{Verification: OK} y sin entradas de error en \texttt{error\_ssl.log}.
+    \item Comprobación final con Firefox utilizando el certificado de cliente de la asignatura y, posteriormente, un segundo certificado firmado por una autoridad distinta, demostrando así la capacidad del servidor para autenticar clientes mediante múltiples CAs.
+\end{itemize}
+
+En conjunto, la práctica ha permitido consolidar los conceptos de autenticación mutua TLS, gestión de \textit{trust stores} con múltiples CAs y exposición de los metadatos de certificados a aplicaciones CGI a través de variables de entorno, todos ellos elementos fundamentales en el despliegue de servicios web con autenticación fuerte basada en certificados digitales.
+
 
 \end{document}
