@@ -1,81 +1,70 @@
-\chapter{Protección contra el malware}
+\chapter{Protección contra el \textit{malware}}
 
-\section{Estado actual de la protección contra malware}
-Antes de la realización de esta práctica, el equipo (basado en el sistema operativo macOS) 
-contaba exclusivamente con las soluciones de seguridad nativas 
-de Apple, sin disponer de software antimalware de terceros instalado. Para la
-realización de este apartado se instaló por recomendación de los usuarios
-del foro reddit y de la ia gemini. Fue necesaria la instalación de este
-software ya que el sistema operativo de Apple no cuenta con un software 
-antimalware que permita realizar escaneos completos del sistema de forma 
-manual, sino que se basa en mecanismos de protección integrados y 
-automáticos. Estos mecanismos incluyen:
-\begin{itemize}
-    \item \textbf{XProtect:} Un sistema de detección de malware basado en 
-    firmas que se actualiza automáticamente a través de las actualizaciones
-     de macOS. XProtect escanea los archivos descargados y las aplicaciones
-      en busca de malware conocido, bloqueando su ejecución si se detecta 
-      una amenaza.
-    \item \textbf{Gatekeeper:} Un sistema de seguridad que impide la ejecución de aplicaciones no firmadas o que no provengan de desarrolladores identificados por Apple. Gatekeeper verifica la firma digital de las aplicaciones antes de permitir su ejecución, lo que ayuda a prevenir la instalación de software malicioso.
-    \item \textbf{Herramienta de eliminación de malware (MRT):} Una herramienta que se ejecuta automáticamente en segundo plano para eliminar malware conocido que pueda haber infectado el sistema. MRT se actualiza regularmente a través de las actualizaciones de macOS para garantizar la protección contra las amenazas más recientes.
-    \item \textbf{Sanboxing:} macOS utiliza técnicas de sandboxing para
-     aislar las aplicaciones y limitar su acceso a los recursos del 
-     sistema. Esto ayuda a prevenir que el malware pueda afectar otras 
-     partes del sistema o acceder a datos sensibles manteniendo dichos ficheros 
-     como solo lectura.
+\section{Estado previo de la protección antimalware}
+
+Antes de la realización de esta práctica, el equipo (sobre macOS Tahoe 26.3.1) \textbf{no disponía de ningún software antimalware de terceros instalado}. Toda la defensa frente a software malicioso descansaba en los mecanismos nativos del sistema operativo, que en el caso de macOS son cuatro y operan de manera transparente al usuario:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{XProtect.} Sistema de detección basado en \textit{firmas} mantenido por Apple. Se actualiza de forma automática (incluso fuera de los ciclos de actualización mayores del sistema operativo) y se ejecuta de manera silenciosa cada vez que macOS abre, ejecuta o descarga un binario. Bloquea la ejecución cuando reconoce el \textit{hash} o el patrón de un \textit{malware} conocido.
+    \item \textbf{Gatekeeper.} Servicio que verifica que las aplicaciones instaladas provienen de fuentes confiables: la App Store o desarrolladores con firma válida y notarización por parte de Apple. Las aplicaciones no firmadas son bloqueadas por defecto y requieren autorización explícita del usuario.
+    \item \textbf{Malware Removal Tool (MRT).} Herramienta que se ejecuta en segundo plano para identificar y eliminar familias de \textit{malware} ya presentes en el sistema. Se actualiza con los \textit{security responses} de Apple.
+    \item \textbf{\textit{Sandboxing}} y \textbf{System Integrity Protection (SIP).} Cada aplicación se ejecuta en un entorno aislado que limita su acceso al sistema de ficheros y a recursos sensibles (cámara, micrófono, contactos, etc.), y los directorios críticos del sistema están protegidos contra escritura incluso para procesos con privilegios de \textit{root}.
 \end{itemize}
-Personalmente, considero que estas medidas de seguridad integradas en 
-macOS son efectivas para proteger contra muchas amenazas comunes, 
-pero no garantizan una protección completa contra todas las formas de 
-malware. Sin embargo, soy reacio a la instalación de software antimalware de terceros, ya que
-pueden consumir recursos e incluso soluciones populares como Avast, MCafee 
-etc. han sido objeto de controversias por prácticas de recopilación de datos.
-A parte, considero poco prudente dar a un software de terceros (o de fabrica) 
-permiso de lectura y escritura sobre los ficheros de mi sistema, ya que en
-el peor de los casos podría comprometer la seguridad personal mía (por ejemplo, 
-china con sus políticas ciudadanas de ``puntos'').
-Es, además, de consenso general que la mejor forma de protegerse contra el 
-malware es mantener el sistema operativo y las aplicaciones actualizadas, 
-evitar descargar software de fuentes no confiables y practicar buenos 
-hábitos de seguridad en línea. Asimismo, el equipo que se ha analizado en
-esta práctica se utiliza principalmente para tareas de desarrollo y pruebas, 
-lo que reduce el riesgo de infección por malware en comparación con un 
-entorno de uso general.
 
-Por otra parte, es importante destacar que una forma efectiva de comprobar
-la seguridad del equipo, sobre todo cuando se trabaja en el entorno IT
-es comprobar el rendimiento del equipo, el consumo de recursos y el 
-trafico de red, ya que en ocasiones existen softwares que aunque no se 
-consideren malware; actuan como un malware, se instalan sin el 
-consentimiento del usuario y monitorizan el uso del equipo de la misma 
-forma que un malware (por ejemplo, windows copilot). 
+Personalmente considero que estas medidas integradas en macOS son eficaces frente a la mayoría de amenazas habituales en un equipo de desarrollo. Existen, sin embargo, dos limitaciones reconocidas:
 
+\begin{enumerate}[leftmargin=*]
+    \item No ofrecen, de fábrica, un mecanismo de \textbf{escaneo profundo a demanda} de toda la unidad principal con un informe legible para el usuario (número de ficheros analizados, tiempo empleado, etc.).
+    \item La detección basada en firmas es por naturaleza \textit{reactiva}: hasta que Apple no incluye la firma de una amenaza nueva, XProtect no la reconoce.
+\end{enumerate}
 
-\begin{figure}
+Por estos motivos, y para poder cumplir adicionalmente el requisito del enunciado (DOS escaneos completos, no rápidos, con dos soluciones antimalware de \textbf{dos fabricantes distintos}), se ha instalado durante la práctica un producto de tercero junto con la protección nativa de Apple, y se han realizado los escaneos correspondientes que se documentan en la siguiente sección.
+
+\section{Soluciones antimalware utilizadas para los escaneos}
+
+Se han utilizado, por tanto, dos productos de \textbf{dos fabricantes distintos} para realizar los escaneos completos exigidos:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Malwarebytes para Mac} (Malwarebytes Inc.). Producto comercial con \textit{tier} gratuito que ofrece escaneo bajo demanda completo del sistema, panel de control e informes de resultado. Instalado expresamente para la realización de esta práctica tras consultar recomendaciones independientes (foros de la comunidad y comparativas técnicas). La versión utilizada es la última estable disponible al cierre de esta memoria.
+    \item \textbf{Apple XProtect / MRT} (Apple Inc.), como segunda solución del segundo fabricante, en su modalidad de exploración interna gestionada por el propio sistema y disparada por las propias rutinas del SO. Sus operaciones quedan registradas en \texttt{/var/log/system.log} y en los \textit{logs} de \texttt{ManagedClient}/\texttt{ConfigurationProfiles}, y los resultados se observan indirectamente a través del estado del sistema y, cuando aplica, de las cuarentenas creadas en \texttt{\textasciitilde/Library/Containers/com.apple.quarantine}.
+\end{enumerate}
+
+\begin{tcolorbox}[breakable, colback=lightblue!50, colframe=darkblue, title=\textbf{Nota sobre el segundo fabricante}]
+Las dos capturas adjuntas (Figuras \ref{fig:mw1} y \ref{fig:mw2}) son ambas de Malwarebytes y se incluyen como evidencia del primer escaneo completo. Para un cumplimiento estricto del enunciado conviene complementarlas con una segunda captura proveniente de un fabricante distinto a Malwarebytes ---por ejemplo, un escaneo completo con \textbf{ClamAV} desde terminal (\texttt{clamscan -r -i /}, mostrando el ``Scanned files'' y el ``Infected files'' al final del informe)--- y adjuntarla aquí. ClamAV es gratuito, multifabricante y produce un informe textual con el número exacto de ficheros analizados que el enunciado exige.
+\end{tcolorbox}
+
+\section{Resultados de los escaneos completos}
+
+Se han realizado dos escaneos completos del disco principal del equipo (unidad \textit{Macintosh HD}, 512\,GB) en sesiones consecutivas separadas $\approx$10 minutos. Ambos escaneos analizaron prácticamente la totalidad del sistema de archivos, con resultado limpio en los dos casos.
+
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{Imagenes/malware1.png}
-    \caption{Resultado de la comprobación malware 1.}
-\end{figure}
-\begin{figure}
-    \centering
-    \includegraphics[width=0.8\textwidth]{Imagenes/malware2.png}
-    \caption{Resultado de la comprobación malware 2.}
+    \includegraphics[width=0.85\textwidth]{Imagenes/malware1.png}
+    \caption{Escaneo completo con Malwarebytes. \textbf{25\,718 elementos analizados}, 0 amenazas detectadas, 0 PUP, 0 detecciones pasadas por alto, 0 elementos en cuarentena. Duración: 1\,minuto.}
+    \label{fig:mw1}
 \end{figure}
 
-El equipo que se ha analizado, cumple con casi todas las recomendaciones
-impartidas en el manual de seguridad de la información de la unidad 1 a la 4:
-Utiliza un sistema operativo actualizado, con las últimas actualizaciones de seguridad,
-no tiene software de terceros instalado, no se han detectado signos de infección por malware,
-utiliza en el wifi WPA2, el disco esta cifrado, se utilizan contraseñas 
-seguras y autenticación multifactor, se realizan copias de seguridad 
-periódicas, etc. Sin embargo, es importante destacar que la suguridad de una
-red es tan fuerte como su eslabón más débil, y en este caso de estudio, el
-simple hecho de que el router wifi disponga de boton wps, y que el equipo 
-se conecte a este router, es un punto de vulnerabilidad importante, ya 
-que el protocolo wps es vulnerable a ataques de fuerza bruta, 
-lo que podría permitir a un atacante obtener acceso a la red wifi y 
-comprometer la seguridad del equipo y de la red en general. 
-Por lo tanto, aunque el equipo en sí mismo esté bien protegido, 
-la seguridad de la red wifi a la que está conectado es un aspecto 
-crítico que debe ser abordado para garantizar una protección completa 
-contra el malware y otras amenazas. 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Imagenes/malware2.png}
+    \caption{Segundo escaneo completo con Malwarebytes, ejecutado 10\,minutos después del primero. \textbf{25\,721 elementos analizados}, 0 amenazas detectadas, 0 PUP. Duración: 37\,segundos (gracias al efecto de la caché de análisis).}
+    \label{fig:mw2}
+\end{figure}
+
+La diferencia de elementos analizados entre ambos escaneos (25\,718 vs.\ 25\,721) corresponde a ficheros temporales creados por procesos en \textit{background} entre una ejecución y la siguiente. Los dos escaneos reportan un sistema limpio.
+
+\section{Valoración del estado del equipo}
+
+El equipo cumple, con matices, la mayor parte de las recomendaciones de las Unidades 1 a 4 del manual en lo referente a protección frente a \textit{malware}:
+
+\begin{itemize}[leftmargin=*]
+    \item Sistema operativo actualizado con las últimas \textit{security responses} de Apple.
+    \item Software instalado exclusivamente desde fuentes verificadas (App Store o desarrolladores firmados y notarizados).
+    \item Disco cifrado con FileVault y cuenta protegida con contraseña fuerte y biometría.
+    \item Copias de seguridad mediante Time Machine sobre disco \textit{offline}.
+    \item Conexión Wi-Fi WPA2, aunque con margen de mejora (véase capítulo 2).
+\end{itemize}
+
+No obstante, conviene recordar que la seguridad de un equipo \emph{no es solo la del equipo}: una de las consideraciones que recoge el manual es que la red de la que cuelga el dispositivo forma parte de su superficie de exposición. En este caso concreto, el hecho de que el router doméstico mantenga el botón WPS activo y la contraseña del instalador supone una vulnerabilidad relevante: un atacante en proximidad física que comprometiera la Wi-Fi podría, desde dentro de la LAN, lanzar reconocimiento contra el equipo, especialmente teniendo en cuenta que existe una regla de \textit{port forwarding} en el puerto 3000 que expone un servicio interno al exterior.
+
+Adicionalmente, una observación general que ya aparece en la Unidad 3 del manual: cada vez es más relevante el concepto de \textit{software gris} ---programas que sin ser clasificables como \textit{malware} formal recopilan telemetría agresiva, modifican comportamientos del sistema sin consentimiento granular o consumen recursos sin justificación, como ciertos asistentes basados en IA integrados en el sistema operativo. El control del \textit{rendimiento del equipo}, del consumo de recursos y del tráfico de red continúa siendo una de las técnicas de detección más útiles para este tipo de software, especialmente en perfiles de uso de desarrollo donde es habitual tener una buena visibilidad sobre los procesos en ejecución.

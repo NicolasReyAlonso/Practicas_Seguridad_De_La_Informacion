@@ -1,36 +1,115 @@
-\chapter{Conclusiones y Contraste de Políticas de Seguridad}
+\chapter{Conclusiones}
 
-En este apartado se evaluarán las medidas y políticas de seguridad aplicadas en el entorno doméstico analizado a lo largo del documento, contrastándolas directamente con los fundamentos teóricos expuestos en las unidades 1 a 4 del manual de la asignatura. Así, se podrán identificar tanto los puntos fuertes del ecosistema analizado como las principales debilidades y puntos de mejora.
+Este capítulo final sintetiza el análisis realizado en los cuatro apartados anteriores, contrastando de manera explícita las políticas reales del entorno doméstico auditado con las recomendaciones de las cuatro primeras unidades del manual de la asignatura y de la Guía INCIBE, y propone para cada bloque las mejoras concretas identificadas.
 
-\section{Análisis frente a Unidades 1 y 2: Principios Básicos y Criptografía}
-Los primeros temas abordan los pilares de la seguridad de la información (Confidencialidad, Integridad y Disponibilidad) y las bases criptográficas. 
-\begin{itemize}
-    \item \textbf{Gestión de contraseñas y MFA:} El manual recalca la importancia de emplear contraseñas largas y complejas. En el sistema analizado (macOS), se emplea una contraseña de más de 14 caracteres y se combinan técnicas de autenticación multifactor (Apple Authenticator) con biometría (Touch ID). Esta configuración se alinea perfectamente con los más altos estándares teóricos para proteger la confidencialidad. 
-    \item \textbf{Cifrado de datos:} Gracias al sistema macOS, el disco se encuentra cifrado protegiendo la información. Esto cumple con las recomendaciones de protección en reposo (evitando la pérdida de confidencialidad en caso de sustracción del dispositivo).
+% =====================================================================
+\section{Ordenador y sistema operativo}
+\label{sec:concl-os}
+
+\textbf{Resumen de lo observado:} el equipo es un MacBook Air con macOS Tahoe 26.3.1 plenamente soportado, con disco cifrado mediante FileVault, contraseña fuerte de 14 caracteres, MFA y biometría activos, y copias de seguridad mediante Time Machine sobre disco externo \textit{offline}. La política de actualizaciones es \textit{conservadora}: descarga automática pero instalación manual trimestral. La principal anomalía es que existe una única cuenta y que esa cuenta tiene privilegios de administrador.
+
+\textbf{Contraste con las Unidades 1 a 4 del manual:}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Gestión de contraseñas y MFA (UA 1 y UA 2).} El manual recalca el uso de contraseñas largas, complejas y combinadas con un segundo factor. La configuración del equipo --- contraseña de 14 caracteres con todos los grupos, MFA con TOTP y Touch ID sobre \textit{Secure Enclave} --- se sitúa en los niveles más altos recomendados por la teoría, y refuerza la dimensión de \textit{confidencialidad} de la tríada CIA.
+    \item \textbf{Cifrado en reposo (UA 2).} FileVault cubre la recomendación de cifrado completo del disco que el manual considera imprescindible para proteger la información ante sustracción física del equipo.
+    \item \textbf{Cuentas y privilegios mínimos (UA 3 y UA 4, sección 1.1.3).} El manual advierte expresamente que utilizar una única cuenta administradora para el uso diario es una de las \emph{negligencias} más extendidas en entornos domésticos: cualquier código malicioso ejecutado por descuido heredará privilegios elevados de manera inmediata. La configuración auditada incurre exactamente en ese antipatrón.
+    \item \textbf{Copias de seguridad (UA 4, sección 1.1.3).} El manual exige al menos un soporte \textit{offline} para protegerse frente a \textit{ransomware}. Time Machine sobre disco externo desconectado entre copias \textbf{cumple este requisito}, pero la \textbf{frecuencia trimestral es insuficiente}: tres meses de pérdida potencial de información son inaceptables para uso académico/profesional.
+    \item \textbf{Actualizaciones (UA 4, sección 1.1.4).} El manual es taxativo: aplicar parches de seguridad cuanto antes y, si es posible, automáticamente. La política propia (instalación manual cada $\approx$3 meses) abre una \textit{ventana de exposición} prolongada que el manual considera el factor de mayor riesgo en sistemas modernos.
 \end{itemize}
 
-\section{Análisis frente a la Unidad 3: Amenazas a los Sistemas de Información}
-La Unidad 3 clasifica las amenazas en ataques, accidentes y negligencias, e incide en que el mayor peligro en un entorno doméstico suele residir en la configuración del equipo y en el factor humano.
-\begin{itemize}
-    \item \textbf{El usuario como administrador:} El manual advierte explícitamente sobre el peligro de utilizar una única cuenta con privilegios de Administrador para las operaciones diarias. En el sistema objeto de la práctica, solo existe una cuenta y es administradora. Esto supone una de las mayores vulnerabilidades del equipo, pues cualquier código malicioso ejecutado por error heredará de forma directa capacidades administrativas (facilitando instalación de rootkits o ransomware).
-    \item \textbf{Vulnerabilidades e instalación de parches:} Dada la existencia continua de \textit{exploits} (o incluso malwares persistentes avanzados), tener ventanas de exposición largas es fatal. El usuario bloquea las instalaciones automáticas y solo actualiza el sistema cada 3 meses, junto con sus copias de seguridad. Esto es una política deficiente que contradice la necesidad de corrección inmediata de vulnerabilidades críticas. 
-    \item \textbf{Redes domésticas y de acceso al router:} El hecho de mantener las credenciales por defecto puestas por el operador del router es una negligencia ampliamente documentada como peligrosa en la Unidad 3.
+\textbf{Mejoras propuestas:}
+
+\begin{enumerate}[leftmargin=*]
+    \item Crear una \textbf{cuenta estándar sin privilegios} para el uso diario, reservando la cuenta administradora para las operaciones de mantenimiento.
+    \item \textbf{Habilitar la instalación automática} (o aprobar manualmente en el día) de los parches de seguridad de macOS, manteniendo opcionalmente la instalación manual para actualizaciones funcionales.
+    \item \textbf{Aumentar la frecuencia de Time Machine al menos a una copia semanal} y considerar una segunda línea de copia cifrada en iCloud Drive (selectiva, sobre Documentos y proyectos críticos), para no depender de un único soporte físico.
+\end{enumerate}
+
+% =====================================================================
+\section{Conexión a Internet}
+\label{sec:concl-internet}
+
+\textbf{Resumen de lo observado:} la conexión es de fibra Movistar a través de un HGU del operador, con NAT y filtrado de entradas activo. Existe una regla de \textit{port forwarding} TCP/3000 hacia un servidor Express interno. La red Wi-Fi se utiliza con WPA2 y contraseña proporcionada por el instalador; WPS está activo, el SSID se anuncia y no hay filtrado por MAC. Ni la contraseña del router ni la de la Wi-Fi han sido cambiadas respecto a las de fábrica.
+
+\textbf{Contraste con la Tabla 4.1 (router) y la Tabla 4.2 (Wi-Fi) del manual:}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Nivel Básico --- Cambiar contraseña del router.} \emph{No cumplido}. La contraseña sigue siendo la del instalador, lo que el manual considera negligencia explícita.
+    \item \textbf{Nivel Básico --- Bloqueo de conexiones entrantes (NAT).} Cumplido.
+    \item \textbf{Nivel Básico --- Evitar DMZ / \textit{default workstation}.} Cumplido; no hay ningún equipo configurado como DMZ.
+    \item \textbf{Nivel Medio --- Configurar puertos entrantes específicos.} Cumplido en parte: existe una sola regla TCP/3000 hacia una IP privada concreta, lo cual es el modo recomendado por el manual frente al uso de DMZ. Como mejora, dicha regla debería \textbf{desactivarse cuando no se esté usando el servidor de desarrollo}.
+    \item \textbf{Wi-Fi, Nivel Básico --- Protocolo WPA/WPA2/WPA3 con contraseña propia.} Sólo parcialmente: el protocolo es WPA2 (correcto si el router no soporta WPA3), pero la contraseña es la del instalador.
+    \item \textbf{Wi-Fi, Nivel Básico --- Desactivar WPS.} \emph{No cumplido}. El manual considera ``imprescindible'' que el WPS esté completamente desactivado por sus vulnerabilidades conocidas. Esta es probablemente la mejora de mayor relación coste/beneficio.
+    \item \textbf{Wi-Fi, Nivel Medio --- Ocultar SSID, ACL por MAC, desactivar DHCP.} Ninguna de las tres medidas está implementada.
+    \item \textbf{Wi-Fi, Nivel Avanzado --- 802.1X.} No aplicable a un entorno doméstico.
 \end{itemize}
 
-\section{Análisis frente a la Unidad 4: Mecanismos de Defensa}
-La Unidad 4 aborda directamente la prevención y resolución de los riesgos expuestos. A la luz de las recomendaciones aplicables al entorno doméstico, se extraen las siguientes valoraciones:
-\begin{itemize}
-    \item \textbf{Copias de seguridad (Backup):} El manual exige disponer de sistemas de recuperación consistentes y almacenados de forma desconectada (offline) para huir del \textit{ransomware}. El procedimiento seguido (Time Machine en disco duro externo) cumple el requisito offline al tratarse de un disco que presuntamente se desconecta tras la copia. Sin embargo, la periodicidad de la copia (cada 3 meses) es a todas luces escasa y pone en grave peligro la Disponibilidad de la información reciente.
-    \item \textbf{Protección contra el Malware:} La teoría indica la conveniencia del empleo de \textit{suites} de seguridad, además del cuidado al navegar e instalar. El entorno auditado se ampara exclusivamente en la seguridad nativa de Apple (XProtect y Gatekeeper), descargando solo software verificado (App Store o desarrolladores con firma). Si bien Apple provee protección de fondo, el ecosistema carece de un antimalware de revisión concurrente o \textit{firewall} de aplicaciones avanzado a nivel del usuario doméstico. La decisión del escaneo profundo en este informe con soluciones temporales como \textit{Malwarebytes} debería, teóricamente, implementarse de forma periódica en vez de anecdótica.
-    \item \textbf{Configuración del router doméstico (WAN/WLAN):} Contrastando con el manual (Tabla 4.1 y 4.2), la defensa perimetral del sistema analizado tiene serias deficiencias. Utiliza NAT y puerto cerrado (salvo redirección al puerto 3000), pero suspende en las medidas denominadas de nivel "Básico" por el texto: no se han cambiado ni la clave de gestión del router ni la clave de la Wifi, ambas asumiendo las etiquetas genéricas del instalador de la ISP.
+\textbf{Mejoras propuestas:}
+
+\begin{enumerate}[leftmargin=*]
+    \item Acceder a la interfaz de administración del router (\texttt{192.168.1.1}) y \textbf{cambiar inmediatamente tanto la contraseña de administración del router como la clave de la red Wi-Fi}. Es la medida de mayor impacto.
+    \item \textbf{Desactivar el WPS} en la página de configuración Wi-Fi del router (medida crítica, fácil y sin efectos secundarios para el uso doméstico).
+    \item \textbf{Migrar a WPA3} cuando lo permita el firmware del router; en su defecto, mantener WPA2-AES (nunca WPA-TKIP).
+    \item \textbf{Desactivar la regla de \textit{port forwarding} TCP/3000} cuando no se esté trabajando con el servidor Express, y limitarla mientras esté activa al menor tiempo posible.
+    \item Considerar \textbf{ocultar el SSID} y/o habilitar \textbf{filtrado por MAC} como segundo escalón de protección, asumiendo el ligero coste de gestión que ello supone.
+\end{enumerate}
+
+% =====================================================================
+\section{Protección contra el \textit{malware}}
+\label{sec:concl-malware}
+
+\textbf{Resumen de lo observado:} el equipo descansa principalmente en la protección nativa de Apple (XProtect, Gatekeeper, MRT, \textit{sandboxing} y SIP), complementada para los escaneos exigidos por la práctica con Malwarebytes para Mac. Los dos escaneos completos realizados no detectaron ninguna amenaza ni PUP en $\approx$25\,720 elementos analizados.
+
+\textbf{Contraste con la Unidad 4 (sección 1.3 ``Protección contra el malware. Suites de seguridad'') del manual:}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Empleo de \textit{suite} de seguridad permanente.} El manual recomienda mantener activa una \textit{suite} antimalware (puede ser la del propio fabricante del SO, como en este caso) y \textbf{revisar periódicamente el sistema con un segundo producto ligero adicional}. Esta es exactamente la configuración objetivo: XProtect + Gatekeeper permanentes, complementados con escaneos puntuales con Malwarebytes y, como mejora, con un segundo fabricante distinto.
+    \item \textbf{Cuidado con la procedencia del software.} Cumplido: todas las aplicaciones se instalan desde App Store, fuentes notarizadas o repositorios de \texttt{brew} firmados.
+    \item \textbf{Atención a la captura indebida de datos.} El manual señala que los antivirus comerciales (Avast, McAfee y otros) han sido en el pasado objeto de controversia por prácticas de recopilación de telemetría, por lo que la elección de la solución debe ser informada y la concesión de permisos restrictiva. La elección de Malwarebytes responde precisamente a este criterio.
 \end{itemize}
 
-\section{Conclusión final y recomendaciones}
-Realizando un balance general, el usuario del Mac auditado confía gran parte de su seguridad al propio ecosistema del fabricante (mecanismos nativos, Touch ID) y a su intuición cibernética, mostrando un nivel aceptable en la capa de acceso y criptografía. Sin embargo, analizando el comportamiento bajo el prisma de las Unidades 1 a 4 del manual, presenta graves brechas operativas (negligencias):  
+\textbf{Mejoras propuestas:}
 
-\begin{enumerate}
-    \item \textbf{Uso de cuentas:} Se recomienda la creación de una cuenta estándar sin privilegios administrativos para el uso diario.
-    \item \textbf{Actualizaciones:} Se debería habilitar la instalación de los parches de seguridad de MacOS de manera automática o inmediata.
-    \item \textbf{Frecuencia de backups:} Aumentar el periodo del Time Machine al menos a una copia semanal.
-    \item \textbf{Router local:} Es capital acceder a la interfaz de administración (192.168.1.1) y cambiar inmediatamente la contraseña de administrador por defecto, así como modificar la clave del WPA2 (y si es posible actualizar a WPA3) del Wi-Fi de un entorno que, por estar en casa sin control adicional, forma el límite primario de la red (su propia DMZ particular).
+\begin{enumerate}[leftmargin=*]
+    \item Realizar un \textbf{escaneo completo trimestral} fijo con Malwarebytes, no sólo cuando lo exija una práctica.
+    \item Añadir un \textbf{segundo escaneo regular con ClamAV} (gratuito, multifabricante, vía Homebrew) como verificación cruzada.
+    \item Monitorizar de forma rutinaria el \textbf{consumo de CPU y red} con \textit{Activity Monitor} y \texttt{nettop}, como recomienda el manual, para detectar tanto \textit{malware} clásico como \textit{software gris} con telemetría agresiva.
+\end{enumerate}
+
+% =====================================================================
+\section{Buenas prácticas en Internet}
+\label{sec:concl-buenas-practicas}
+
+\subsection{Contraste de nuestras políticas con TODAS las fichas de la Guía INCIBE}
+
+Una lectura completa de la guía permite identificar varias áreas en las que mis hábitos digitales están alineados con las recomendaciones de INCIBE --- y otras en las que existen mejoras claras:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Bien cubierto:} contraseñas (longitud, complejidad, gestor en lugar de repetir credenciales), uso de MFA, cifrado de dispositivos, verificación de remitentes en correo electrónico, conciencia de \textit{phishing} y revisión periódica de los permisos de las aplicaciones móviles. Coherente con UA 4 del manual.
+    \item \textbf{Mejorable:} la guía insiste en separar \textbf{cuentas de correo por contexto} (laboral, personal, basura para suscripciones); en mi caso uso dos pero no tres. Habría que añadir una cuenta ``de uso bajo'' específica para registros y boletines.
+    \item \textbf{Mejorable:} configuración de \textbf{privacidad granular en redes sociales} y revisión periódica de la \textit{huella digital}. INCIBE incluye varias fichas dedicadas a esto que conviene aplicar de manera explícita, no sólo intuitiva.
+    \item \textbf{Mejorable:} hábito de \textbf{descargar el extracto de actividad y datos almacenados} por las grandes plataformas (Google Takeout, descarga de información de Meta, etc.) al menos una vez al año, para auditar qué información tienen efectivamente sobre uno.
+    \item \textbf{Cumplido:} no uso redes Wi-Fi públicas para tráfico sensible; cuando es imprescindible, encapsulo el tráfico mediante VPN.
+\end{itemize}
+
+\subsection{Propuestas de actualización de la Guía INCIBE (vigente hasta 2016)}
+
+La guía no ha sido actualizada desde 2016, lo que se nota especialmente en temas tecnológicos que han evolucionado mucho en una década. Si se nos encargara una actualización, propondría las siguientes modificaciones:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Ficha número:} 8 (Verificadores de páginas web en el navegador). \\
+    \textbf{Actualización propuesta:} ampliar la ficha para incluir las protecciones nativas que ya integran los navegadores modernos --- \textit{Google Safe Browsing} en Chrome/Firefox y \textit{Microsoft SmartScreen} en Edge ---, así como la importancia de mantener actualizado el propio navegador como primera barrera de defensa frente a \textit{phishing} y \textit{drive-by downloads}. En la versión actual la ficha asume que el verificador es siempre un \textit{add-on} de un antivirus de terceros, supuesto que en 2026 ya no se sostiene.
+
+    \item \textbf{Ficha número:} 10 (Mensajería instantánea). \\
+    \textbf{Actualización propuesta:} sustituir las referencias a productos descatalogados (Line, Hangouts) por las plataformas dominantes actuales (Signal, Telegram, WhatsApp, iMessage). Explicar el modelo de \textbf{cifrado de extremo a extremo} (E2EE) como propiedad por defecto en Signal y WhatsApp y opcional (\textit{Secret Chats}) en Telegram, y advertir sobre los riesgos específicos del \textit{backup en la nube no cifrado} de los chats (rompe el E2EE de facto si el adversario accede al backup).
+
+    \item \textbf{Ficha número:} 18 (\textit{Wearables} y dispositivos de salud). \\
+    \textbf{Actualización propuesta:} extender la ficha al \textbf{ecosistema completo de Internet de las Cosas en el hogar} (asistentes de voz, cámaras inteligentes, termostatos, robots aspiradores con cámara, cerraduras inteligentes). Incorporar recomendaciones específicas sobre segmentación de red para dispositivos IoT (VLAN o red de invitados aislada), revisión de los permisos de las apps acompañantes y cuidado con los \textit{firmwares} sin actualizaciones. El IoT doméstico es la categoría que más ha crecido desde 2016 y la guía apenas la trata.
+
+    \item \textbf{Ficha nueva propuesta (adición):} \textbf{Inteligencia artificial generativa}. \\
+    \textbf{Actualización propuesta:} introducir una ficha dedicada a los riesgos asociados al uso de servicios de IA generativa: confidencialidad del \textit{prompt} (no incluir datos personales o sensibles), efectos de la posible inclusión del input en los datos de entrenamiento, riesgo de \textit{prompt injection} y de \textit{deepfakes}, y verificación crítica de las respuestas. Es un fenómeno totalmente posterior a 2016 y completamente ausente de la guía vigente.
+
+    \item \textbf{Ficha nueva propuesta (adición):} \textbf{Gestores de contraseñas}. \\
+    \textbf{Actualización propuesta:} aunque diversas fichas mencionan la importancia de contraseñas robustas y únicas, ninguna recomienda de forma explícita el uso sistemático de un gestor de contraseñas (1Password, Bitwarden, KeePassXC, llavero de iCloud, etc.). Una ficha específica explicando ventajas, riesgos y buenas prácticas de uso (contraseña maestra, MFA en el gestor, copia de seguridad cifrada del \textit{vault}) cubriría una carencia importante.
 \end{enumerate}
