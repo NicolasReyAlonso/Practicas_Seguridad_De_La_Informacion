@@ -1,91 +1,54 @@
 \chapter{Botnets, ordenadores zombies}
-\begin{tcolorbox}[
-    title=Detalles de la Noticia: DoJ Disrumpe Botnets IoT por DDoS Globales,
-    colframe=black, % Borde negro
-    colback=gray!5,         % Fondo gris claro
-    sharp corners,          % Esquinas afiladas,
-    breakable              % Permite que el cuadro se divida en varias páginas si es necesario
-]
-% 1. Descripción y Título
-\textbf{Breve descripción de la amenaza:}
-Una botnet es una red de dispositivos informáticos (ordenadores, smartphones, routers, 
-IoT) que han sido comprometidos y controlados remotamente por un atacante, 
-conocido como "botmaster". Estos dispositivos infectados se convierten en "bots" o 
-"zombies", que son utilizados para ejecutar tareas maliciosas que benefician al atacante.
 
-Los ordenadores zombies (o bots) son los nodos individuales dentro de esta red.
- Un ordenador zombie es esencialmente una máquina que ha sido infectada con malware 
- (como bots, worms o Trojans) y se ejecuta silenciosamente, realizando comandos 
- sin el conocimiento del usuario. El atacante utiliza un servidor central, 
- llamado infraestructura de comando y control (C2), para enviar órdenes a todos los 
- zombies simultáneamente.
+    % 1. Descripción y Título
+    \section{Breve descripción de la amenaza: (más de 100 palabras)}
+    La amenaza descrita se centra en la proliferación y operación de cuatro grandes botnets de dispositivos infectados: 
+    \textbf{Aisuru, KimWolf, JackSkid y Mossad}. Estas redes están compuestas por más de tres millones de dispositivos del Internet
+     de las Cosas (IoT), como grabadoras de vídeo digital (DVR), cámaras web y routers WiFi, que han sido transformados en 
+     ``ordenadores zombies'' o nodos de ataque. La peligrosidad de estas botnets radica en su capacidad para lanzar ataques 
+     de Denegación de Servicio Distribuido (DDoS) de una magnitud impresionante, alcanzando récords de hasta 
+     \textbf{30 Terabits por segundo (Tbps)}. Los operadores de estas redes emplean un modelo de ``cibercrimen como servicio'',
+      vendiendo el acceso a esta infraestructura a otros delincuentes para saturar servidores y redes, incluyendo activos 
+      críticos del Departamento de Defensa de EE. UU. (DoDIN). Estas botnets son particularmente sofisticadas, ya que algunas, 
+      como KimWolf y JackSkid, han demostrado capacidad para infectar dispositivos que tradicionalmente se consideran protegidos 
+      por firewalls, expandiendo el alcance del secuestro digital a niveles globales.
 
-\vspace{0.5em}
-\textbf{Fecha de la noticia:}
-20 de Marzo de 2026
+    \section{Fecha de la noticia:}
+    19 de marzo de 2026
+   
+    \section{Título de la noticia:}
+    \href{https://www.justice.gov/usao-ak/pr/authorities-disrupt-worlds-largest-iot-ddos-botnets-responsible-record-breaking-attacks}{Authorities disrupt world’s largest IoT DDoS botnets responsible for record breaking attacks targeting victims worldwide}
 
-\vspace{0.5em}
-\textbf{Título de la noticia:}
-DoJ Disrupts 3 Million-Device IoT Botnets Behind Record 31.4 Tbps Global DDoS Attacks
+    % 2. Enlaces y Medio
+    \section{Enlace a la noticia:}
+    \href{https://www.justice.gov/usao-ak/pr/authorities-disrupt-worlds-largest-iot-ddos-botnets-responsible-record-breaking-attacks}{https://www.justice.gov/usao-ak/pr/authorities-disrupt-worlds-largest-iot-ddos-botnets-responsible-record-breaking-attacks}
 
-\vspace{0.5em}
-\textbf{Enlace a la noticia:}
-\href{https://thehackernews.com/2026/03/doj-disrupts-3-million-device-iot.html}{https://thehackernews.com/2026/03/doj-disrupts-3-million-device-iot.html}
+    \section{Medio:}
+    U.S. Department of Justice (Oficina del Fiscal de los Estados Unidos, Distrito de Alaska)
 
-\vspace{0.5em}
-\textbf{Medio:}
-The Hacker News
+    \section{Enlace al medio:}
+    \href{https://www.justice.gov/}{https://www.justice.gov/}
 
-\vspace{0.5em}
-\textbf{Enlace al medio:}
-\href{https://thehackernews.com}{https://thehackernews.com}
+    \section{Nacionalidad del medio:}
+    Estados Unidos (con cooperación de Canadá y Alemania)
+    
+    \section{Idioma de la noticia:}
+    Inglés
+    
+    \section{Pequeña imagen de la noticia:}
+    \begin{center}
+        \includegraphics[width=0.8\textwidth]{Imagenes/05-bot.png} 
+    \end{center} 
 
-\vspace{0.5em}
-\textbf{Nacionalidad del medio:}
-Internacional (EE. UU./Reino Unido)
+    % 4. Resumen y Análisis
+    \section{Breve resumen de la noticia: (más de 100 palabras)}
+    El Departamento de Justicia de los Estados Unidos, en una operación coordinada con fuerzas de seguridad de Canadá y Alemania, ha desmantelado la infraestructura de Comando y Control (C2) de cuatro de las botnets IoT más potentes del mundo. La intervención incluyó la ejecución de órdenes de incautación de dominios de internet registrados en EE. UU., servidores virtuales y otra infraestructura crítica utilizada para actividades criminales. Estas botnets habían esclavizado más de tres millones de dispositivos en todo el mundo, utilizándolos para ejecutar cientos de miles de ataques DDoS, algunos de los cuales establecieron récords de volumen de tráfico (30 Tbps). La operación no solo se limitó a la infraestructura técnica, sino que también incluyó acciones legales contra los individuos que operaban estas redes en el extranjero. Además de la interrupción técnica, se identificó que los criminales utilizaban estas redes para extorsionar a sus víctimas, exigiendo pagos para detener los ataques. La colaboración de gigantes tecnológicos como Amazon, Google y Cloudflare fue fundamental para identificar y mitigar la conectividad de estas redes "zombie".
 
-\vspace{0.5em}
-\textbf{Idioma de la noticia:}
-Inglés
+    \section{Relación con la amenaza:}
+    La noticia es un ejemplo paradigmático de la amenaza de las botnets, ilustrando cómo dispositivos domésticos e industriales vulnerables son reclutados de forma masiva para formar ejércitos digitales capaces de paralizar infraestructuras nacionales y servicios globales.
 
-\vspace{1em}
-% 4. Pequeña imagen de la noticia:
-\begin{center}
-\includegraphics[width=0.8\textwidth]{Imagenes/05-botnet-malware.jpg} 
-\end{center}
+    \section{\textquestiondown Existe CVE o CWE asociado a la noticia?}
+    La noticia no cita un CVE específico.
 
-\vspace{1em} % Separador
-
-% 4. Resumen y Análisis
-\textbf{Breve resumen de la noticia:}
-El Departamento de Justicia de EE. UU. anunció la disrupción de la 
-infraestructura de comando y control (C2) de varias botnets de IoT 
-(como AISURU y Kimwolf) que fueron utilizadas para lanzar ataques DDoS globales 
-récord de 31.4 Tbps. Esta operación involucró a autoridades de Canadá y Alemania,
-así como a firmas privadas como Cloudflare y Akamai en la investigación. 
-Los atacantes explotaron dispositivos IoT comprometidos para crear una red 
-de botnets masiva.
-
-\vspace{0.5em}
-\textbf{Relación con la amenaza:}
-Esta noticia describe un incidente de ciberseguridad masivo donde botnets basadas 
-en dispositivos IoT (como cámaras, routers y televisores inteligentes) se 
-convirtieron en herramientas para ataques DDoS a gran escala. 
-La vulnerabilidad clave reside en el uso de estos dispositivos comprometidos 
-para acceder a redes locales y explotar redes proxy residenciales.
-
-\vspace{0.5em}
-\textbf{\textquestiondown Existe CVE o CWE asociado a la noticia?}
-La noticia menciona vulnerabilidades relacionadas con proveedores de proxy
- (como IPIDEA) y la exposición de Android Debug Bridge (ADB), que fueron explotadas 
- por los actores de la amenaza para obtener acceso a dispositivos de red local.
-
-\vspace{0.5em}
-\textbf{Impacto ocasionado por la amenaza en esta noticia:}
-Los ataques generaron tráfico máximo equivalente a "la población combinada del Reino 
-Unido, Alemania y España" simultáneamente navegando una dirección web, 
-logrando tasas de ataque que superaron los 31.4 Tbps. Estos ataques pueden paralizar
- la infraestructura de Internet central, causar degradación significativa del 
- servicio para los ISPs y sobrecargar los servicios de mitigación basados en la nube.
-
-\end{tcolorbox}
+    \section{Impacto ocasionado por la amenaza en esta noticia: (más de 100 palabras)}
+    El impacto documentado en esta operación es masivo, tanto a nivel técnico como económico. Financieramente, las víctimas han reportado pérdidas individuales de decenas de miles de dólares derivadas de los gastos de remediación y la interrupción de servicios. A nivel de infraestructura, el impacto es crítico: se lanzaron ataques que superaron los 30 Tbps, una cifra que puede saturar incluso las defensas más robustas de proveedores de servicios de internet y redes gubernamentales. La seguridad nacional también se vio comprometida, ya que las botnets dirigieron ataques específicamente contra la Red de Información del Departamento de Defensa (DoDIN). Además, el impacto social y de privacidad es notable, dado que más de tres millones de usuarios particulares poseían dispositivos (cámaras, routers) que estaban siendo utilizados para actividades delictivas sin su conocimiento. La escala de la infección subraya una vulnerabilidad sistémica en el ecosistema IoT global, donde la falta de seguridad en dispositivos de consumo se traduce en herramientas de ciberterrorismo y extorsión a gran escala.
