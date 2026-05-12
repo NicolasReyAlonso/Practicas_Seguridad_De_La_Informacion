@@ -1,0 +1,39 @@
+\chapter{Análisis comparativo}
+
+Este capítulo plantea, de forma razonada, una lectura crítica conjunta de las tres CVE seleccionadas. Las tres comparten un mismo perfil CVSS base (9.8 \textit{Critical}, vector \texttt{AV:N/AC:L/PR:N/UI:N}), por lo que el ejercicio comparativo no puede limitarse al \textit{Base Score}: hay que introducir variables de \textit{exposición real}, \textit{tipología del activo} y \textit{disponibilidad de exploits}.
+
+\section*{Pregunta 1. Riesgo real para un usuario doméstico vs. una empresa}
+
+Para un \textbf{usuario doméstico} el mayor riesgo lo representa, con bastante claridad, \textbf{CVE-2018-6350}. La razón es exclusivamente de exposición: prácticamente cualquier usuario doméstico tiene WhatsApp instalado y lo usa como canal de comunicación principal, mientras que la probabilidad de que un domicilio típico tenga un servicio Voltronic Power ViewPower en escucha (CVE-2023-51582) es testimonial, y un PC con Windows actualizado normalmente no procesa imágenes provenientes de fuentes desconocidas en \textit{servicios automatizados}, sino bajo la atención del propio usuario, lo que reduce ligeramente la superficie efectiva de CVE-2025-53766. La buena noticia para el doméstico es que tanto WhatsApp como Windows tienen mecanismos de actualización automática muy maduros, de modo que el riesgo real \textit{residual} hoy es bajo si se mantienen al día.
+
+Para una \textbf{empresa con red corporativa}, en cambio, el mayor riesgo se desplaza hacia \textbf{CVE-2025-53766}. GDI+ es invocado por innumerables servicios en cadena dentro de un entorno empresarial: pasarelas de correo que generan vistas previas, servidores de impresión, motores de OCR, generadores de informes y herramientas DLP que inspeccionan ficheros adjuntos. Esa transversalidad hace que la \textit{superficie de exposición real} dentro del perímetro empresarial sea mucho mayor que la del binario gráfico aislado. CVE-2023-51582 también es muy relevante para empresas con CPD propio o entornos OT, pero su impacto está acotado a un activo concreto. La respuesta, por tanto, no es la misma en ambos contextos porque lo que cambia no es la gravedad técnica del fallo, sino la probabilidad de que el componente vulnerable esté realmente desplegado y accesible en cada escenario.
+
+\section*{Pregunta 2. Ventana de exposición de cada CVE}
+
+La \textit{ventana de exposición} mide el tiempo entre la publicación del CVE y la disponibilidad del primer parche oficial. Comparando los tres casos:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{CVE-2018-6350}: ventana \textit{negativa} en la práctica, ya que el parche se distribuyó en verano de 2018 mediante actualizaciones de la propia app de WhatsApp, y el CVE no se publicó hasta abril de 2019. El usuario final estuvo protegido antes incluso de conocer que existía la vulnerabilidad.
+    \item \textbf{CVE-2025-53766}: ventana de \textit{cero días}. Microsoft publicó CVE y actualización el mismo día (12 de agosto de 2025), encaje canónico de \textit{coordinated disclosure} en Patch Tuesday.
+    \item \textbf{CVE-2023-51582}: ventana también muy reducida; ZDI publicó el aviso \texttt{ZDI-23-1887} junto con la versión corregida del agente.
+\end{itemize}
+
+La implicación práctica para los administradores de sistemas es doble. Por un lado, ventanas cortas en sentido estricto (parche disponible a la vez que la información pública) son la situación deseable, pero \textit{no eliminan} el riesgo: una vez publicado el aviso, la ingeniería inversa del parche por parte de atacantes puede generar exploits funcionales en cuestión de días, y todo el parque sin actualizar entra entonces en una \textit{ventana de exposición efectiva} que ya no depende del fabricante, sino de la velocidad de despliegue del propio equipo de operaciones. Por otro lado, ventanas largas ---o, peor aún, \textit{0-days} explotados antes de ser conocidos--- obligan a recurrir a controles compensatorios (segmentación, IPS, EDR con reglas genéricas para clases enteras de fallos), porque la organización está expuesta sin posibilidad de parchear el origen.
+
+\section*{Pregunta 3. Orden de priorización con recursos limitados}
+
+Suponiendo una organización que utiliza las tres plataformas y debe priorizar parches con recursos limitados, mi propuesta de orden sería:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{CVE-2025-53766 (Windows GDI+)} en primer lugar, \textit{por exposición y por estabilidad del exploit}. GDI+ está presente en prácticamente todos los puestos y servidores Windows, está cubierto por trayectoria histórica de explotación (la clase \textit{image parsing RCE} ha generado \textit{n-day exploits} reutilizables) y su parche se aplica de forma centralizada vía WSUS/Intune en un solo ciclo.
+    \item \textbf{CVE-2023-51582 (ViewPower Linux)} en segundo lugar, condicionado a que la organización tenga el agente desplegado. Si lo tiene, sube al primer lugar de la lista, porque el activo (gestión de SAI) es crítico para la continuidad y suele alojarse en redes de gestión con privilegios y poca monitorización. Si no se tiene desplegado, no se prioriza en absoluto.
+    \item \textbf{CVE-2018-6350 (WhatsApp)} en tercer lugar, dado que la versión vulnerable es de 2018; el parque empresarial actual ya tiene aplicaciones móviles muy posteriores. El esfuerzo del equipo de seguridad en este caso debe centrarse en \textit{verificar} mediante MDM que ningún dispositivo de empresa conserva versiones de WhatsApp anteriores a las indicadas en la ficha técnica, no en una acción remediadora masiva.
+\end{enumerate}
+
+Los criterios determinantes han sido, por tanto, distintos del \textit{Base Score}: \textit{exposición real} en el parque desplegado, \textit{transversalidad} del componente afectado, \textit{criticidad del activo} para la continuidad del negocio y \textit{esfuerzo de remediación} (parche centralizado vs. inventario y verificación caso a caso).
+
+\section*{Pregunta 4. Catálogo CISA KEV}
+
+A fecha de redacción de esta memoria, \textbf{ninguna de las tres CVE seleccionadas figura en el catálogo \textit{Known Exploited Vulnerabilities} (KEV) de CISA}. El catálogo KEV recopila exclusivamente vulnerabilidades para las que CISA tiene evidencia fehaciente de explotación activa en estado salvaje y constituye, en la práctica, una lista de obligación de parcheo en plazos cortos para las agencias federales estadounidenses (mandato BOD 22-01); para el resto de organizaciones funciona como una excelente referencia de priorización urgente. Que una CVE \textit{esté} en KEV es la señal más fuerte posible de que el riesgo no es teórico sino operativo: implica que existen actores aprovechando el fallo en este mismo momento.
+
+Si alguna de las tres CVE de esta práctica entrara en KEV en el futuro, mi priorización cambiaría inmediatamente. Por ejemplo, una eventual inclusión de CVE-2025-53766 reforzaría su primera posición y justificaría un despliegue de emergencia fuera del ciclo mensual de parches. Una inclusión de CVE-2023-51582 elevaría su prioridad al primer puesto incluso por encima de GDI+, dada la criticidad de los entornos donde típicamente se despliega ViewPower. El criterio KEV pesa por sí solo más que el \textit{Base Score} porque cierra el bucle entre teoría y realidad: pasa de \textit{``esto podría explotarse''} a \textit{``alguien lo está haciendo''}, lo que altera el cálculo de riesgo de manera cualitativa.

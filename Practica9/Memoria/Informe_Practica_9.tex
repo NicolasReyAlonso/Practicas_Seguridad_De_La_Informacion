@@ -4,18 +4,19 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 % Márgenes
-\usepackage[left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage[left=2cm,right=2cm,top=2.5cm,bottom=2.5cm]{geometry}
 % Formato de página
 \usepackage{fancyhdr}
 \usepackage{lastpage}
 % Tipografía
-\usepackage{mathptmx}  
+\usepackage{mathptmx}
 \usepackage{setspace}
 \onehalfspacing
 % Colores
 \usepackage{xcolor}
 \definecolor{darkblue}{rgb}{0.1,0.1,0.5}
 \definecolor{lightblue}{rgb}{0.9,0.95,1}
+\definecolor{lightgray}{rgb}{0.95,0.95,0.95}
 % Enlaces e hipervínculos
 \usepackage{hyperref}
 \hypersetup{
@@ -37,10 +38,10 @@
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{longtable}
+\usepackage{makecell}
 
 % Código fuente
 \usepackage{listings}
-\usepackage{xcolor}
 
 % Configuración de listings
 \lstset{
@@ -79,10 +80,6 @@
 % Tarjetas
 \usepackage[breakable]{tcolorbox}
 
-% Índices
-\usepackage{imakeidx}
-\makeindex
-
 %% ============================================================================
 %% ESTILOS DE PÁGINA
 %% ============================================================================
@@ -115,11 +112,13 @@
     \vspace{0.5cm}
     {\LARGE \textbf{Práctica 9:}}\\
     {\LARGE \textbf{ANÁLISIS COMPARATIVO DE VULNERABILIDADES CVE}}\\
+    \vspace{0.3cm}
+    {\large CVE-2018-6350 \quad $\cdot$ \quad CVE-2025-53766 \quad $\cdot$ \quad CVE-2023-51582}\\
     \vspace{0.5cm}
     {\rule{\textwidth}{2pt}}\\
     \vspace{1cm}
     {\large \textbf{Asignatura:} Seguridad de la Información}\\
-    {\large \textbf{Curso:} 4\textdegree\ de Grado en Ingeniería Informática}\\
+    {\large \textbf{Curso:} 4\textdegree\ de Grado en Ingeniería Informática --- 2025/2026}\\
     \vspace{1.5cm}
 }
 
@@ -131,7 +130,7 @@
 
 \date{
     \vspace{1cm}
-    \textbf{Fecha:} Abril 2026
+    \textbf{Fecha:} Mayo 2026
 }
 
 
@@ -147,57 +146,12 @@
 
 \include{index}
 \include{intro}
-\include{CVEs}
-
-\chapter{Modificación del fichero hosts}
-Se modifica el fichero \texttt{/etc/hosts} para añadir los alias.
-\begin{lstlisting}[language=bash]
-127.0.0.1 www.ejemplo.com
-127.0.0.1 ejemplo.com
-\end{lstlisting}
-Verificamos:
-\begin{lstlisting}[language=bash]
-ping -c 2 www.ejemplo.com
-ping -c 2 ejemplo.com
-\end{lstlisting}
-
-
-\chapter{Incorporación del certificado RAÍZ}
-Se incorpora el certificado RAÍZ de la asignatura a la lista de autoridades reconocidas del sistema según las instrucciones.
-
-
-\chapter{Configuración del servidor Apache}
-Descripción detallada de los ficheros modificados, donde se configuran el certificado de servidor, cliente (si fuera necesario) y la entidad CA (Autoridad de Certificación).
-
-
-\chapter{Instalación y arranque del servidor Apache}
-Comandos utilizados:
-\begin{lstlisting}[language=bash]
-sudo apt update
-sudo apt install apache2
-sudo a2enmod ssl
-sudo systemctl restart apache2
-\end{lstlisting}
-Se revisan continuamente \texttt{/var/log/apache2/error\_log} para detectar *warnings* y errores; y \texttt{/var/log/apache2/access\_log} para comprobar accesos.
-
-\chapter{Página index.html}
-Creación de la página principal en el directorio raíz del servidor y configuración de los permisos y cualquier otra modificación adicional necesaria.
-
-\chapter{Conexión con openssl s\_client}
-Comprobación mediante \texttt{openssl s\_client}:
-\begin{lstlisting}[language=bash]
-openssl s_client -connect www.ejemplo.com:443
-\end{lstlisting}
-Se compara con al conexión a \texttt{www.ulpgc.es:443} para verificar. Así nos aseguramos de que no hay un problema de identificación del servidor y los certificados que presenta.
-
-\chapter{Conexión desde el navegador local}
-Se realizan pruebas con Firefox, donde deberá accederse de forma transparente, es decir, sin mostrar ningún error y sin generar avisos con la opción de "\textit{Entiendo los riesgos}".
-
-\chapter{Capturas de Pantalla del acceso web}
-\textit{Se incorporarán las 4 capturas, como mínimo, que muestran la correcta configuración de la web de este servidor virtual:}
-\begin{itemize}
-    \item 2 capturas con el contenido para las descripciones de los dominios (ejemplo.com y www.ejemplo.com).
-    \item 2 capturas de las propiedades de la conexión.
-\end{itemize}
+\include{seleccion}
+\include{ficha}
+\include{analisis}
+\include{comparativo}
+\include{noticias}
+\include{conclusiones}
+\include{bibliografia}
 
 \end{document}

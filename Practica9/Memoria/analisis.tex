@@ -1,0 +1,94 @@
+\chapter{Análisis individual de cada CVE}
+
+\section{CVE-2018-6350 --- WhatsApp (RTP) sobre Android, iOS y Windows Phone}
+
+\subsection*{Origen y descubrimiento}
+
+La vulnerabilidad fue identificada y comunicada por el propio equipo de seguridad de \textbf{Facebook} (hoy Meta), responsable de WhatsApp. El identificador CVE fue reservado por Facebook como CNA y publicado en la NVD el \textbf{6 de abril de 2019}. El registro original quedó relativamente discreto durante varios años, hasta que el \textbf{9 de marzo de 2025} la NVD lo reanalizó y republicó con metadatos actualizados, motivo por el cual aparece en las búsquedas filtradas por \textit{Last Modified Date} dentro del rango temporal exigido por la práctica. No consta un descubridor externo individual asociado al hallazgo: la propia entrada de CVE.org indica únicamente la fuente \textit{Facebook, Inc.}, consistente con un descubrimiento interno mediante \textit{fuzzing} o auditoría del propio fabricante.
+
+\subsection*{Descripción técnica}
+
+El fallo reside en el \textbf{parser de cabeceras de extensión RTP} (\textit{Real-time Transport Protocol}) que WhatsApp utiliza para procesar audio y vídeo durante las llamadas. Una validación incorrecta de la longitud declarada en la cabecera de extensión permite que el lector recorra memoria más allá del búfer reservado, dando lugar a una \textbf{lectura fuera de límites} (\textit{out-of-bounds read}, CWE-125). Para explotarla, un atacante debe iniciar o aceptar una llamada con la víctima y enviar un paquete RTP especialmente formado durante la negociación o transmisión del flujo; no se requiere que la víctima conteste explícitamente, ya que parte del procesamiento del flujo entrante ocurre en cuanto se recibe la invitación. Aunque el primario es una lectura fuera de límites, en términos prácticos el fabricante consideró su impacto \textit{High} en confidencialidad, integridad y disponibilidad: la fuga de memoria adyacente puede contener punteros, credenciales o material criptográfico utilizable como primitiva para una cadena de explotación más amplia, y un \textit{crash} sostenido del proceso de mensajería supone una denegación de servicio sobre el canal principal de comunicación del usuario.
+
+\subsection*{Traducción del vector CVSS al lenguaje natural}
+
+El vector es \texttt{CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H}:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{AV:N (Network)} --- el atacante explota la vulnerabilidad enviando paquetes RTP a través de Internet en el contexto de una llamada de WhatsApp, sin necesidad de presencia física ni de estar en la misma red local que la víctima.
+    \item \textbf{AC:L (Low)} --- no se requieren condiciones especiales de tiempo o configuración: basta con que la víctima tenga una versión vulnerable instalada y reciba la llamada.
+    \item \textbf{PR:N (None)} --- el atacante \textit{no} necesita ninguna credencial, sesión o autorización previa en el dispositivo de la víctima; sólo necesita conocer (o adivinar) su número de teléfono.
+    \item \textbf{UI:N (None)} --- la víctima no tiene que pulsar nada para que la vulnerabilidad se active, porque el procesamiento RTP comienza durante la negociación de la llamada entrante, antes de que el usuario decida contestar.
+    \item \textbf{S:U (Unchanged)} --- el daño queda contenido dentro del proceso de WhatsApp; no se documenta que la lectura fuera de límites por sí sola permita saltar al resto del sistema operativo (Scope sin cambios), aunque podría ser un eslabón inicial dentro de una cadena más amplia.
+    \item \textbf{C:H / I:H / A:H} --- el fabricante puntúa los tres impactos como \textit{High}: la lectura fuera de límites puede filtrar contenido sensible de la memoria del proceso (confidencialidad), corromper estructuras de control en presencia de errores secundarios (integridad) y provocar la caída de la aplicación de comunicaciones por la que pasan llamadas y mensajes (disponibilidad).
+\end{itemize}
+
+\subsection*{Impacto real observado}
+
+No existe constancia pública de explotación masiva de \textit{esta} CVE concreta. Sí es relevante el contexto: WhatsApp ha sido vector real de ataques sofisticados en años posteriores (notablemente CVE-2019-3568, explotada por el \textit{spyware} Pegasus de NSO Group, también ligada al subsistema de llamadas VoIP). La pauta de ataque ---paquete RTP especialmente formado durante una llamada entrante, sin interacción del usuario--- es la misma clase de vector que se ha visto activamente abusada en años posteriores contra periodistas y activistas, lo que da una dimensión añadida a este tipo de fallos.
+
+\subsection*{Estado de la mitigación}
+
+El fabricante distribuyó parches dentro del propio ciclo de actualización de WhatsApp en las versiones indicadas en la ficha técnica (verano de 2018, anteriores a la publicación del CVE). Las versiones actuales de WhatsApp para Android e iOS no son vulnerables. Como medidas de mitigación complementarias, el propio modelo de actualización automática de Google Play y App Store reduce notablemente la ventana de exposición efectiva. No se han propuesto mitigaciones específicas a nivel de configuración del sistema operativo, ya que el fallo es del lado del cliente y solo se corrige actualizando la propia aplicación.
+
+\section{CVE-2025-53766 --- Microsoft Windows GDI+ \textit{Heap-Based Buffer Overflow}}
+
+\subsection*{Origen y descubrimiento}
+
+Se trata de una vulnerabilidad crítica reportada de forma coordinada al \textbf{Microsoft Security Response Center (MSRC)} y publicada por \textbf{Microsoft Corporation} como CNA en su boletín del \textit{Patch Tuesday} de \textbf{agosto de 2025}. El registro NVD se publicó el \textbf{12 de agosto de 2025} y se actualizó el 14 del mismo mes. La autoría externa figura atribuida a investigadores independientes; según la documentación del MSRC el reporte siguió el procedimiento de \textit{coordinated disclosure} habitual, sin evidencia de explotación previa a la publicación del parche.
+
+\subsection*{Descripción técnica}
+
+La vulnerabilidad reside en el componente \textbf{GDI+} (\textit{Graphics Device Interface Plus}, biblioteca \texttt{gdiplus.dll}), parte del subsistema gráfico nativo de Windows. Concretamente se trata de un \textbf{desbordamiento de búfer basado en \textit{heap}} (\textit{heap-based buffer overflow}, CWE-122) en el procesamiento de determinados ficheros de imagen con metadatos manipulados. Por la naturaleza del componente, cualquier proceso que consuma GDI+ para decodificar imágenes ---visores integrados, miniaturas del Explorador de archivos, vistas previas en clientes de correo, motores de renderizado de servidores que procesen imágenes subidas por usuarios, etc.--- queda potencialmente expuesto. La explotación puede llevar a la ejecución remota de código arbitrario en el contexto del proceso afectado. La calificación \textit{Network} del vector se justifica porque Microsoft documenta escenarios en los que la imagen maliciosa se entrega a través de un canal de red (cliente que descarga la imagen, servicio que la procesa al recibirla) sin que el atacante esté en la misma red local.
+
+\subsection*{Traducción del vector CVSS al lenguaje natural}
+
+Vector idéntico al anterior, \texttt{CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H}:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{AV:N} --- la entrega del fichero de imagen malicioso se realiza a través de la red (correo, navegador, servicio web), sin acceso físico ni necesidad de pivotar dentro de la LAN.
+    \item \textbf{AC:L} --- no se requieren \textit{race conditions} ni condiciones extraordinarias del entorno; basta con que la imagen llegue a un componente que la pase por GDI+.
+    \item \textbf{PR:N} --- el atacante no necesita credenciales en la máquina objetivo: cualquier flujo de entrada que termine invocando GDI+ es válido.
+    \item \textbf{UI:N} --- la métrica de interacción se considera \textit{None} porque existen rutas en las que la imagen se procesa automáticamente (generación de miniaturas, vistas previas, ingestión por servicios) sin que el usuario abra explícitamente el archivo.
+    \item \textbf{S:U} --- la corrupción de memoria sucede dentro del proceso que invoca a GDI+; no salta de manera intrínseca a otro \textit{security authority}, aunque su criticidad es alta porque GDI+ se ejecuta con frecuencia en procesos privilegiados (servicios del sistema o procesos de usuario con acceso a red).
+    \item \textbf{C:H / I:H / A:H} --- la ejecución de código arbitrario implica posibilidad de lectura de información sensible (confidencialidad), modificación de ficheros y estado del sistema (integridad) y bloqueo o caída del proceso afectado (disponibilidad).
+\end{itemize}
+
+\subsection*{Impacto real observado}
+
+A fecha de redacción de esta memoria, Microsoft \textbf{no} ha reportado evidencia de explotación activa de esta CVE en estado salvaje. El histórico de vulnerabilidades sobre GDI+ ---incluyendo CVE-2018-8174 (\textit{Double Kill}) o las distintas RCE sobre procesado de fuentes y metadatos EMF--- demuestra, sin embargo, que esta clase de fallos en el subsistema gráfico de Windows son habitualmente integrados en \textit{kits de explotación} y campañas de \textit{phishing} dirigidas en los meses posteriores a su publicación, por lo que el riesgo de explotación retroactiva sobre sistemas sin parchear es elevado.
+
+\subsection*{Estado de la mitigación}
+
+Microsoft publicó la actualización correctiva el mismo día del aviso (12/08/2025), dentro del ciclo mensual de actualizaciones acumulativas. La mitigación principal es aplicar el parche acumulativo correspondiente a través de Windows Update o WSUS. Como medida temporal en entornos donde no sea posible parchear de inmediato, se recomienda restringir la apertura automática de imágenes en clientes de correo, desactivar la generación de miniaturas en directorios accesibles desde la red y bloquear, mediante políticas EDR, la carga de \texttt{gdiplus.dll} en procesos que normalmente no la requieren.
+
+\section{CVE-2023-51582 --- Voltronic Power ViewPower (Linux MonitorConsole) RCE}
+
+\subsection*{Origen y descubrimiento}
+
+La vulnerabilidad fue descubierta por un investigador asociado al programa \textbf{Zero Day Initiative (ZDI)} de Trend Micro, que actúa también como CNA. Inicialmente catalogada como \texttt{ZDI-CAN-22035}, fue reportada de forma coordinada al fabricante \textbf{Voltronic Power}. El registro CVE se publicó en la NVD el \textbf{2 de mayo de 2024} y se reanalizó el \textbf{9 de julio de 2025}, fecha que la sitúa dentro del rango temporal exigido por la práctica. ZDI es además, por construcción, una de las fuentes que mejor documenta el ciclo coordinado: el aviso público \texttt{ZDI-23-1887} acompaña al CVE y proporciona detalles técnicos suficientes para reproducir el fallo con fines defensivos.
+
+\subsection*{Descripción técnica}
+
+La aplicación \textbf{Voltronic Power ViewPower} es una suite de monitorización y gestión de SAI (\textit{Sistemas de Alimentación Ininterrumpida}) ampliamente desplegada en CPDs, salas técnicas e instalaciones industriales, distribuida en versiones para Windows y Linux. La vulnerabilidad afecta específicamente al componente \texttt{LinuxMonitorConsole} ---una consola de gestión expuesta como servicio--- y se cataloga como \textit{Exposed Dangerous Method} (CWE-749): el servicio expone un método remoto que no debería ser invocable sin autenticación, pero cuyo control de acceso no está correctamente aplicado. Un atacante remoto puede invocar ese método y, a través de él, alcanzar primitivas que permiten la ejecución de código arbitrario en el contexto del usuario bajo el que corre el servicio. Dado que el agente ViewPower se ejecuta habitualmente con privilegios elevados sobre la máquina anfitriona (para acceder a los puertos de control del SAI), una RCE en este contexto se traduce de manera muy directa en compromiso completo del nodo Linux.
+
+\subsection*{Traducción del vector CVSS al lenguaje natural}
+
+Vector \texttt{CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H}:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{AV:N} --- el servicio LinuxMonitorConsole escucha en un puerto de red, de modo que el atacante puede invocar el método peligroso desde cualquier punto con conectividad hacia la máquina afectada; en redes mal segmentadas, esto puede significar desde Internet.
+    \item \textbf{AC:L} --- la explotación no exige condiciones especiales: basta con localizar el puerto del servicio y enviar la invocación.
+    \item \textbf{PR:N} --- la esencia de la vulnerabilidad es precisamente que el método sensible queda expuesto \textit{sin} autenticación efectiva, justificando \texttt{PR:None}.
+    \item \textbf{UI:N} --- no se requiere ninguna acción del operador o usuario legítimo de la consola de gestión; la invocación se realiza contra el servicio.
+    \item \textbf{S:U} --- el alcance se mantiene en el sistema vulnerable. No obstante, dada la naturaleza del activo (gestor de SAI con privilegios y red en CPDs), el comprometido suele convertirse en cabeza de puente hacia el resto del segmento de gestión.
+    \item \textbf{C:H / I:H / A:H} --- la ejecución de código arbitrario implica los tres impactos: lectura de información sensible del nodo y de la propia infraestructura de SAI, modificación de configuración del propio servicio (incluido el comportamiento del corte programado de energía) y posibilidad de provocar caídas tanto del software de monitorización como del nodo.
+\end{itemize}
+
+\subsection*{Impacto real observado}
+
+A día de hoy no se ha publicado constancia de campañas masivas que aprovechen específicamente este CVE, ni figura en el catálogo CISA KEV. Sí existe constancia de exploración activa de los puertos típicos asociados a ViewPower por parte de \textit{honeypots} y motores como Shodan o Censys, lo que sugiere interés ofensivo en este tipo de servicio. El riesgo es particularmente alto en entornos OT/IT industrial, donde las suites de gestión de SAI suelen permanecer sin actualizar durante años.
+
+\subsection*{Estado de la mitigación}
+
+Voltronic Power publicó la versión corregida del agente ViewPower poco después del reporte coordinado, y la recomendación oficial es actualizar al último \textit{build} disponible. Como mitigaciones adicionales recomendadas se incluyen: restringir mediante reglas de firewall el puerto del servicio LinuxMonitorConsole a una VLAN exclusivamente de gestión, exigir VPN o \textit{jump host} para alcanzarlo, deshabilitar el componente cuando no sea estrictamente necesario y monitorizar logs del servicio en busca de invocaciones anómalas. El propio aviso ZDI-23-1887 sugiere, en caso de imposibilidad de actualización inmediata, considerar como única configuración aceptable la del agente confinado tras un cortafuegos perimetral.
