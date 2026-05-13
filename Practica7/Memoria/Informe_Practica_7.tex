@@ -291,6 +291,13 @@ Tras el reinicio se inspecciona el fichero \texttt{/var/log/apache2/error\_ssl.l
 sudo tail -f /var/log/apache2/error_ssl.log
 \end{lstlisting}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{Imagenes/NoErrorLog.png}
+    \caption{Inspección del fichero \texttt{error\_ssl.log}: no se registran errores ni \textit{warnings} tras el reinicio de Apache.}
+    \label{fig:no-error-log}
+\end{figure}
+
 
 \chapter{Conexión de prueba con \texttt{openssl s\_client}}
 \section{Enunciado}
