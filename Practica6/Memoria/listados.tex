@@ -1,0 +1,75 @@
+\chapter{Listados de los certificados en formato PEM}
+Como exige el enunciado de la práctica (\emph{``se incluirán listados de todos los ficheros obtenidos en formato texto, hexadecimal, base64, PEM o similar''}), se reproducen a continuación los certificados utilizados en la práctica en su formato PEM, es decir, su representación textual base64 delimitada por las cabeceras \texttt{-----BEGIN CERTIFICATE-----} y \texttt{-----END CERTIFICATE-----}.
+
+\section{Certificado RAÍZ de la asignatura (\texttt{certificadoRaiz.crt})}
+Es el certificado autofirmado de la autoridad de certificación de la asignatura de \emph{Seguridad de la Información} (CN \texttt{Asignatura Seguridad de la Informacion}, ULPGC). Es el certificado que se ha incorporado al almacén del sistema en el capítulo correspondiente para que el cliente confíe en cualquier certificado emitido por esta CA, en particular en el certificado de servidor generado para \texttt{www.ejemplo.com}.
+
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize, caption={certificadoRaiz.crt en formato PEM}]
+-----BEGIN CERTIFICATE-----
+MIIEAzCCAusCFHxge6KeuU3jHyJGgu/ZsLCaKfm2MA0GCSqGSIb3DQEBCwUAMIG9
+MQswCQYDVQQGEwJFUzETMBEGA1UECAwKTGFzIFBhbG1hczEjMCEGA1UEBwwaTGFz
+IFBhbG1hcyBkZSBHcmFuIENhbmFyaWExDjAMBgNVBAoMBVVMUEdDMQwwCgYDVQQL
+DANFSUkxLzAtBgNVBAMMJkFzaWduYXR1cmEgU2VndXJpZGFkIGRlIGxhIEluZm9y
+bWFjaW9uMSUwIwYJKoZIhvcNAQkBFhZpbmZvQG9wZW5zc2wuY2ljZWkuY29tMB4X
+DTIzMDIyODA5MzU0MloXDTQzMDIyMzA5MzU0Mlowgb0xCzAJBgNVBAYTAkVTMRMw
+EQYDVQQIDApMYXMgUGFsbWFzMSMwIQYDVQQHDBpMYXMgUGFsbWFzIGRlIEdyYW4g
+Q2FuYXJpYTEOMAwGA1UECgwFVUxQR0MxDDAKBgNVBAsMA0VJSTEvMC0GA1UEAwwm
+QXNpZ25hdHVyYSBTZWd1cmlkYWQgZGUgbGEgSW5mb3JtYWNpb24xJTAjBgkqhkiG
+9w0BCQEWFmluZm9Ab3BlbnNzbC5jaWNlaS5jb20wggEiMA0GCSqGSIb3DQEBAQUA
+A4IBDwAwggEKAoIBAQDgNHLpTIW6K1s/l3w5ExEhoYGtSMnKAMP9uO+++SYvmclM
+PWL4whNRG/SNoAiQb6MQ+D/N8qlgPT0KSUuPiiFJfrPkyVZXZiCRTQajRWq7T5wz
+EPA1lGndbE36CDh97eqZSdtRWHjOM3iWJNW/jgH6+RkLIxnZA0mlHqC58WWGYbJQ
+zqIm/dIXDhgYNCVZUyd840L3vAM1afRwGImbEtwIttYBxkIOhIpXT+/dijKffK1y
+mRgn1cZ3JWZAsM4JevsEd4ZNZBr29qMwQT4kjq+dYBTrGfjYhm2rqFnHP6OtUvze
+t3jaULqKKJ59oUUF6eMOGkGUb6PwKMqTO+aX+h+LAgMBAAEwDQYJKoZIhvcNAQEL
+BQADggEBAI8F+oAf68Gv7+e9uuPAiD5PRbkjNmCuDx4gyHynO1BkClQAY1TtLiCJ
+vROf2ZXkOR0Eah33vHz+Do5cf5KnMFVtFlgQSmn1HLSSL0V+xmlaKAUy7L4S/esy
++DD0VFXKNAFVkt6cU2SUu2vaZTGT+JU99lJT2t6G5i7MVYtImkCgvZEvvCfU51j2
+rZ/DEONYdmjLJfLl2wQuGzC0k7QPNmsm+f3TC+Stz1pA1kkvTzxifGpSiDAY/W9d
+IYa0Vkzo1sDGalQYsuDIgcQ/eB29WX9FrC1sjt8k90uRj3n2bi69BVok8aucpERy
+5K0bVyrCettoaP67iKN3JR6uoLe6Lm0=
+-----END CERTIFICATE-----
+\end{lstlisting}
+
+\section{Certificado del servidor (\texttt{servidor.crt})}
+Es el certificado generado para los dominios \texttt{www.ejemplo.com} y \texttt{ejemplo.com}, firmado por la CA de la asignatura tal como se describe en el capítulo de creación del certificado. Su \emph{Subject} es \texttt{/C=ES/ST=LasPalmas/L=LasPalmas/O=Ejemplo/CN=www.ejemplo.com} y contiene la extensión \texttt{X509v3 Subject Alternative Name} con \texttt{DNS:www.ejemplo.com, DNS:ejemplo.com}.
+
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize, caption={servidor.crt en formato PEM}]
+-----BEGIN CERTIFICATE-----
+MIIE/TCCA+WgAwIBAgIUIXiViJhmcXJPJytlLmeJEJpkbicwDQYJKoZIhvcNAQEL
+BQAwgb0xCzAJBgNVBAYTAkVTMRMwEQYDVQQIDApMYXMgUGFsbWFzMSMwIQYDVQQH
+DBpMYXMgUGFsbWFzIGRlIEdyYW4gQ2FuYXJpYTEOMAwGA1UECgwFVUxQR0MxDDAK
+BgNVBAsMA0VJSTEvMC0GA1UEAwwmQXNpZ25hdHVyYSBTZWd1cmlkYWQgZGUgbGEg
+SW5mb3JtYWNpb24xJTAjBgkqhkiG9w0BCQEWFmluZm9Ab3BlbnNzbC5jaWNlaS5j
+b20wHhcNMjYwMzEyMTczODU1WhcNMjcwMzEyMTczODU1WjBhMQswCQYDVQQGEwJF
+UzESMBAGA1UECAwJTGFzUGFsbWFzMRIwEAYDVQQHDAlMYXNQYWxtYXMxEDAOBgNV
+BAoMB0VqZW1wbG8xGDAWBgNVBAMMD3d3dy5lamVtcGxvLmNvbTCCASIwDQYJKoZI
+hvcNAQEBBQADggEPADCCAQoCggEBALyc7f5LjOXXli8I6ylBR1pGJw2jLlJ2y9d4
+MfwPXxDi3YuyOwVR9y6oNYfOurd7qf3H5UO/vuN12nBWqaeBbKhMjjfA1vpcEsaO
+6R2+x/ehpwLnABSFxYZRs7lukONsQQsDia6aDlCTYHBV6eHZzsFcuQvStVeEz4AI
+UGof5FORe+TnZixF9smkK+Q0Wy3DiqaX9g5tDdskLjnF3hwNWGfIaDwdqWbc66XY
+zYFPKtdZNW9CZGK7+Ni6d60ZNQ3MqtrO+wFXCfWnANyGTuz2lq5Dc1PGotqI4oYS
+voNLegmnbjR2fMuZpDbiqGZmwiz/GNKYNveoCqxp6nWSgct1IwUCAwEAAaOCAU4w
+ggFKMCcGA1UdEQQgMB6CD3d3dy5lamVtcGxvLmNvbYILZWplbXBsby5jb20wCQYD
+VR0TBAIwADALBgNVHQ8EBAMCBeAwHQYDVR0OBBYEFNKsb5pmruQ1ZAffiEZg2C4K
+0kEJMIHnBgNVHSMEgd8wgdyhgcOkgcAwgb0xCzAJBgNVBAYTAkVTMRMwEQYDVQQI
+DApMYXMgUGFsbWFzMSMwIQYDVQQHDBpMYXMgUGFsbWFzIGRlIEdyYW4gQ2FuYXJp
+YTEOMAwGA1UECgwFVUxQR0MxDDAKBgNVBAsMA0VJSTEvMC0GA1UEAwwmQXNpZ25h
+dHVyYSBTZWd1cmlkYWQgZGUgbGEgSW5mb3JtYWNpb24xJTAjBgkqhkiG9w0BCQEW
+FmluZm9Ab3BlbnNzbC5jaWNlaS5jb22CFHxge6KeuU3jHyJGgu/ZsLCaKfm2MA0G
+CSqGSIb3DQEBCwUAA4IBAQA/0THV7MY2APaXBtuqxougkW1aDzOGFU2TmzCZxI9b
+kqmd1eHJX8sD6zEi1cQpDRMyIyrE2Dp1ztzETgBUjTP1lyPh3lrvYvYa1gN9XeMu
++g8um7qvsaHTX7CFZ0d9NKmTWzdsSi3M05OfinEsLSDe4tiXrl+fMeed2qMQS7Kp
+mccU81V0NEVvm6u7IrP3Hyf56eAa/kgrdwpXUWdxubHR9+XhcPShCih6A2O35G48
++8pmsmpoIQZFD4wjwY6i6xz2UkixT8hpJFkoPcSG14MgpjssDWgxQf+xAD0CF2GS
+++r8S7+IdE06gVo3dKFQGJeU02FXRv8wDSP4B0itZy+J
+-----END CERTIFICATE-----
+\end{lstlisting}
+
+\section{Verificación de la cadena}
+Con ambos ficheros disponibles se puede verificar de forma independiente que el certificado del servidor está correctamente firmado por la CA de la asignatura:
+\begin{lstlisting}[language=bash]
+openssl verify -CAfile certificadoRaiz.crt servidor.crt
+# servidor.crt: OK
+\end{lstlisting}
+La salida \texttt{OK} confirma que el certificado del servidor pertenece a la cadena de confianza encabezada por el certificado RAÍZ de la asignatura, y que en consecuencia cualquier cliente que reconozca dicha CA aceptará sin avisos las conexiones HTTPS al servidor \texttt{www.ejemplo.com}.
