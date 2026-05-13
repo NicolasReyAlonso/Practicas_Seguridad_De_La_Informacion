@@ -385,6 +385,13 @@ Al haber incorporado la \textbf{AC Raíz FNMT-RCM} dentro del fichero \texttt{ce
 
 El \textit{handshake} TLS se completa con éxito y el script \texttt{index.sh} muestra ahora los datos del nuevo certificado, donde el campo \textbf{Emisor} se corresponde con \texttt{AC FNMT Usuarios / FNMT-RCM} en lugar de con la autoridad de la asignatura. De esta forma queda demostrado que el servidor es capaz de aceptar dos conexiones distintas firmadas por autoridades de certificación diferentes, tal y como exige el enunciado.
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{Imagenes/CertificadoFNMT.png}
+    \caption{Acceso a \texttt{www.ejemplo.com} desde Firefox utilizando el certificado de cliente FNMT: el script CGI muestra como \textbf{Emisor} la AC FNMT-RCM.}
+    \label{fig:firefox-fnmt}
+\end{figure}
+
 
 \chapter{Conclusiones}
 A lo largo de la práctica se ha extendido el servidor web seguro de la Práctica 6 para que, además de presentar su propio certificado de servidor, exija la presentación y verificación de un certificado de cliente, aceptando certificados firmados por dos Autoridades de Certificación distintas: la autoridad propia de la asignatura y la AC Raíz FNMT-RCM.
