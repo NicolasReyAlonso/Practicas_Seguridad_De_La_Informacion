@@ -1,86 +1,87 @@
-\chapter{Análisis de la conexión a Internet}
+\chapter{Conexión a Internet}
+
+Este capítulo describe la conexión a Internet del domicilio, el equipamiento de acceso y la configuración del router, así como la red Wi-Fi sobre la que se conecta el equipo analizado. Se sigue el mismo guion del enunciado, completando todos los campos solicitados con datos reales y aportando las capturas correspondientes.
+
+\section{Descripción general de la conexión}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Tecnología de acceso:} fibra óptica hasta el hogar (FTTH).
+    \item \textbf{Operador:} Movistar (Telefónica de España, S.A.U.).
+    \item \textbf{Velocidad contratada:} fibra simétrica de banda ancha doméstica.
+    \item \textbf{Equipamiento principal:} router HGU (\textit{Home Gateway Unit}) suministrado por el operador en régimen de cesión de uso.
+    \item \textbf{Modo de conexión del equipo analizado:} Wi-Fi, banda 5\,GHz, IEEE 802.11ac.
+\end{itemize}
 
 % ===========================================================
-% SECCIÓN 1: INFORMACIÓN GENERAL DEL ROUTER Y CONEXIÓN WAN
+% SECCIÓN 1: ROUTER Y CONEXIÓN WAN
 % ===========================================================
+\section{Configuración del router (WAN/LAN)}
 
-\section{Descripción General del Router (WAN)}
-Esta sección contiene los detalles básicos y las configuraciones físicas de la conexión a Internet.
+\subsection{Direccionamiento IP}
 
-% Subsección sobre IPs
-\subsection*{Direccionamiento IP}
-\textbf{1. Dirección IP Pública del Router:} 
-\campo{Obtenida a través de la configuración avanzada del router.}
-88.24.71.160
-\vspace{0.5cm} % Espacio extra para separar grupos de preguntas
+\begin{itemize}[leftmargin=*]
+    \item \textbf{IP pública del router:} \texttt{88.24.71.160} --- obtenida a través de la pantalla de configuración avanzada del router y verificada con \url{https://whatismyipaddress.com/es/mi-ip}.
+    \item \textbf{IP privada / LAN:} sí. El router actúa como \textit{gateway} en \texttt{192.168.1.1} con máscara \texttt{255.255.255.0} y reparte direcciones a los clientes mediante DHCP en el rango \texttt{192.168.1.33 -- 192.168.1.199}. Los DNS configurados por el operador son \texttt{80.58.61.250} y \texttt{80.58.61.254}.
+\end{itemize}
 
-\textbf{2. Direcciones Privadas (LAN):} 
-% Se pregunta si tiene y luego pide detalles, usando el comando \campo.
-\campo{¿Tiene direcciones privadas? Si es afirmativo, especificar la dirección IP privada principal o rango.}
-Sí, tiene direcciones privadas. La dirección IP privada principal es 192.168.1.1 y su rango es del 33 al 199
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{Imagenes/03.png}
+    \caption{Configuración del rango DHCP y de los servidores DNS de la red local del router.}
+    \label{fig:lan}
+\end{figure}
 
-% Subsección sobre filtrado de conexiones
-\subsection*{Filtrado de Tráfico (Firewall)}
+\subsection{Filtrado de tráfico (\textit{firewall})}
 
-\textbf{3. ¿El router tiene filtrado de conexiones entrantes?} 
-\campo{Respuesta: [Sí / No]} Sí
+\begin{itemize}[leftmargin=*]
+    \item \textbf{¿Tiene filtrado de conexiones entrantes?} Sí. El router está configurado en modo NAT y bloquea por defecto cualquier conexión entrante no solicitada. Esta es la configuración recomendada por la Tabla 4.1 del manual.
+    \item \textbf{¿Hay alguna configuración especial de conexiones entrantes?} Sí, una única regla de \textbf{\textit{port forwarding}} para uso ocasional de desarrollo: el puerto TCP \texttt{3000} público se reenvía al puerto TCP \texttt{3000} de la IP privada \texttt{192.168.1.76}, donde se levanta un servidor Express. La regla se mantiene activa pero se utiliza exclusivamente para pruebas locales (Figura \ref{fig:portforward}).
+\end{itemize}
 
-\vspace{0.2cm} % Pequeño espacio extra
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Imagenes/04.png}
+    \caption{Tabla de mapeo de puertos: regla TCP/3000 hacia el servidor Express interno.}
+    \label{fig:portforward}
+\end{figure}
 
-% Uso de un entorno condicional simulado para la explicación
-{\bfseries Nota:} En caso afirmativo (y si se especificaron direcciones privadas), responder lo siguiente:
+\subsection{Credenciales y acceso al router}
 
-\textbf{4. ¿Hay alguna configuración especial de conexiones entrantes?} 
-\campo{Si es afirmativo, detallar las asignaciones específicas (ej.: Puerto Forwarding XYZ).}
-Si, tengo un port forwarding configurado para el puerto 3000, ya que tenía un servidor node express montado.
-\vspace{0.5cm} % Espacio extra para separar grupos de preguntas
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Origen de la contraseña del router:} la \textbf{contraseña sigue siendo la asignada por el instalador del operador}. No se ha cambiado por motivos prácticos (en el domicilio conviven personas sin perfil técnico y el riesgo de pérdida de credenciales y posterior \textit{reset} es alto).
+    \item \textbf{Acceso remoto:} la interfaz de administración no es accesible desde la WAN; sólo desde la LAN interna.
+\end{itemize}
 
-% Subsección sobre contraseña del router
-\subsection*{Credenciales y Acceso al Router}
-
-\textbf{5. Origen de la Contraseña del Router:} 
-\campo{¿La contraseña asignada es por el instalador o es propia?}
-Asignada por el instalador. Ya que es un entorno doméstico no la he cambiado por la falta
-de conocimientos de mis familiares.
-
-% ===========================================================
-% SECCIÓN 2: DETALLE DE LA CONEXIÓN WI-FI (WLAN)
-% ===========================================================
-
-\newpage % Empieza en una nueva página para mejor formato
-
-\section{Configuración de Red Inalámbrica (Wi-Fi / WLAN)}
-Detalle sobre la configuración del acceso inalámbrico.
-
-% Subsección de seguridad y medidas adicionales
-\subsection*{Seguridad y Funcionalidades Wi-Fi}
-
-\textbf{1. Nivel de Seguridad:} 
-\campo{Indicar el nivel utilizado: [WEP / WPA / WPA2 / WPA3]}
-WPA2
-\vspace{0.2cm} % Pequeño espacio extra
-
-\textbf{2. Medidas Adicionales Implementadas:} 
-\campo{Marcar o describir cualquier medida especial (Filtrado de MAC, No anuncio del SSID, desactivación del DHCP/WPS, empleo de 802.X, etc.).}
-
-
-% Subsección de contraseña Wi-Fi
-\subsection*{Credenciales Inalámbricas}
-
-\textbf{3. Origen de la Contraseña WiFi:} 
-\campo{¿La contraseña asignada es por el instalador o es propia?}
-Asignada por el instalador. Ya que es un entorno doméstico no la he cambiado por la falta
-de conocimientos de mis familiares.
-\vspace{1cm} % Gran espacio para el cierre del formulario
+Esta es la \textbf{principal debilidad del perímetro doméstico} que se identifica en este informe: el manual (Tabla 4.1, nivel \textit{Básico}) considera \emph{imprescindible} sustituir la contraseña de fábrica del router, ya que el instalador puede conservar acceso y porque en los HGU del operador la clave por defecto suele responder a un patrón derivado del número de serie o de la MAC.
 
 % ===========================================================
-% SECCIÓN 3: ANEXOS (CAPTURA DE PANTALLA)
+% SECCIÓN 2: WI-FI
 % ===========================================================
+\section{Configuración de red inalámbrica (Wi-Fi / WLAN)}
 
-\section*{Anexos y Evidencia Visual}
-Adjuntar captura(s) de pantalla de las opciones básicas de configuración del router. Se requiere evidencia visual para validar la información proporcionada en el documento.
+\subsection{Seguridad y funcionalidades Wi-Fi}
 
-\vspace{1cm} 
-\hrule % Línea horizontal separadora
-\vspace{0.2cm} 
-% Puedes añadir un entorno figure o simplemente dejar espacio:
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Nivel de seguridad:} \textbf{WPA2-PSK (AES-CCMP)}. El router no soporta WPA3 en su firmware actual.
+    \item \textbf{Medidas adicionales implementadas:}
+    \begin{itemize}
+        \item Anuncio del SSID: \textbf{activo} (visible).
+        \item Filtrado por MAC: \textbf{no configurado}.
+        \item DHCP: \textbf{activo} (no se han configurado IPs estáticas en los clientes).
+        \item WPS: \textbf{activo} con botón físico en el router. (Punto de mejora prioritario --- véase conclusiones.)
+        \item 802.1X: no aplicable en este entorno doméstico.
+    \end{itemize}
+    \item \textbf{Origen de la contraseña Wi-Fi:} \textbf{contraseña asignada por el instalador}. Es la etiqueta genérica que figura en la pegatina inferior del router, no se ha cambiado por los mismos motivos prácticos indicados en el apartado anterior.
+\end{itemize}
+
+\subsection{Valoración preliminar}
+
+La configuración de la red Wi-Fi cumple los \textit{mínimos básicos} de la Tabla 4.2 del manual --- cifrado WPA2 con contraseña no trivial --- pero \textbf{suspende en todas las medidas de nivel medio y avanzado}:
+
+\begin{itemize}[leftmargin=*]
+    \item No se ha sustituido la contraseña de fábrica de la red Wi-Fi.
+    \item WPS está habilitado y el manual recomienda \textit{taxativamente} desactivarlo por su vulnerabilidad histórica frente a ataques de fuerza bruta sobre el PIN.
+    \item El SSID se anuncia, no se filtra por MAC y el DHCP está activo. Cada una de estas medidas adicionales constituye, de acuerdo al manual, un escalón más de protección en entornos domésticos.
+\end{itemize}
+
+Las propuestas concretas de remediación se desarrollan en el capítulo de conclusiones.

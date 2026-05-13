@@ -1,109 +1,154 @@
-\chapter{Análisis del sistéma doméstico}
-En este apartado se decidió analizar el sistema que uso laboralmente/educativamente, 
-el cuál es un portatil MacBook air con chip M2.
+\chapter{Ordenador y sistema operativo}
+
+El equipo analizado es el ordenador que utilizo de manera habitual tanto para tareas académicas como profesionales: un \textbf{Apple MacBook Air} con chip Apple Silicon, sobre el que corre la versión más reciente de macOS. A lo largo del capítulo se describen, en formato profesional, todos los aspectos que el enunciado solicita ``rellenar entre líneas''.
 
 % ===============================================================
 % SECCIÓN 1: CONFIGURACIÓN GENERAL DEL EQUIPO
 % ===============================================================
-\section{Configuración General de Equipo}
+\section{Configuración general del equipo}
 \label{sec:configuracion_general}
 
-\subsection{Especificaciones del Sistema Operativo}
+\subsection{Especificaciones del sistema operativo}
 \label{subsec:specs}
 
-\textbf{Fabricante y Versión del Sistema Operativo:}
-\begin{itemize}[leftmargin=*, label=\textbullet]
-    \item Fabricante: Apple
-    \item Versión del SO: macOS Tahoe 26.3.1
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Fabricante:} Apple Inc.
+    \item \textbf{Sistema operativo:} macOS Tahoe.
+    \item \textbf{Versión exacta:} 26.3.1.
+    \item \textbf{Arquitectura:} ARM64 (Apple Silicon).
 \end{itemize}
 
-\subsection{Hardware y Componentes}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Imagenes/VersionSistema.png}
+    \caption{Panel \textit{Acerca de esta Mac} mostrando la versión exacta de macOS Tahoe 26.3.1 instalada en el equipo.}
+    \label{fig:version_sistema}
+\end{figure}
+
+\subsection{Hardware y componentes}
 \label{subsec:hardware}
 
-\textbf{Detalle de la Configuración del Equipo:}
-\begin{itemize}[leftmargin=*, label=\textbullet]
-    \item CPU: Apple M2
-    \item RAM instalada: 8 GB LPDDR5
-    \item Discos Duros/SSD (Capacidad y Tipo): 512 GB SSD en dos modulos de 256 GB cada uno.
-    \item Otros componentes relevantes (ej. Tarjeta gráfica, etc.): GPU integrada Apple M2 con 10 núcleos,
-    neural engine de 16 núcleos, cámara FaceTime HD, 2 microfonos.
+\begin{itemize}[leftmargin=*]
+    \item \textbf{CPU:} Apple M2 (SoC con 8 núcleos: 4 \textit{performance} + 4 \textit{efficiency}).
+    \item \textbf{RAM instalada:} 8 GB LPDDR5 \textit{unified memory}.
+    \item \textbf{Almacenamiento:} 512 GB SSD interno, organizado físicamente en dos módulos NAND de 256 GB cada uno.
+    \item \textbf{GPU:} integrada Apple M2 con 10 núcleos gráficos.
+    \item \textbf{Otros componentes:} \textit{Neural Engine} de 16 núcleos, cámara FaceTime HD 1080p, dos micrófonos con \textit{beamforming} direccional, chip de seguridad \textit{Secure Enclave} integrado en el SoC.
 \end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Imagenes/DatosSistema.png}
+    \caption{Informe de datos del sistema (\textit{System Report}) con las especificaciones de hardware completas del MacBook Air M2.}
+    \label{fig:datos_sistema}
+\end{figure}
+
+\subsection{Fecha límite de actualizaciones de mantenimiento y de seguridad}
+\label{subsec:eol}
+
+Apple no publica un calendario formal de fin de soporte para cada versión de macOS, pero sí mantiene un criterio bien documentado: la versión \textit{actual} recibe todas las actualizaciones (funcionales y de seguridad), la inmediatamente anterior recibe \textit{únicamente parches de seguridad} y la \textit{N-2} recibe parches de seguridad ``en la mayoría de los casos'' hasta el lanzamiento de la siguiente versión mayor. En la práctica esto se traduce en una ventana de soporte efectiva de \textbf{aproximadamente tres años desde el lanzamiento} de cada \textit{major release}. macOS Tahoe (versión 26) se lanzó en el ciclo 2025, por lo que el equipo recibe la totalidad de las actualizaciones de seguridad y mantenimiento al menos hasta el otoño de 2028 según la cadencia histórica de Apple.
 
 % ===============================================================
 % SECCIÓN 2: POLÍTICAS DE SEGURIDAD Y GESTIÓN
 % ===============================================================
-\section{Políticas de Seguridad y Mantenimiento}
+\section{Políticas de seguridad y mantenimiento}
 \label{sec:politicas_seguridad}
 
-\subsection{Gestión de Cuentas de Usuario}
+\subsection{Gestión de cuentas de usuario}
 \label{subsec:usuarios}
 
-\textbf{Número total de cuentas de usuario:} 1
+El equipo tiene configurada una \textbf{única cuenta} de usuario, con privilegios de administrador:
 
-\textbf{Cuentas con privilegios de Administrador (o equivalente):} 1 
-
-\begin{itemize}[leftmargin=*, label=$\diamond$]
-    \item Lista de usuarios administradores: NicolasReyAlonso
+\begin{itemize}[leftmargin=*]
+    \item Número total de cuentas: 1.
+    \item Cuentas con privilegios de Administrador: 1 (\texttt{NicolasReyAlonso}).
+    \item No existen cuentas estándar adicionales para el uso cotidiano.
 \end{itemize}
 
-\subsection{Política de Contraseñas}
+Esta configuración --- una única cuenta administradora utilizada para todo --- es la que el manual señala explícitamente como una de las \emph{negligencias} más comunes en los entornos domésticos. Volveremos sobre este punto en las conclusiones.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.70\textwidth]{Imagenes/Users.png}
+    \caption{Panel de \textit{Usuarios y grupos} de macOS mostrando la única cuenta del equipo (\texttt{NicolasReyAlonso}), de tipo Administrador.}
+    \label{fig:usuarios}
+\end{figure}
+
+\subsection{Política de contraseñas}
 \label{subsec:contraseñas}
 
-\textbf{Descripción de la Política de Contraseñas:}
-\begin{itemize}[leftmargin=*, label=$\rightarrow$]
-    \item Requisitos mínimos (longitud, complejidad): Apple te permite configurar una 
-    contraseña de cualquier tipo, y puntua la calidad de la contraseña, pero no impone requisitos mínimos. 
-    En mi caso, tengo una contraseña de 14 caracteres mínimo con mayúsculas, minúsculas, números y símbolos.
-    \item Frecuencia de cambio: No hay una frecuencia de cambio obligatoria, 
-    pero apple desaconseja el cambio frecuente ya que supuestamente lleva a los usuarios a
-    utilizar contraseñas simples. Este dato es interesante, ya que va en contra de la creencia común de que cambiar las contraseñas frecuentemente mejora la seguridad.
-     En mi caso, no tengo una frecuencia de cambio establecida, pero suelo cambiarla cada 6 meses aproximadamente, ya que independientemente de la frecuencia, el acceso principal se realiza mediante la autenticación biométrica.
-    \item Uso de autenticación multifactor (MFA): Sí, tengo configurada la autenticación multifactor utilizando la aplicación de autenticación de Apple (Apple Authenticator) y también tengo configurada la autenticación biométrica (Touch ID) para acceder al sistema.
-    \item Restricciones implementadas (bloqueo de cuentas inactivas, etc.): \hrulefill 
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Requisitos mínimos:} macOS no impone unos requisitos mínimos estrictos; muestra un indicador visual de calidad mientras se escribe. En mi caso, la contraseña local tiene \textbf{14 caracteres como mínimo}, combinando mayúsculas, minúsculas, números y símbolos.
+    \item \textbf{Frecuencia de cambio:} no hay frecuencia obligatoria. Sigo el criterio de \textbf{cambio voluntario cada $\approx$6 meses}; Apple desaconseja explícitamente el cambio forzado y frecuente porque empíricamente conduce a contraseñas más débiles, lo que es consistente con la recomendación más reciente del NIST SP 800-63B.
+    \item \textbf{Autenticación multifactor (MFA):} activada. Apple ID exige doble factor con dispositivo de confianza y, además, dispongo de \textbf{códigos TOTP en la app nativa Contraseñas} (sucesora de \textit{Authenticator}) para los servicios que lo soportan.
+    \item \textbf{Autenticación biométrica:} Touch ID activado tanto para el desbloqueo del equipo como para la confirmación de operaciones \texttt{sudo}, compras y aprobaciones de cambios de seguridad del sistema. El factor biométrico se almacena cifrado dentro del \textit{Secure Enclave}.
+    \item \textbf{Bloqueo automático y otras restricciones:} pantalla con bloqueo automático tras 5 minutos de inactividad y exigencia de contraseña al despertar.
 \end{itemize}
 
-\subsection{Política de Copias de Seguridad (Backup)}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.70\textwidth]{Imagenes/PassPolicy.png}
+    \caption{Panel de \textit{Contraseña} en \textit{Ajustes del Sistema} de macOS, mostrando la configuración de desbloqueo, Touch ID y bloqueo automático de pantalla.}
+    \label{fig:pass_policy}
+\end{figure}
+
+\subsection{Política de copias de seguridad (\textit{backup})}
 \label{subsec:copias_seguridad}
 
-\textbf{Estrategia de Copias de Seguridad:}
-\begin{itemize}[leftmargin=*, label=$\rightarrow$]
-    \item Frecuencia de las copias: Cada 3 meses, o en caso de realizar cambios significativos en el sistema, en los datos o en proyectos que no se puedan recuperar a través de github.
-    \item Tipo de copias (completas, incrementales, etc.): Copias completas utilizando Time Machine de Apple.
-    \item Almacenamiento (local, nube, etc.): Solo local, utilizando Time Machine de Apple con un disco duro externo.
-    \item Procedimiento de recuperación en caso de fallo: En caso de fallo, se puede restaurar el sistema utilizando las copias de seguridad realizadas con Time Machine. Esto se puede hacer a través del modo de recuperación de macOS, seleccionando la opción de restaurar desde una copia de seguridad de Time Machine y siguiendo las instrucciones en pantalla para seleccionar la copia de seguridad deseada.
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Herramienta:} Time Machine, copias \textbf{completas} (con \textit{snapshots} incrementales gestionados por APFS internamente).
+    \item \textbf{Frecuencia:} cada $\approx$3 meses o de forma puntual antes de cambios significativos en el sistema o tras finalizar proyectos que no estén respaldados por Git/GitHub.
+    \item \textbf{Almacenamiento:} disco duro externo USB-C dedicado a Time Machine. El disco \textbf{permanece desconectado entre copias} y se monta sólo para realizarlas, lo que cumple el requisito de copia \textit{offline} que el manual considera imprescindible frente a ataques de \textit{ransomware}.
+    \item \textbf{Almacenamiento en nube:} no hay copias automáticas hacia iCloud Drive de la totalidad del sistema; sí se sincronizan selectivamente Documentos y Escritorio.
+    \item \textbf{Procedimiento de recuperación:} en caso de fallo, el sistema puede restaurarse arrancando en \textit{Recovery Mode} (Cmd+R durante el encendido) y seleccionando ``Restore from Time Machine Backup'', siguiendo el asistente para elegir el \textit{snapshot} adecuado.
 \end{itemize}
 
 % ===============================================================
 % SECCIÓN 3: GESTIÓN DE ACTUALIZACIONES Y EVIDENCIA
 % ===============================================================
-\section{Política y Gestión de Actualizaciones (Patch Management)}
+\section{Política y gestión de actualizaciones (\textit{Patch Management})}
 \label{sec:actualizaciones}
 
-\subsection{Requisitos y Proceso de Actualización}
+\subsection{Requisitos y proceso de actualización}
 \label{subsec:actualizacion_proceso}
 
-\textbf{Fecha Límite de Mantenimiento y Seguridad:} 
-\begin{itemize}[leftmargin=*, label=$\rightarrow$]
-    \item Fuente de información utilizada para la fecha límite: Apple software updater.
-    \item Frecuencia con la que se revisan estas fechas: Cada 3 meses, o en caso de recibir una notificación de Apple sobre una actualización crítica. 
+\textbf{Fuente y revisión de las fechas límite de mantenimiento:}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Fuente principal:} el módulo \textit{Software Update} de macOS (\texttt{System Settings $\to$ General $\to$ Software Update}), complementado con los avisos de Apple Security Releases.
+    \item \textbf{Frecuencia de revisión:} cada $\approx$3 meses junto con la copia de seguridad, o de forma inmediata cuando Apple emite un aviso de actualización crítica.
 \end{itemize}
 
-\textbf{Descripción Detallada de la Política de Actualizaciones:}
-\begin{itemize}[leftmargin=*, label=$\rightarrow$]
-    \item Tipo de actualizaciones permitidas (seguridad, funcionalidad, etc.): Ninguna automática. solo permito la descarga de actualizaciones pero no la instalación automática. 
-    \item Frecuencia de instalación: Tras realizar la copia de seguridad
-    \item Método de instalación (automático/manual): automático a través de Apple Software Updater y de brew para las aplicaciones instaladas a través de este gestor de paquetes.
-    \item Procedimiento de prueba antes de la implementación: \hrulefill 
+\textbf{Descripción detallada de la política de actualizaciones:}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Tipo de actualizaciones permitidas:} se permiten descargas automáticas en segundo plano, pero la \textbf{instalación se autoriza siempre manualmente}; es decir, no hay instalación automática habilitada.
+    \item \textbf{Aplicaciones gestionadas por \texttt{brew}:} se actualizan mediante \texttt{brew update \&\& brew upgrade}, también de forma manual.
+    \item \textbf{Aplicaciones de App Store:} con descarga automática activada e instalación manual.
+    \item \textbf{Frecuencia de instalación:} tras realizar la copia de seguridad correspondiente, para mantener la posibilidad de \textit{rollback}.
+    \item \textbf{Procedimiento de prueba:} las actualizaciones se aplican directamente sobre el sistema productivo. No se utiliza un entorno de pruebas previo.
 \end{itemize}
 
-\subsection{Evidencia Gráfica}
+Esta política de \emph{descargar automáticamente, instalar manualmente con frecuencia trimestral} es deliberadamente conservadora --- prima la previsibilidad sobre la \textit{ventana de exposición} ---, pero el manual de la asignatura es taxativo a este respecto: cuanto mayor sea esa ventana, mayor es la probabilidad de que un \textit{exploit} público de un fallo ya parcheado nos alcance. En las conclusiones se discute esta tensión y se propone una mejora.
+
+\subsection{Evidencia gráfica}
 \label{subsec:evidencia_pantalla}
 
-\textbf{Captura de Pantalla del Nivel de Actualización del Sistema Operativo:}
-\begin{figure}[h]
+Las siguientes capturas muestran el estado real del panel \textit{Actualización de software} en el equipo auditado.
+
+\begin{figure}[H]
     \centering
-    % Reemplaza 'nombre_captura.png' con el nombre real de tu archivo
-    % \includegraphics[width=0.8\textwidth]{nombre_captura_actualizacion.png} 
-    \caption{Captura de pantalla del nivel de actualización y estado de seguridad del Sistema Operativo.}
-    \label{fig:actualizacion}
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Imagenes/UpdatePolicy.png}
+        \caption{Panel principal de \textit{Actualización de software} con el estado de la última comprobación.}
+        \label{fig:update_policy1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Imagenes/Updatepolicy2.png}
+        \caption{Opciones avanzadas de actualización: descarga automática activada, instalación manual.}
+        \label{fig:update_policy2}
+    \end{subfigure}
+    \caption{Panel \textit{Software Update} de macOS Tahoe mostrando la política de actualizaciones del equipo: descarga automática en segundo plano con instalación manual habilitada por el usuario.}
+    \label{fig:update_policy}
 \end{figure}

@@ -1,20 +1,17 @@
 \chapter{Página index.html}
-La página web que se utilizó para este ejercicio es un template que reutilicé de la asignatura pwm en angular, por lo que
-no posee una estructura html tradicional, sino que se compone de un index.html y un main.js que se encarga de cargar el 
-contenido dinámicamente. Para esta práctica, se ha modificado el index.html para incluir un mensaje de bienvenida y 
-una breve descripción del servidor web seguro que se ha configurado. Además, se han ajustado los permisos del archivo para 
-asegurar que el servidor Apache pueda acceder a él correctamente. No se han realizado otras modificaciones adicionales en la 
-configuración del servidor para esta parte de la práctica. Sin embargo, hay una corrección ya que en el capitulo 2 debí
-de haber configurado el a2enmod ssl para habilitar el módulo SSL en Apache pero debido a que trabajo en dos equipos diferentes,
-en mi equipo portatil no lo tenía habilitado.
+La página web que se utilizó para este ejercicio es un \emph{template} que reutilicé de la asignatura PWM en Angular,
+por lo que no posee una estructura HTML tradicional, sino que se compone de un \texttt{index.html} y un \texttt{main.js}
+que se encarga de cargar el contenido dinámicamente. Para esta práctica se ha adaptado el \texttt{index.html} para
+incluir un mensaje de bienvenida y una breve descripción del servidor web seguro que se ha configurado. Además, se han
+ajustado los permisos del archivo para asegurar que el servidor Apache pueda acceder a él correctamente.
 \section{Enunciado}
 6. Creación y configuración del fichero \texttt{index.html}. Permisos y configuración adicional necesaria.
 \section{Resolución}
 Una vez el código angular estaba terminado:
 \begin{lstlisting}[language=html, caption={Página index.html del servidor web}]
-    <!-- ═══════════════════════════════════════════════════════════
+    <!-- ===========================================================
      Seguridad de la Información & Criptografía
-     ═══════════════════════════════════════════════════════════ -->
+     =========================================================== -->
 
 <!-- ── NAVIGATION ── -->
 <nav class="navbar">

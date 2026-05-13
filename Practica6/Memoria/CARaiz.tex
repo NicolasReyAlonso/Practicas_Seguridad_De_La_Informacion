@@ -2,12 +2,39 @@
 \section{Enunciado}
 3. Incorporación del certificado RAÍZ de la asignatura a la lista de autoridades reconocidas en el servidor Linux de la máquina virtual.
 \section{Resolución}
-Se incorpora el certificado RAÍZ de la asignatura a la lista de autoridades 
-reconocidas del sistema según las instrucciones.
-\begin{center}
-\includegraphics[width=0.8\textwidth]{Imagenes/6.png}
-\end{center}
-Se comprueba que el certificado se ha incorporado correctamente a la lista de autoridades reconocidas del sistema y se comprueva el certificadoo del servidor.
-\begin{center}
-\includegraphics[width=0.8\textwidth]{Imagenes/7.png}
-\end{center}
+Para que el sistema operativo (y las herramientas que se apoyan en su almacén de CAs como \texttt{curl}, \texttt{wget} o el propio \texttt{openssl}) reconozcan el certificado de servidor firmado por la autoridad de la asignatura, es necesario añadir el certificado raíz al almacén de autoridades de confianza del sistema.
+
+\subsection{Copia del certificado raíz al almacén del sistema}
+En Debian/Kali Linux los certificados raíz adicionales se ubican en \texttt{/usr/local/share/ca-certificates/}. El fichero debe tener extensión \texttt{.crt} y estar en formato PEM:
+\begin{lstlisting}[language=bash]
+sudo cp certificadoRaiz.crt /usr/local/share/ca-certificates/SI-CA-Raiz.crt
+\end{lstlisting}
+
+\subsection{Actualización del almacén de CAs}
+Tras copiarlo, se ejecuta \texttt{update-ca-certificates}, que regenera el fichero global de autoridades de confianza (\texttt{/etc/ssl/certs/ca-certificates.crt}) e instala el nuevo certificado en él:
+\begin{lstlisting}[language=bash]
+sudo update-ca-certificates
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Imagenes/6.png}
+    \caption{Incorporación del certificado raíz al almacén del sistema.}
+\end{figure}
+
+\subsection{Verificación}
+Se comprueba que el certificado se ha incorporado correctamente comprobando su presencia en el almacén global y que la verificación del certificado del servidor contra el almacén del sistema es satisfactoria:
+\begin{lstlisting}[language=bash]
+# El raiz aparece como uno de los certificados de confianza del sistema
+grep -l "SI" /etc/ssl/certs/*.pem 2>/dev/null
+
+# Verificacion del certificado de servidor sin pasar -CAfile explicito
+openssl verify servidor.crt
+# servidor.crt: OK
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Imagenes/7.png}
+    \caption{Verificación del certificado del servidor contra el almacén actualizado.}
+\end{figure}

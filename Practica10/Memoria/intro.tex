@@ -1,66 +1,30 @@
 \chapter{Introducción}
 
 \section{Objetivos de la práctica}
-El objetivo fundamental de esta práctica es la obtenención de información y 
-familiarización con las amenazas a la seguridad digital.
 
-\section{Fundamentos teóricos}
-Para la realización de esta práctica, se aplican diversos conceptos teóricos clave 
-de la ciberseguridad y la seguridad de la información, entre los que destacan:
-\begin{itemize}
-    \item \textbf{Conocimiento de los CVE/CWE:} CVE (Common Vulnerabilities and Exposures) es un sistema de identificación de vulnerabilidades conocido a nivel mundial, mientras que CWE (Common Weakness Enumeration) clasifica las debilidades de software. Familiarizarse con estas bases de datos es esencial para entender las amenazas actuales y cómo mitigarlas.
-    \item \textbf{Phishing:} Técnica de ingeniería social utilizada para engañar a los usuarios y obtener información confidencial, como contraseñas o datos bancarios, a través de correos electrónicos, mensajes o sitios web falsos.
-    \item \textbf{Malware:} Software malicioso diseñado para dañar, explotar o comprometer sistemas informáticos. Puede incluir virus, troyanos, ransomware, spyware, entre otros.
-    \item \textbf{Ransomware:} Tipo de malware que cifra los archivos de la víctima y exige un rescate para restaurar el acceso a los datos. Es una amenaza creciente para empresas y particulares.
-    \item \textbf{Botnets:} Redes de dispositivos comprometidos (ordenadores zombies) controlados por un atacante para realizar actividades maliciosas, como ataques DDoS, envío de spam o minería de criptomonedas.
-    \item \textbf{SQL Injection:} Vulnerabilidad que permite a un atacante ejecutar código SQL malicioso en una base de datos a través de una aplicación web, lo que puede resultar en la exposición o manipulación de datos sensibles.
-    \item \textbf{Cross-Site Scripting (XSS):} Vulnerabilidad que permite a un atacante inyectar scripts maliciosos en páginas web vistas por otros usuarios, lo que puede llevar al robo de cookies, secuest
-\end{itemize}
+Esta décima práctica de la asignatura tiene por objeto realizar un \textbf{análisis detallado de las medidas básicas de seguridad} aplicadas en mi propio entorno doméstico, contrastando lo que efectivamente se hace en mi equipo, mi conexión a Internet y mi rutina diaria con las recomendaciones que recogen las cuatro primeras unidades del manual de la asignatura --- \textit{Apuntes de Seguridad de la Información} de A. Ocón y C. Rosa, 2022. El ejercicio no es teórico: se trata de auditarse uno mismo y, a partir de ese diagnóstico, identificar tanto los aciertos como las brechas operativas que conviene corregir.
 
-\subsection{Enunciado:}
-1. Introducción a CVE, CVSS y las principales bases de datos
+\section{Alcance y estructura}
 
-\subsection{Introducción a CVE, CVSS y las principales bases de datos}
-El estándar CVE (Common Vulnerabilities and Exposures) consiste en un sistema de
- identificación y catalogación de vulnerabilidades de software y hardware. 
- El objetivo de esta norma es suministrar un marco común para que las organizaciones, 
- desarrolladores y profesionales de la seguridad puedan discutir, reportar y 
- gestionar estas vulnerabilidades de manera uniforme. La gestión de CVE es coordinada 
- principalmente por MITRE (Management of Information Technology Research and Evaluation), 
- que establece los estándares y el marco operativo para la asignación de estos identificadores.
-
-Por otra parte, las CNA (CVE Numbering Authorities) son organizaciones autorizadas para 
-asignar identificadores CVE a vulnerabilidades específicas. Estas autoridades pueden 
-ser fabricantes de software, investigadores de seguridad o entidades académicas, 
-y su función es garantizar que cada vulnerabilidad se registre de manera precisa y 
-rastreable. La asignación de un CVE a una vulnerabilidad implica un proceso riguroso 
-de verificación y documentación para asegurar la integridad del sistema. Una vez que 
-una vulnerabilidad ha sido identificada y registrada con un CVE, su impacto se 
-cuantifica utilizando el sistema CVSS (Common Vulnerability Scoring System). CVSS es 
-un método estandarizado que asigna una puntuación numérica (de 0.0 a 10.0) que refleja 
-la severidad y la explotabilidad de la vulnerabilidad.
-
-En cuanto a las principales bases de datos, existen diferencias clave: CVE.org es el
- registro central donde se publican y gestionan los identificadores CVE. La NVD 
- (National Vulnerability Database), mantenida por el NIST (Instituto Nacional de 
- Estándares y Tecnología), es una base de datos que recopila datos sobre 
- vulnerabilidades, incluyendo puntuaciones CVSS asociadas a múltiples identificadores 
- CVEs. Finalmente, FIRST.org (Forum of Incident Response and Security Teams) es un 
- foro más amplio centrado en la colaboración comunitaria, las mejores prácticas y el
-  desarrollo de estándares de respuesta a incidentes de seguridad, aunque no es una 
-  base de datos directa de vulnerabilidades como la NVD.
-
-\section{Enunciado de la práctica}
-Esta práctica consiste en la realización de un informe basado en una selección de noticias de prensa digital, posteriores al 1 de enero de 2025, relacionadas con una serie de amenazas informáticas.
-
-Las amenazas objeto de esta actividad serán:
-\begin{enumerate}
-    \item Phishing, estafas a través de la red
-    \item Malware difundido en redes sociales
-    \item Ataques de ransomware contra corporaciones y gobiernos
-    \item Botnets, ordenadores zombies
-    \item Malware en dispositivos móviles
-    \item Inyección de código SQL
-    \item Cross-Site Scripting (XSS)
+El informe se estructura en seis apartados que siguen literalmente el guion del enunciado:
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Ordenador y sistema operativo:} análisis del equipo personal (un MacBook Air con chip Apple M2 sobre macOS Tahoe 26.3.1), incluyendo configuración general, política de cuentas, contraseñas, copias de seguridad y actualizaciones.
+    \item \textbf{Conexión a Internet:} descripción de la conexión de fibra doméstica, configuración del router (NAT, \textit{port forwarding}, credenciales) y de la red Wi-Fi (protocolo, contraseña, medidas adicionales).
+    \item \textbf{Protección contra el \textit{malware}:} estado de la protección frente a software malicioso, mecanismos nativos del sistema operativo y resultados de los escaneos completos realizados como evidencia.
+    \item \textbf{Buenas prácticas en Internet:} análisis de la \textit{Guía de Seguridad y Privacidad en Internet} de INCIBE e identificación de recomendaciones complementarias al manual.
+    \item \textbf{Conclusiones:} contraste sistemático de las políticas reales con las recomendaciones de las Unidades 1 a 4 del manual, propuesta de mejoras y propuesta de actualización de la guía INCIBE.
+    \item \textbf{Bibliografía} en formato IEEE.
 \end{enumerate}
 
+\section{Marco teórico de referencia}
+
+Las recomendaciones que se utilizan como vara de medir provienen, fundamentalmente, de la \textbf{Unidad 4 ``Mecanismos de Defensa''} del manual, con apoyo puntual en las tres primeras:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{UA 1 --- Visión integral de la seguridad de la información:} define los tres pilares clásicos (\textit{Confidencialidad, Integridad y Disponibilidad}) y sitúa el factor humano como el eslabón habitualmente más débil. Aporta el marco de identidad digital, autenticación y firma electrónica.
+    \item \textbf{UA 2 --- Fundamentos en seguridad digital:} establece las bases criptográficas (clave simétrica y asimétrica, resúmenes, firma digital), el cifrado de discos y la seguridad en redes LAN/WAN.
+    \item \textbf{UA 3 --- Amenazas a los sistemas de información:} clasifica las amenazas en \textit{ataques, accidentes y negligencias} y describe el \textit{malware} (virus, troyanos, \textit{ransomware}, \textit{spyware}, \textit{botnets}), las amenazas asociadas al correo electrónico, a la navegación web y a las redes sociales, y el modelo de cibercrimen profesionalizado.
+    \item \textbf{UA 4 --- Mecanismos de defensa:} esta es la unidad nuclear de la práctica. Define las recomendaciones básicas para el entorno doméstico: protección física, cuentas de usuario separadas y con privilegios mínimos, contraseñas robustas, copias de seguridad con al menos un soporte \textit{offline}, actualizaciones automáticas, configuración del router (Tabla 4.1) y de la Wi-Fi (Tabla 4.2), \textit{suites} de seguridad antimalware, y un conjunto adicional de recomendaciones para dispositivos móviles.
+\end{itemize}
+
+A lo largo del informe se irá referenciando explícitamente a estas unidades cada vez que se contraste una política propia con la recomendación correspondiente del manual.

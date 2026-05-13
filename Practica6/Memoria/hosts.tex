@@ -2,9 +2,32 @@
 \section{Enunciado}
 2. Modificación del fichero \texttt{/etc/hosts} de la máquina virtual y verificación de los alias \texttt{www.ejemplo.com} y \texttt{ejemplo.com}.
 \section{Resolución}
-Se modifica el fichero \texttt{/etc/hosts} para añadir los alias.
+Dado que no se dispone de control sobre el dominio \texttt{ejemplo.com} desde el punto de vista del DNS, se modifica el fichero \texttt{/etc/hosts} de la máquina virtual para que ambos nombres resuelvan a la dirección \emph{loopback} \texttt{127.0.0.1}. De este modo, tanto el servidor Apache como el navegador Firefox de la propia máquina podrán utilizar los nombres de forma transparente.
+
+\subsection{Edición del fichero}
+Se añaden las dos líneas siguientes al final del fichero \texttt{/etc/hosts}:
 \begin{lstlisting}[language=bash]
 127.0.0.1 www.ejemplo.com
 127.0.0.1 ejemplo.com
 \end{lstlisting}
-\includegraphics[width=0.8\textwidth]{Imagenes/1-Edicion_etc_hosts.png}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Imagenes/1-Edicion_etc_hosts.png}
+    \caption{Edición del fichero \texttt{/etc/hosts} con los alias de los dominios.}
+\end{figure}
+
+\subsection{Verificación de los alias}
+Para comprobar que la resolución de nombres a través del fichero \texttt{/etc/hosts} funciona correctamente se utiliza \texttt{getent hosts}, que consulta la base de datos de \emph{hosts} configurada por NSS (Name Service Switch) e incluye el fichero \texttt{/etc/hosts}:
+\begin{lstlisting}[language=bash]
+getent hosts www.ejemplo.com
+getent hosts ejemplo.com
+\end{lstlisting}
+
+Ambas órdenes deben devolver la dirección \texttt{127.0.0.1} junto con el nombre solicitado, confirmando que el alias resuelve correctamente antes de levantar el servidor Apache.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Imagenes/VerifyHosteGetEnt.png}
+    \caption{Verificación de la resolución de \texttt{www.ejemplo.com} y \texttt{ejemplo.com} mediante \texttt{getent hosts}.}
+\end{figure}
