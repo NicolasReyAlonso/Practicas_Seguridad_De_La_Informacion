@@ -25,17 +25,15 @@ Por estos motivos, y para poder cumplir adicionalmente el requisito del enunciad
 Se han utilizado, por tanto, dos productos de \textbf{dos fabricantes distintos} para realizar los escaneos completos exigidos:
 
 \begin{enumerate}[leftmargin=*]
-    \item \textbf{Malwarebytes para Mac} (Malwarebytes Inc.). Producto comercial con \textit{tier} gratuito que ofrece escaneo bajo demanda completo del sistema, panel de control e informes de resultado. Instalado expresamente para la realización de esta práctica tras consultar recomendaciones independientes (foros de la comunidad y comparativas técnicas). La versión utilizada es la última estable disponible al cierre de esta memoria.
-    \item \textbf{Apple XProtect / MRT} (Apple Inc.), como segunda solución del segundo fabricante, en su modalidad de exploración interna gestionada por el propio sistema y disparada por las propias rutinas del SO. Sus operaciones quedan registradas en \texttt{/var/log/system.log} y en los \textit{logs} de \texttt{ManagedClient}/\texttt{ConfigurationProfiles}, y los resultados se observan indirectamente a través del estado del sistema y, cuando aplica, de las cuarentenas creadas en \texttt{\textasciitilde/Library/Containers/com.apple.quarantine}.
+    \item \textbf{Malwarebytes para Mac} (Malwarebytes Inc.). Producto comercial con \textit{tier} gratuito que ofrece escaneo bajo demanda completo del sistema, panel de control gráfico e informes de resultado. Instalado expresamente para la realización de esta práctica tras consultar recomendaciones independientes (foros de la comunidad y comparativas técnicas). La versión utilizada es la última estable disponible al cierre de esta memoria.
+    \item \textbf{ClamAV} (Cisco Talos / Open-Source). Antivirus libre y multiplataforma cuyo motor (\texttt{libclamav}) se actualiza diariamente a partir de la base de firmas oficial del proyecto. Se ha instalado mediante \texttt{Homebrew} y se ha ejecutado un \textit{escaneo recursivo y completo} de la unidad principal \texttt{/} desde la terminal, lo que produce un informe textual con el detalle exacto del número de ficheros analizados, ficheros infectados y errores, tal y como exige el enunciado para el segundo fabricante. Adicionalmente, el equipo cuenta con la protección nativa de Apple (\textbf{XProtect}, \textbf{Gatekeeper} y \textbf{MRT}) operando de forma transparente en segundo plano.
 \end{enumerate}
-
-\begin{tcolorbox}[breakable, colback=lightblue!50, colframe=darkblue, title=\textbf{Nota sobre el segundo fabricante}]
-Las dos capturas adjuntas (Figuras \ref{fig:mw1} y \ref{fig:mw2}) son ambas de Malwarebytes y se incluyen como evidencia del primer escaneo completo. Para un cumplimiento estricto del enunciado conviene complementarlas con una segunda captura proveniente de un fabricante distinto a Malwarebytes ---por ejemplo, un escaneo completo con \textbf{ClamAV} desde terminal (\texttt{clamscan -r -i /}, mostrando el ``Scanned files'' y el ``Infected files'' al final del informe)--- y adjuntarla aquí. ClamAV es gratuito, multifabricante y produce un informe textual con el número exacto de ficheros analizados que el enunciado exige.
-\end{tcolorbox}
 
 \section{Resultados de los escaneos completos}
 
-Se han realizado dos escaneos completos del disco principal del equipo (unidad \textit{Macintosh HD}, 512\,GB) en sesiones consecutivas separadas $\approx$10 minutos. Ambos escaneos analizaron prácticamente la totalidad del sistema de archivos, con resultado limpio en los dos casos.
+Se han realizado dos escaneos completos del disco principal del equipo (unidad \textit{Macintosh HD}, 512\,GB) con dos productos de fabricantes distintos. Ambos escaneos analizaron prácticamente la totalidad del sistema de archivos, con resultado limpio en los dos casos.
+
+\subsection{Primer y segundo escaneo con Malwarebytes}
 
 \begin{figure}[H]
     \centering
@@ -52,6 +50,44 @@ Se han realizado dos escaneos completos del disco principal del equipo (unidad \
 \end{figure}
 
 La diferencia de elementos analizados entre ambos escaneos (25\,718 vs.\ 25\,721) corresponde a ficheros temporales creados por procesos en \textit{background} entre una ejecución y la siguiente. Los dos escaneos reportan un sistema limpio.
+
+\subsection{Escaneo de verificación cruzada con ClamAV}
+
+Para cumplir el requisito del enunciado de utilizar \emph{dos fabricantes distintos} y obtener una verificación cruzada de los resultados de Malwarebytes, se ha instalado el antivirus libre \textbf{ClamAV} mediante \texttt{Homebrew} y se ha ejecutado un escaneo recursivo de toda la unidad principal.
+
+\paragraph{Instalación y actualización de la base de firmas.} Una vez instalado ClamAV, se ha partido del fichero de ejemplo \texttt{freshclam.conf.sample} para crear el fichero de configuración real \texttt{/opt/homebrew/etc/clamav/freshclam.conf}, eliminando la línea \texttt{Example}. A continuación se ha lanzado \texttt{freshclam} para descargar las bases de firmas oficiales (\texttt{daily.cvd}, \texttt{main.cvd} y \texttt{bytecode.cvd}) desde el servidor del proyecto:
+
+\begin{lstlisting}[language=bash]
+brew install clamav
+cp /opt/homebrew/etc/clamav/freshclam.conf.sample \
+   /opt/homebrew/etc/clamav/freshclam.conf
+# Eliminar la linea 'Example' del fichero anterior
+sudo freshclam
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{Imagenes/ClamAVConfig.png}
+    \caption{Instalación de ClamAV, configuración de \texttt{freshclam.conf} y descarga de las bases de firmas (\texttt{main}, \texttt{daily} y \texttt{bytecode}) antes de lanzar el escaneo.}
+    \label{fig:clamav-config}
+\end{figure}
+
+\paragraph{Ejecución del escaneo recursivo.} Con la base de firmas actualizada se ha lanzado el escaneo completo y recursivo de la unidad principal con la opción \texttt{-i} para que el informe muestre únicamente los ficheros infectados (y, al final, el resumen estadístico):
+
+\begin{lstlisting}[language=bash]
+sudo clamscan -r -i /
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{Imagenes/ResultadoClamAV.png}
+    \caption{Resultado del escaneo completo con ClamAV sobre la raíz \texttt{/} del sistema. El bloque \texttt{SCAN SUMMARY} confirma \textbf{0 ficheros infectados} sobre la totalidad de la unidad analizada, en línea con los dos escaneos previos de Malwarebytes.}
+    \label{fig:clamav-result}
+\end{figure}
+
+El bloque \texttt{----------- SCAN SUMMARY -----------} reporta los datos clave que pide el enunciado: número total de \emph{firmas conocidas} cargadas en el motor, número de \emph{directorios y ficheros escaneados}, número de \emph{ficheros infectados} (\textbf{0}), volumen de datos leídos del disco y tiempo total empleado por la operación. Las líneas \texttt{WARNING: Can't open file or directory} que aparecen durante el recorrido son esperables al escanear \texttt{/} sin \textit{Full Disk Access}: corresponden a sockets, ficheros temporales efímeros o directorios protegidos por \textbf{SIP} (System Integrity Protection) que macOS no permite abrir ni siquiera a un proceso con privilegios de \texttt{root}, y no comprometen la validez del análisis.
+
+De este modo queda cubierto el requisito del enunciado de presentar \textbf{dos escaneos completos con dos soluciones antimalware de fabricantes distintos} (Malwarebytes y ClamAV), ambos con resultado limpio.
 
 \section{Valoración del estado del equipo}
 

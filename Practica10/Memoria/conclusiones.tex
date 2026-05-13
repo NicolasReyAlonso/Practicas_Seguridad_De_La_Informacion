@@ -59,21 +59,21 @@ Este capítulo final sintetiza el análisis realizado en los cuatro apartados an
 \section{Protección contra el \textit{malware}}
 \label{sec:concl-malware}
 
-\textbf{Resumen de lo observado:} el equipo descansa principalmente en la protección nativa de Apple (XProtect, Gatekeeper, MRT, \textit{sandboxing} y SIP), complementada para los escaneos exigidos por la práctica con Malwarebytes para Mac. Los dos escaneos completos realizados no detectaron ninguna amenaza ni PUP en $\approx$25\,720 elementos analizados.
+\textbf{Resumen de lo observado:} el equipo descansa principalmente en la protección nativa de Apple (XProtect, Gatekeeper, MRT, \textit{sandboxing} y SIP), complementada por dos productos antimalware de \textbf{fabricantes distintos} que se han utilizado para los escaneos exigidos por la práctica: \textbf{Malwarebytes para Mac} (panel gráfico, escaneos rápidos) y \textbf{ClamAV} (motor libre de Cisco Talos, escaneo exhaustivo desde terminal con \texttt{clamscan -r -i /}). Los tres escaneos completos realizados (dos con Malwarebytes y uno con ClamAV sobre la raíz \texttt{/}) coinciden en no detectar ninguna amenaza ni PUP en el sistema.
 
 \textbf{Contraste con la Unidad 4 (sección 1.3 ``Protección contra el malware. Suites de seguridad'') del manual:}
 
 \begin{itemize}[leftmargin=*]
-    \item \textbf{Empleo de \textit{suite} de seguridad permanente.} El manual recomienda mantener activa una \textit{suite} antimalware (puede ser la del propio fabricante del SO, como en este caso) y \textbf{revisar periódicamente el sistema con un segundo producto ligero adicional}. Esta es exactamente la configuración objetivo: XProtect + Gatekeeper permanentes, complementados con escaneos puntuales con Malwarebytes y, como mejora, con un segundo fabricante distinto.
+    \item \textbf{Empleo de \textit{suite} de seguridad permanente.} El manual recomienda mantener activa una \textit{suite} antimalware (puede ser la del propio fabricante del SO, como en este caso) y \textbf{revisar periódicamente el sistema con un segundo producto ligero adicional}. Esta es exactamente la configuración actual del equipo: XProtect + Gatekeeper permanentes, complementados con escaneos puntuales con Malwarebytes y verificación cruzada con ClamAV ---un segundo fabricante completamente distinto y de código abierto---.
     \item \textbf{Cuidado con la procedencia del software.} Cumplido: todas las aplicaciones se instalan desde App Store, fuentes notarizadas o repositorios de \texttt{brew} firmados.
-    \item \textbf{Atención a la captura indebida de datos.} El manual señala que los antivirus comerciales (Avast, McAfee y otros) han sido en el pasado objeto de controversia por prácticas de recopilación de telemetría, por lo que la elección de la solución debe ser informada y la concesión de permisos restrictiva. La elección de Malwarebytes responde precisamente a este criterio.
+    \item \textbf{Atención a la captura indebida de datos.} El manual señala que los antivirus comerciales (Avast, McAfee y otros) han sido en el pasado objeto de controversia por prácticas de recopilación de telemetría, por lo que la elección de la solución debe ser informada y la concesión de permisos restrictiva. La elección de Malwarebytes y ClamAV responde precisamente a este criterio: el primero porque su modelo de negocio no se sustenta en la venta de telemetría, y el segundo porque al ser software libre auditable se elimina por completo el riesgo de recopilación oculta de datos.
 \end{itemize}
 
 \textbf{Mejoras propuestas:}
 
 \begin{enumerate}[leftmargin=*]
     \item Realizar un \textbf{escaneo completo trimestral} fijo con Malwarebytes, no sólo cuando lo exija una práctica.
-    \item Añadir un \textbf{segundo escaneo regular con ClamAV} (gratuito, multifabricante, vía Homebrew) como verificación cruzada.
+    \item \textbf{Automatizar la actualización de las bases de firmas de ClamAV} ejecutando \texttt{freshclam} como servicio (\texttt{brew services start clamav}) en lugar de manualmente, y planificar un \texttt{clamscan -r -i /} mensual mediante \texttt{launchd} o \texttt{cron} para que la verificación cruzada deje de depender de la ejecución manual.
     \item Monitorizar de forma rutinaria el \textbf{consumo de CPU y red} con \textit{Activity Monitor} y \texttt{nettop}, como recomienda el manual, para detectar tanto \textit{malware} clásico como \textit{software gris} con telemetría agresiva.
 \end{enumerate}
 
