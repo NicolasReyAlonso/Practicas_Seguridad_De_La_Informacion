@@ -1,36 +1,92 @@
 \chapter{Creación del certificado del servidor www.ejemplo.com y ejemplo.com}
-En este apartado se detalla la creación del certificado de servidor firmado con 
-la autoridad de la asignatura, asegurándose de que el certificado incorpora 
-correctamente dichos nombres en la extensión \texttt{subjectAltName}.
+En este apartado se detalla la creación del certificado de servidor firmado con
+la autoridad de la asignatura, asegurándose de que el certificado incorpora
+correctamente los nombres \texttt{www.ejemplo.com} y \texttt{ejemplo.com} en
+la extensión \texttt{subjectAltName}.
 \section{Enunciado}
 1. Creación del certificado del servidor \texttt{www.ejemplo.com} (y \texttt{ejemplo.com}) firmado con la autoridad de la asignatura. Asegurarse de que el certificado incorpora correctamente los nombres \texttt{www.ejemplo.com} y \texttt{ejemplo.com} en la extensión \texttt{subjectAltName}.
+
 \section{Resolución}
-Para incluir las extensiones requeridas se crea un fichero \texttt{extensiones\_v3.cnf} 
-con el siguiente contenido:
-\begin{lstlisting}[language=bash]
+
+\subsection{Fichero de extensiones X.509 v3}
+Tal como indica la Nota Importante del enunciado, para que el certificado contenga la extensión \texttt{subjectAltName} con los dos nombres de dominio se prepara un fichero de extensiones propio del directorio de trabajo, en lugar de modificar la configuración general de \texttt{openssl}. De este modo las extensiones quedan documentadas de forma explícita y no se altera la configuración global de la máquina virtual.
+
+Se crea el fichero \texttt{extensiones\_v3.cnf} con el siguiente contenido:
+\begin{lstlisting}[language=bash, caption={Fichero extensiones\_v3.cnf}]
 #### EXTENSIONES PARA subjectAltName
 [ v3_req ]
 # Extensions to add a certificate request
-subjectAltName = @alt_names
+subjectAltName  = @alt_names
 basicConstraints = CA:FALSE
-keyUsage = nonRepudiation, digitalSignature, keyEncipherment
-[alt_names]
+keyUsage        = nonRepudiation, digitalSignature, keyEncipherment
+
+[ alt_names ]
 DNS.1 = www.ejemplo.com
 DNS.2 = ejemplo.com
 \end{lstlisting}
 
-La orden de generación con OpenSSL será la siguiente:
+\subsection{Generación de la clave privada del servidor}
+Antes de poder solicitar un certificado se debe generar la clave privada RSA del servidor. Se utiliza una longitud de 2048 bits, considerada segura para servidores TLS:
 \begin{lstlisting}[language=bash]
-    openssl req -new \
--subj "/C=ES/ST=LasPalmas/O=Ejemplo/CN=www.ejemplo.com"
--subj=C=ES/ST=LasPalmas/O=Ejemplo/CN="www.ejemplo.com"
--in servidor.csr
--subj=/C=ES/ST=LasPalmas/O=Ejemplo/CN=www.ejemplo.com
--key servidor.key
--out servidor.csr
--subj="/C=ES/ST=LasPalmas/O=Ejemplo/CN=www.ejemplo.com"
--extfile ext_v3.cnf
--extensions v3_req
+openssl genrsa -out servidor.key 2048
 \end{lstlisting}
-\includegraphics[width=0.8\textwidth]{Imagenes/4.png}
 
+\subsection{Generación de la solicitud de certificado (CSR)}
+A partir de la clave privada se genera la solicitud de firma de certificado (CSR). Se rellenan los campos del \emph{Distinguished Name} con \texttt{-subj} para no tener que introducirlos de forma interactiva. El \texttt{CN} se establece a \texttt{www.ejemplo.com}, mientras que el segundo dominio se cubrirá con la extensión \texttt{subjectAltName}:
+\begin{lstlisting}[language=bash]
+openssl req -new \
+    -key servidor.key \
+    -out servidor.csr \
+    -subj "/C=ES/ST=LasPalmas/O=Ejemplo/CN=www.ejemplo.com"
+\end{lstlisting}
+
+\subsection{Firma del certificado con la CA de la asignatura}
+El paso crucial es la firma de la CSR con la autoridad de certificación de la asignatura (\texttt{certificadoRaiz.crt} y \texttt{certificadoRaiz.key}). En este comando es donde se aplica el fichero de extensiones mediante \texttt{-extfile} y \texttt{-extensions}, garantizando que la extensión \texttt{subjectAltName} llegue al certificado firmado:
+\begin{lstlisting}[language=bash]
+openssl x509 -req \
+    -in servidor.csr \
+    -CA certificadoRaiz.crt \
+    -CAkey certificadoRaiz.key \
+    -CAcreateserial \
+    -out servidor.crt \
+    -days 365 \
+    -sha256 \
+    -extfile extensiones_v3.cnf \
+    -extensions v3_req
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Imagenes/4.png}
+    \caption{Generación y firma del certificado del servidor.}
+    \label{fig:gen-cert}
+\end{figure}
+
+\subsection{Verificación del certificado generado}
+Para comprobar que la extensión \texttt{subjectAltName} se ha incorporado correctamente al certificado firmado se vuelca su contenido en formato texto:
+\begin{lstlisting}[language=bash]
+openssl x509 -in servidor.crt -noout -text
+\end{lstlisting}
+
+En la salida debe aparecer un bloque similar al siguiente, que confirma que el certificado es válido para ambos nombres de dominio:
+\begin{lstlisting}[language=bash, caption={Extensiones X.509 v3 presentes en servidor.crt}]
+X509v3 extensions:
+    X509v3 Subject Alternative Name:
+        DNS:www.ejemplo.com, DNS:ejemplo.com
+    X509v3 Basic Constraints:
+        CA:FALSE
+    X509v3 Key Usage:
+        Digital Signature, Non Repudiation, Key Encipherment
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Imagenes/VerifyServerCert.png}
+    \caption{Volcado en texto del certificado de servidor mostrando la extensión \texttt{subjectAltName} con ambos dominios.}
+\end{figure}
+
+Adicionalmente, se puede verificar que la cadena de confianza es correcta contra el certificado raíz de la asignatura:
+\begin{lstlisting}[language=bash]
+openssl verify -CAfile certificadoRaiz.crt servidor.crt
+# servidor.crt: OK
+\end{lstlisting}

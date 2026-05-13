@@ -18,6 +18,13 @@ El equipo analizado es el ordenador que utilizo de manera habitual tanto para ta
     \item \textbf{Arquitectura:} ARM64 (Apple Silicon).
 \end{itemize}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Imagenes/VersionSistema.png}
+    \caption{Panel \textit{Acerca de esta Mac} mostrando la versión exacta de macOS Tahoe 26.3.1 instalada en el equipo.}
+    \label{fig:version_sistema}
+\end{figure}
+
 \subsection{Hardware y componentes}
 \label{subsec:hardware}
 
@@ -28,6 +35,13 @@ El equipo analizado es el ordenador que utilizo de manera habitual tanto para ta
     \item \textbf{GPU:} integrada Apple M2 con 10 núcleos gráficos.
     \item \textbf{Otros componentes:} \textit{Neural Engine} de 16 núcleos, cámara FaceTime HD 1080p, dos micrófonos con \textit{beamforming} direccional, chip de seguridad \textit{Secure Enclave} integrado en el SoC.
 \end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Imagenes/DatosSistema.png}
+    \caption{Informe de datos del sistema (\textit{System Report}) con las especificaciones de hardware completas del MacBook Air M2.}
+    \label{fig:datos_sistema}
+\end{figure}
 
 \subsection{Fecha límite de actualizaciones de mantenimiento y de seguridad}
 \label{subsec:eol}
@@ -53,6 +67,13 @@ El equipo tiene configurada una \textbf{única cuenta} de usuario, con privilegi
 
 Esta configuración --- una única cuenta administradora utilizada para todo --- es la que el manual señala explícitamente como una de las \emph{negligencias} más comunes en los entornos domésticos. Volveremos sobre este punto en las conclusiones.
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.70\textwidth]{Imagenes/Users.png}
+    \caption{Panel de \textit{Usuarios y grupos} de macOS mostrando la única cuenta del equipo (\texttt{NicolasReyAlonso}), de tipo Administrador.}
+    \label{fig:usuarios}
+\end{figure}
+
 \subsection{Política de contraseñas}
 \label{subsec:contraseñas}
 
@@ -63,6 +84,13 @@ Esta configuración --- una única cuenta administradora utilizada para todo ---
     \item \textbf{Autenticación biométrica:} Touch ID activado tanto para el desbloqueo del equipo como para la confirmación de operaciones \texttt{sudo}, compras y aprobaciones de cambios de seguridad del sistema. El factor biométrico se almacena cifrado dentro del \textit{Secure Enclave}.
     \item \textbf{Bloqueo automático y otras restricciones:} pantalla con bloqueo automático tras 5 minutos de inactividad y exigencia de contraseña al despertar.
 \end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.70\textwidth]{Imagenes/PassPolicy.png}
+    \caption{Panel de \textit{Contraseña} en \textit{Ajustes del Sistema} de macOS, mostrando la configuración de desbloqueo, Touch ID y bloqueo automático de pantalla.}
+    \label{fig:pass_policy}
+\end{figure}
 
 \subsection{Política de copias de seguridad (\textit{backup})}
 \label{subsec:copias_seguridad}
@@ -104,4 +132,23 @@ Esta política de \emph{descargar automáticamente, instalar manualmente con fre
 \subsection{Evidencia gráfica}
 \label{subsec:evidencia_pantalla}
 
-\textit{[Captura de pantalla del panel \textbf{Software Update} de macOS mostrando el nivel de actualización actual del sistema y la fecha del último \textit{check} pendiente de añadir como Figura.]}
+Las siguientes capturas muestran el estado real del panel \textit{Actualización de software} en el equipo auditado.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Imagenes/UpdatePolicy.png}
+        \caption{Panel principal de \textit{Actualización de software} con el estado de la última comprobación.}
+        \label{fig:update_policy1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Imagenes/Updatepolicy2.png}
+        \caption{Opciones avanzadas de actualización: descarga automática activada, instalación manual.}
+        \label{fig:update_policy2}
+    \end{subfigure}
+    \caption{Panel \textit{Software Update} de macOS Tahoe mostrando la política de actualizaciones del equipo: descarga automática en segundo plano con instalación manual habilitada por el usuario.}
+    \label{fig:update_policy}
+\end{figure}

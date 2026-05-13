@@ -32,3 +32,10 @@ El desarrollo del ejercicio y de la presente memoria seguirán el guion de activ
     \item Conexión desde el navegador local. Firefox debe acceder sin mostrar ningún error. No permitir la conexión si aparecen errores del tipo ``entiendo los problemas...''.
     \item Capturas de pantalla del Firefox (cuatro como mínimo) para ambos dominios, una mostrando el contenido del fichero \texttt{index.html} y otra con las propiedades de la conexión (Herramientas / Información de la página / Seguridad en Firefox o bien pulsar en el ``candado'' de la conexión segura en Firefox, más información...), mostrando la versión de TLS y el tipo de cifrado obtenido en cada una de las conexiones.
 \end{enumerate}
+
+\section{Nota sobre el \emph{prompt} personalizado}
+Tal como exige el enunciado de la práctica, en todas las capturas de pantalla de la consola que aparecen en esta memoria se ha personalizado la variable de entorno \texttt{PS1} con el nombre y apellidos del estudiante. Para ello se ha utilizado la siguiente definición en el fichero de configuración del \emph{shell} (la máquina virtual Kali utiliza \texttt{zsh} por defecto):
+\begin{lstlisting}[language=bash]
+export PS1='%F{blue}Nicolas Rey Alonso-[%F{white}%~%F{blue}] $ %f'
+\end{lstlisting}
+De este modo, en todas las capturas de pantalla del sistema operativo que aparecen en esta memoria, el \emph{prompt} muestra de forma inequívoca el nombre del estudiante que ha realizado la práctica.
