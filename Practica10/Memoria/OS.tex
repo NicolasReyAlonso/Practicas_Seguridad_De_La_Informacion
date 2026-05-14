@@ -1,6 +1,6 @@
 \chapter{Ordenador y sistema operativo}
 
-El equipo analizado es el ordenador que utilizo de manera habitual tanto para tareas académicas como profesionales: un \textbf{Apple MacBook Air} con chip Apple Silicon, sobre el que corre la versión más reciente de macOS. A lo largo del capítulo se describen, en formato profesional, todos los aspectos que el enunciado solicita ``rellenar entre líneas''.
+El equipo analizado es el ordenador que utilizo de manera habitual tanto para tareas académicas como profesionales: un \textbf{Apple MacBook Air} con chip Apple Silicon, sobre el que corre la versión 26.3.1 de macOS (ya actualizaré cuando termine el TFG). A lo largo del capítulo se describen, en formato profesional, todos los aspectos que el enunciado solicita ``rellenar entre líneas''.
 
 % ===============================================================
 % SECCIÓN 1: CONFIGURACIÓN GENERAL DEL EQUIPO
@@ -61,7 +61,7 @@ El equipo tiene configurada una \textbf{única cuenta} de usuario, con privilegi
 
 \begin{itemize}[leftmargin=*]
     \item Número total de cuentas: 1 (Aparte de root).
-    \item Cuentas con privilegios de Administrador: 1 (\texttt{NicolasReyAlonso}).
+    \item Cuentas con privilegios de Administrador: 2 (\texttt{NicolasReyAlonso} y \texttt{root}).
     \item No existen cuentas estándar adicionales para el uso cotidiano.
 \end{itemize}
 
@@ -99,7 +99,7 @@ Esta configuración --- una única cuenta administradora utilizada para todo ---
     \item \textbf{Herramienta:} Time Machine, copias \textbf{completas} (con \textit{snapshots} incrementales gestionados por APFS internamente).
     \item \textbf{Frecuencia:} cada $\approx$3 meses o de forma puntual antes de cambios significativos en el sistema o tras finalizar proyectos que no estén respaldados por Git/GitHub.
     \item \textbf{Almacenamiento:} disco duro externo USB-C dedicado a Time Machine. El disco \textbf{permanece desconectado entre copias} y se monta sólo para realizarlas, lo que cumple el requisito de copia \textit{offline} que el manual considera imprescindible frente a ataques de \textit{ransomware}.
-    \item \textbf{Almacenamiento en nube:} no hay copias automáticas hacia iCloud Drive de la totalidad del sistema; sí se sincronizan selectivamente Documentos y Escritorio.
+    \item \textbf{Almacenamiento en nube:} no hay copias automáticas hacia iCloud Drive de la totalidad del sistema; considero que aumenta mi seguridad el tener mis datos en la menor cantidad de sitios en la nube posible.
     \item \textbf{Procedimiento de recuperación:} en caso de fallo, el sistema puede restaurarse arrancando en \textit{Recovery Mode} (Cmd+R durante el encendido) y seleccionando ``Restore from Time Machine Backup'', siguiendo el asistente para elegir el \textit{snapshot} adecuado.
 \end{itemize}
 

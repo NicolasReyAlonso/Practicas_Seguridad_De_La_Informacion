@@ -34,8 +34,8 @@ Este capítulo describe la conexión a Internet del domicilio, el equipamiento d
 \subsection{Filtrado de tráfico (\textit{firewall})}
 
 \begin{itemize}[leftmargin=*]
-    \item \textbf{¿Tiene filtrado de conexiones entrantes?} Sí. El router está configurado en modo NAT y bloquea por defecto cualquier conexión entrante no solicitada. Esta es la configuración recomendada por la Tabla 4.1 del manual.
-    \item \textbf{¿Hay alguna configuración especial de conexiones entrantes?} Sí, una única regla de \textbf{\textit{port forwarding}} para uso ocasional de desarrollo: el puerto TCP \texttt{3000} público se reenvía al puerto TCP \texttt{3000} de la IP privada \texttt{192.168.1.76}, donde se levanta un servidor Express. La regla se mantiene activa pero se utiliza exclusivamente para pruebas locales (Figura \ref{fig:portforward}).
+    \item \textbf{\textquestiondown{}Tiene filtrado de conexiones entrantes?} Sí. El router está configurado en modo NAT y bloquea por defecto cualquier conexión entrante no solicitada. Esta es la configuración recomendada por la Tabla 4.1 del manual.
+    \item \textbf{\textquestiondown{}Hay alguna configuración especial de conexiones entrantes?} Sí, una única regla de \textbf{\textit{port forwarding}} para uso ocasional de desarrollo: el puerto TCP \texttt{3000} público se reenvía al puerto TCP \texttt{3000} de la IP privada \texttt{192.168.1.76}, donde se levanta un servidor Express. La regla se mantiene activa pero se utiliza exclusivamente para pruebas locales (Figura \ref{fig:portforward}).
 \end{itemize}
 
 \begin{figure}[H]

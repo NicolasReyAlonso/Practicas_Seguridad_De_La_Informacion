@@ -72,10 +72,9 @@ sudo freshclam
     \label{fig:clamav-config}
 \end{figure}
 
-\paragraph{Ejecución del escaneo recursivo.} Con la base de firmas actualizada se ha lanzado el escaneo completo y recursivo de la unidad principal con la opción \texttt{-i} para que el informe muestre únicamente los ficheros infectados (y, al final, el resumen estadístico):
-
+\paragraph{Ejecución del escaneo recursivo.} Con la base de firmas actualizada se ha lanzado el escaneo completo y recursivo de la unidad principal con la opción \texttt{-r}:
 \begin{lstlisting}[language=bash]
-sudo clamscan -r -i /
+sudo clamscan -r /
 \end{lstlisting}
 
 \begin{figure}[H]
@@ -104,3 +103,6 @@ El equipo cumple, con matices, la mayor parte de las recomendaciones de las Unid
 No obstante, conviene recordar que la seguridad de un equipo \emph{no es solo la del equipo}: una de las consideraciones que recoge el manual es que la red de la que cuelga el dispositivo forma parte de su superficie de exposición. En este caso concreto, el hecho de que el router doméstico mantenga el botón WPS activo y la contraseña del instalador supone una vulnerabilidad relevante: un atacante en proximidad física que comprometiera la Wi-Fi podría, desde dentro de la LAN, lanzar reconocimiento contra el equipo, especialmente teniendo en cuenta que existe una regla de \textit{port forwarding} en el puerto 3000 que expone un servicio interno al exterior.
 
 Adicionalmente, una observación general que ya aparece en la Unidad 3 del manual: cada vez es más relevante el concepto de \textit{software gris} ---programas que sin ser clasificables como \textit{malware} formal recopilan telemetría agresiva, modifican comportamientos del sistema sin consentimiento granular o consumen recursos sin justificación, como ciertos asistentes basados en IA integrados en el sistema operativo. El control del \textit{rendimiento del equipo}, del consumo de recursos y del tráfico de red continúa siendo una de las técnicas de detección más útiles para este tipo de software, especialmente en perfiles de uso de desarrollo donde es habitual tener una buena visibilidad sobre los procesos en ejecución.
+
+Finalmente, debido a que el desarrollo de este informe ni lo exige ni se centra en ello, he ignorado los problemas de seguridad mucho más graves que se encuentran en mi red doméstica. Los otros equipos informáticos de la casa (a escepción de los mios) tienen aplicaciones instaladas de fuentes dudosas, sistemas operativos instalados a través de medios que ya se han clasificado como spyware (por ejemplo, windows con un parche kit para evadir la activación) y, en general, un nivel de exposición mucho más alto que el equipo auditado. En este sentido, el análisis de la protección frente a \textit{malware} de este equipo es solo una parte del diagnóstico general de seguridad del entorno doméstico, y no se puede considerar representativo del mismo. No es por 
+tirar abajo el trabajo que yo he realizado para asegurar mi equipo, sino para poner en perspectiva la importancia de auditar y proteger cada uno de los dispositivos que forman parte de la red doméstica, ya que el eslabón más débil compromete a toda la red, y este es el caso ya que no está en mi capacidad actuar sobre las acciones de otras personas pertenecientes a la red.

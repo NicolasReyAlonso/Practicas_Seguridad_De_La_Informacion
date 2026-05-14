@@ -1,8 +1,5 @@
 \chapter{Conclusiones}
 
-Este capítulo final sintetiza el análisis realizado en los cuatro apartados anteriores, contrastando de manera explícita las políticas reales del entorno doméstico auditado con las recomendaciones de las cuatro primeras unidades del manual de la asignatura y de la Guía INCIBE, y propone para cada bloque las mejoras concretas identificadas.
-
-% =====================================================================
 \section{Ordenador y sistema operativo}
 \label{sec:concl-os}
 
@@ -13,9 +10,9 @@ Este capítulo final sintetiza el análisis realizado en los cuatro apartados an
 \begin{itemize}[leftmargin=*]
     \item \textbf{Gestión de contraseñas y MFA (UA 1 y UA 2).} El manual recalca el uso de contraseñas largas, complejas y combinadas con un segundo factor. La configuración del equipo --- contraseña de 14 caracteres con todos los grupos, MFA con TOTP y Touch ID sobre \textit{Secure Enclave} --- se sitúa en los niveles más altos recomendados por la teoría, y refuerza la dimensión de \textit{confidencialidad} de la tríada CIA.
     \item \textbf{Cifrado en reposo (UA 2).} FileVault cubre la recomendación de cifrado completo del disco que el manual considera imprescindible para proteger la información ante sustracción física del equipo.
-    \item \textbf{Cuentas y privilegios mínimos (UA 3 y UA 4, sección 1.1.3).} El manual advierte expresamente que utilizar una única cuenta administradora para el uso diario es una de las \emph{negligencias} más extendidas en entornos domésticos: cualquier código malicioso ejecutado por descuido heredará privilegios elevados de manera inmediata. La configuración auditada incurre exactamente en ese antipatrón.
+    \item \textbf{Cuentas y privilegios mínimos (UA 3 y UA 4, sección 1.1.3).} El manual advierte expresamente que utilizar una única cuenta administradora para el uso diario es una de las \emph{negligencias} más extendidas en entornos domésticos: cualquier código malicioso ejecutado por descuido heredará privilegios elevados de manera inmediata. La configuración auditada incurre exactamente en ese error.
     \item \textbf{Copias de seguridad (UA 4, sección 1.1.3).} El manual exige al menos un soporte \textit{offline} para protegerse frente a \textit{ransomware}. Time Machine sobre disco externo desconectado entre copias \textbf{cumple este requisito}, pero la \textbf{frecuencia trimestral es insuficiente}: tres meses de pérdida potencial de información son inaceptables para uso académico/profesional.
-    \item \textbf{Actualizaciones (UA 4, sección 1.1.4).} El manual es taxativo: aplicar parches de seguridad cuanto antes y, si es posible, automáticamente. La política propia (instalación manual cada $\approx$3 meses) abre una \textit{ventana de exposición} prolongada que el manual considera el factor de mayor riesgo en sistemas modernos.
+    \item \textbf{Actualizaciones (UA 4, sección 1.1.4).} El manual es taxativo: aplicar parches de seguridad cuanto antes y, si es posible, automáticamente. La política propia (instalación manual cada $\approx$3 meses) abre una \textit{ventana de exposición} prolongada que el manual considera el factor de mayor riesgo en sistemas modernos. En mi defensa, me ha ocurrido demasiadas veces que tras una actualización me dejan de funcionar maquinas virtuales, entornos de desarrollo, etc. así que en la actualidad trato de mantener un balance entre la actualización rápida de parches críticos y la prudencia con actualizaciones funcionales que puedan romper algo.
 \end{itemize}
 
 \textbf{Mejoras propuestas:}
@@ -52,7 +49,7 @@ Este capítulo final sintetiza el análisis realizado en los cuatro apartados an
     \item \textbf{Desactivar el WPS} en la página de configuración Wi-Fi del router (medida crítica, fácil y sin efectos secundarios para el uso doméstico).
     \item \textbf{Migrar a WPA3} cuando lo permita el firmware del router; en su defecto, mantener WPA2-AES (nunca WPA-TKIP).
     \item \textbf{Desactivar la regla de \textit{port forwarding} TCP/3000} cuando no se esté trabajando con el servidor Express, y limitarla mientras esté activa al menor tiempo posible.
-    \item Considerar \textbf{ocultar el SSID} y/o habilitar \textbf{filtrado por MAC} como segundo escalón de protección, asumiendo el ligero coste de gestión que ello supone.
+    \item \textbf{ocultar el SSID} y/o habilitar \textbf{filtrado por MAC} como segundo escalón de protección, asumiendo el ligero coste de gestión que ello supone.
 \end{enumerate}
 
 % =====================================================================
@@ -65,7 +62,7 @@ Este capítulo final sintetiza el análisis realizado en los cuatro apartados an
 
 \begin{itemize}[leftmargin=*]
     \item \textbf{Empleo de \textit{suite} de seguridad permanente.} El manual recomienda mantener activa una \textit{suite} antimalware (puede ser la del propio fabricante del SO, como en este caso) y \textbf{revisar periódicamente el sistema con un segundo producto ligero adicional}. Esta es exactamente la configuración actual del equipo: XProtect + Gatekeeper permanentes, complementados con escaneos puntuales con Malwarebytes y verificación cruzada con ClamAV ---un segundo fabricante completamente distinto y de código abierto---.
-    \item \textbf{Cuidado con la procedencia del software.} Cumplido: todas las aplicaciones se instalan desde App Store, fuentes notarizadas o repositorios de \texttt{brew} firmados.
+    \item \textbf{Cuidado con la procedencia del software.} Cumplido: todas las aplicaciones se instalan desde App Store, fuentes confiables o repositorios de \texttt{brew} firmados.
     \item \textbf{Atención a la captura indebida de datos.} El manual señala que los antivirus comerciales (Avast, McAfee y otros) han sido en el pasado objeto de controversia por prácticas de recopilación de telemetría, por lo que la elección de la solución debe ser informada y la concesión de permisos restrictiva. La elección de Malwarebytes y ClamAV responde precisamente a este criterio: el primero porque su modelo de negocio no se sustenta en la venta de telemetría, y el segundo porque al ser software libre auditable se elimina por completo el riesgo de recopilación oculta de datos.
 \end{itemize}
 
