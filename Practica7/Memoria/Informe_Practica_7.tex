@@ -396,15 +396,6 @@ El \textit{handshake} TLS se completa con éxito y el script \texttt{index.sh} m
 \chapter{Conclusiones}
 A lo largo de la práctica se ha extendido el servidor web seguro de la Práctica 6 para que, además de presentar su propio certificado de servidor, exija la presentación y verificación de un certificado de cliente, aceptando certificados firmados por dos Autoridades de Certificación distintas: la autoridad propia de la asignatura y la AC Raíz FNMT-RCM.
 
-Los principales logros del trabajo realizado son:
-\begin{itemize}
-    \item Descarga, verificación de huella SHA-1 y conversión a PEM del certificado raíz FNMT, así como su concatenación con la CA de la asignatura en un único almacén de CAs confiables.
-    \item Reconfiguración del \texttt{VirtualHost *:443} de Apache para activar la verificación obligatoria del certificado del cliente (\texttt{SSLVerifyClient require}) y la ejecución de scripts CGI desde \texttt{/usr/lib/cgi-bin/}.
-    \item Diseño e instalación de un script \texttt{bash} que sustituye al \texttt{index.html} estático y muestra los datos más significativos del certificado presentado por el cliente, leyéndolos exclusivamente de las variables de entorno proporcionadas por Apache, sin invocar a \texttt{openssl}.
-    \item Validación funcional del servidor mediante \texttt{openssl s\_client}, obteniendo un \textit{handshake} TLS con \texttt{Verification: OK} y sin entradas de error en \texttt{error\_ssl.log}.
-    \item Comprobación final con Firefox utilizando el certificado de cliente de la asignatura y, posteriormente, un segundo certificado firmado por una autoridad distinta, demostrando así la capacidad del servidor para autenticar clientes mediante múltiples CAs.
-\end{itemize}
-
 En conjunto, la práctica ha permitido consolidar los conceptos de autenticación mutua TLS, gestión de \textit{trust stores} con múltiples CAs y exposición de los metadatos de certificados a aplicaciones CGI a través de variables de entorno, todos ellos elementos fundamentales en el despliegue de servicios web con autenticación fuerte basada en certificados digitales.
 
 \include{bibliografia}

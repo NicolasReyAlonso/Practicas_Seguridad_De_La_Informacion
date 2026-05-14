@@ -1,6 +1,7 @@
 \chapter{Introducción}
 
 \section{Requisitos Previos}
+En lineas generales, haber realizado correctamente las prácticas anteriores.
 \begin{itemize}
     \item Servidor web Apache instalado y configurado.
     \item Certificados de cliente necesarios: certificado de la autoridad de la asignatura y un certificado secundario (ej. FNMT).
@@ -9,7 +10,7 @@
 
 \section{Objetivos de la práctica}
 \begin{itemize}
-    \item Modificar la configuración del servidor web Apache para que acepte certificados de cliente firmados por la misma autoridad de certificación y por una autoridad adicional (preferentemente FNMT).
+    \item Modificar la configuración del servidor web Apache para que acepte certificados de cliente firmados por la misma autoridad de certificación y por una autoridad adicional (FNMT).
     \item Habilitar la ejecución de scripts CGI/binarios (bash) o Python para interactuar con los datos del certificado.
     \item Instalar un script que reemplace el fichero \texttt{index.html} para mostrar los datos más importantes del certificado presentado por el cliente (Common Name, Issuer, Validity, etc.) a través de variables de entorno.
     \item Demostrar la capacidad del servidor web para aceptar dos conexiones distintas utilizando certificados firmados por autoridades diferentes.
