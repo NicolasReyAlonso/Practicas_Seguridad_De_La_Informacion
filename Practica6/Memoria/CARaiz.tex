@@ -5,7 +5,10 @@
 Para que el sistema operativo (y las herramientas que se apoyan en su almacén de CAs como \texttt{curl}, \texttt{wget} o el propio \texttt{openssl}) reconozcan el certificado de servidor firmado por la autoridad de la asignatura, es necesario añadir el certificado raíz al almacén de autoridades de confianza del sistema.
 
 \subsection{Copia del certificado raíz al almacén del sistema}
-En Debian/Kali Linux los certificados raíz adicionales se ubican en \texttt{/usr/local/share/ca-certificates/}. El fichero debe tener extensión \texttt{.crt} y estar en formato PEM:
+En Kali Linux los certificados raíz adicionales 
+se ubican en \texttt{/usr/local/share/ca-certificates/}. 
+El fichero debe tener extensión \texttt{.crt} y 
+estar en formato PEM:
 \begin{lstlisting}[language=bash]
 sudo cp certificadoRaiz.crt /usr/local/share/ca-certificates/SI-CA-Raiz.crt
 \end{lstlisting}
