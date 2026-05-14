@@ -29,7 +29,7 @@ CVE-2023-51582 & Linux & Ejecución remota de código en el componente \texttt{L
 \caption{CVEs seleccionadas para la práctica.}
 \end{table}
 
-Las tres comparten exactamente el mismo perfil ofensivo en su vector CVSS base: \texttt{AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H}, esto es, ataque remoto a través de red, complejidad baja, sin privilegios ni interacción de usuario y con impacto alto en las tres dimensiones de la tríada CIA. Esto satisface de forma directa los requisitos de puntuación $\geq 9.0$, \texttt{AV:N} y \texttt{PR:N}. Asimismo, las tres pertenecen a plataformas diferentes (Android/iOS, Windows y Linux) y las tres han sido publicadas o, en el caso de CVE-2018-6350 y CVE-2023-51582, \textit{modificadas} en la NVD dentro de los últimos doce meses, cumpliendo el criterio temporal.
+Las tres comparten exactamente el mismo perfil ofensivo en su vector CVSS base: \texttt{AV:N/}\allowbreak\texttt{AC:L/}\allowbreak\texttt{PR:N/}\allowbreak\texttt{UI:N/}\allowbreak\texttt{S:U/}\allowbreak\texttt{C:H/}\allowbreak\texttt{I:H/}\allowbreak\texttt{A:H}, esto es, ataque remoto a través de red, complejidad baja, sin privilegios ni interacción de usuario y con impacto alto. Esto satisface de forma directa los requisitos de puntuación $\geq 9.0$, \texttt{AV:N} y \texttt{PR:N}. Asimismo, las tres pertenecen a plataformas diferentes (Android/iOS, Windows y Linux) y las tres han sido publicadas o, en el caso de CVE-2018-6350 y CVE-2023-51582, \textit{modificadas} en la NVD dentro de los últimos doce meses, cumpliendo el criterio temporal.
 
 \section{Capturas de pantalla de la búsqueda y del historial del navegador}
 
@@ -78,7 +78,7 @@ Durante el proceso de selección se evaluaron y descartaron varias CVE que en pr
 \hline
 \rowcolor{lightblue}
 \textbf{Identificador} & \textbf{Plataforma} & \textbf{Razón del descarte} \\ \hline
-CVE-2025-21298 & Windows & Vulnerabilidad crítica en Windows OLE (CVSS 9.8). Se descartó porque ya estaba cubierta la plataforma Windows por CVE-2025-53766, que afecta a un componente gráfico (GDI+) de uso más transversal y por tanto de mayor interés didáctico. \\ \hline
+CVE-2025-21298 & Windows & Vulnerabilidad crítica en Windows OLE (CVSS 9.8). Se descartó porque ya estaba cubierta la plataforma Windows por CVE-2025-53766, que afecta a un componente gráfico (GDI+) de uso más común. \\ \hline
 CVE-2025-32711 & Multiplataforma & Vulnerabilidad crítica de \textit{prompt injection} sobre Microsoft 365 Copilot (\textit{EchoLeak}, CVSS 9.3). Aunque cumple los requisitos de puntuación y vector, afecta a una aplicación SaaS de terceros, no a un componente del sistema operativo base. \\ \hline
 CVE-2025-49144 & Windows & Notepad++ \textit{installer privilege escalation}. Descartada porque, pese a la alta puntuación, el componente afectado es una aplicación de terceros y el vector real requiere ejecución local del instalador, no encajando con el espíritu del criterio \texttt{AV:N}. \\ \hline
 CVE-2024-43461 & Windows & Spoofing en Windows MSHTML Platform (CVSS 8.8). Se descartó por puntuación por debajo del umbral 9.0 y porque la métrica UI:R (\textit{User Interaction Required}) restaba interés frente a otros candidatos con \texttt{UI:N}. \\ \hline

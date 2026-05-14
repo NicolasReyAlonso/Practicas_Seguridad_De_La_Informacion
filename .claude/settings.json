@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(xelatex -interaction=nonstopmode Informe_Practica_10.tex)"
+      "Bash(xelatex -interaction=nonstopmode Informe_Practica_10.tex)",
+      "Bash(xelatex -interaction=nonstopmode Informe_Practica_9.tex)"
     ]
   }
 }
